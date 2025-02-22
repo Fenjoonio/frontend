@@ -1,0 +1,3 @@
+export const enum USER_QUERY_KEYS {
+  GET_CURRENT_USER = "GET_CURRENT_USER",
+}
