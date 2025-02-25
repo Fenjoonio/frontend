@@ -1,7 +1,8 @@
 export type User = {
   id: number;
+  phone: string;
   firstName: string;
   lastName: string;
-  nickName: string;
+  nickname: string;
   isVerified: boolean;
 };
