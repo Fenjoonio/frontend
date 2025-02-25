@@ -1,0 +1,29 @@
+import VerifyForm from "./components/VerifyForm";
+
+type VerifyPageProps = {
+  searchParams: Promise<{
+    phone: string | null;
+    redirect: string | null;
+    action: "login" | "register" | null;
+  }>;
+};
+
+export default async function VerifyPage({ searchParams }: VerifyPageProps) {
+  const { phone, action, redirect } = await searchParams;
+  const censoredPhone = phone?.replace(/(\d{4})(\d{3})(\d{3})/, "$1***$3");
+
+  return (
+    <div className="h-svh flex flex-col px-4 pb-20">
+      <header className="mt-16">
+        <h1 className="text-lg font-bold">تایید شماره همراه</h1>
+        <span className="block text-sm text-[#B0B0B0] mt-1">
+          برای عبور از این مرحله و دسترسی به امکانات فنجون، لطفا کد ۵ رقمی ارسال شده به شماره{" "}
+          <span className="inline-block ltr text-sm text-[#e0e0e0] leading-6">{censoredPhone}</span>{" "}
+          را وارد کنید
+        </span>
+      </header>
+
+      <VerifyForm phone={phone} action={action} redirect={redirect} className="flex-1 mt-20" />
+    </div>
+  );
+}
