@@ -1,0 +1,4 @@
+export const enum STORIES_QUERY_KEYS {
+  GET_STORIES = "GET_STORIES",
+  ADD_NEW_STORY = "ADD_NEW_STORY",
+}
