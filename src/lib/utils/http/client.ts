@@ -1,9 +1,17 @@
+type APIResponse<T = unknown> = {
+  status: number;
+  message: string;
+  data: T;
+};
+
+type RequestOptions = RequestInit & { params?: Record<string, any>; throwError?: boolean };
+
 export default class HttpClient {
   private baseURL: string;
-  private requestInterceptors: Array<
-    (config: RequestInit) => Promise<RequestInit | void>
+  private requestInterceptors: Array<(config: RequestInit) => Promise<RequestInit | void>>;
+  private responseInterceptors: Array<
+    (data: APIResponse, config: RequestOptions) => Promise<APIResponse>
   >;
-  private responseInterceptors: Array<(data: unknown) => Promise<unknown>>;
 
   constructor(baseURL: string = "") {
     this.baseURL = baseURL;
@@ -11,48 +19,81 @@ export default class HttpClient {
     this.responseInterceptors = [];
   }
 
-  useRequestInterceptor(
-    interceptor: (config: RequestInit) => Promise<RequestInit | void>
-  ): void {
+  useRequestInterceptor(interceptor: (config: RequestInit) => Promise<RequestInit | void>) {
     this.requestInterceptors.push(interceptor);
   }
 
   useResponseInterceptor(
-    interceptor: (data: unknown) => Promise<unknown>
-  ): void {
+    interceptor: (data: APIResponse, config: RequestOptions) => Promise<APIResponse>
+  ) {
     this.responseInterceptors.push(interceptor);
+  }
+
+  private buildQueryParams(params?: Record<string, any>): string {
+    if (!params) return "";
+    const query = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        query.append(key, String(value));
+      }
+    });
+    return query.toString() ? `?${query.toString()}` : "";
   }
 
   async request<T = unknown>(
     method: string,
     url: string,
-    options: RequestInit = {}
-  ): Promise<T> {
+    options: RequestOptions = {}
+  ): Promise<APIResponse<T>> {
     let config: RequestInit = { method, headers: {}, ...options };
+    const queryString = this.buildQueryParams(options.params);
 
     for (const interceptor of this.requestInterceptors) {
       config = (await interceptor(config)) || config;
     }
 
-    const response = await fetch(`${this.baseURL}${url}`, config);
-    let data = await response.json();
+    try {
+      const response = await fetch(`${this.baseURL}${url}${queryString}`, config);
+      const data = await response.json();
 
-    for (const interceptor of this.responseInterceptors) {
-      data = (await interceptor(data)) || data;
+      let result = {
+        message: data.message || "مشکلی پیش آمده است",
+        data: data.data || {},
+        status: response.status,
+      };
+
+      for (const interceptor of this.responseInterceptors) {
+        result = { ...result, ...((await interceptor(result, options)) || {}) };
+      }
+
+      return result;
+    } catch (error) {
+      console.error(error);
+
+      if (options.throwError) {
+        throw error;
+      }
+
+      return {
+        status: 500,
+        data: <T>{},
+        message: "مشکلی پیش آمده است",
+      };
     }
-
-    return data;
   }
 
-  get<T = unknown>(url: string, options?: RequestInit): Promise<T> {
+  get<T = unknown>(
+    url: string,
+    options?: RequestInit & { params?: Record<string, any>; throwError?: boolean }
+  ): Promise<{ message: string; data: T; status: number }> {
     return this.request<T>("GET", url, options);
   }
 
   post<T = unknown>(
     url: string,
     body: unknown,
-    options: RequestInit = {}
-  ): Promise<T> {
+    options: RequestInit & { params?: Record<string, any>; throwError?: boolean } = {}
+  ): Promise<{ message: string; data: T; status: number }> {
     return this.request<T>("POST", url, {
       ...options,
       body: JSON.stringify(body),
@@ -63,8 +104,8 @@ export default class HttpClient {
   put<T = unknown>(
     url: string,
     body: unknown,
-    options: RequestInit = {}
-  ): Promise<T> {
+    options: RequestInit & { params?: Record<string, any>; throwError?: boolean } = {}
+  ): Promise<{ message: string; data: T; status: number }> {
     return this.request<T>("PUT", url, {
       ...options,
       body: JSON.stringify(body),
@@ -72,25 +113,29 @@ export default class HttpClient {
     });
   }
 
-  delete<T = unknown>(url: string, options?: RequestInit): Promise<T> {
+  patch<T = unknown>(
+    url: string,
+    body: unknown,
+    options: RequestInit & { params?: Record<string, any>; throwError?: boolean } = {}
+  ): Promise<{ message: string; data: T; status: number }> {
+    return this.request<T>("PATCH", url, {
+      ...options,
+      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json", ...options.headers },
+    });
+  }
+
+  delete<T = unknown>(
+    url: string,
+    options?: RequestInit & { params?: Record<string, any>; throwError?: boolean }
+  ): Promise<{ message: string; data: T; status: number }> {
     return this.request<T>("DELETE", url, options);
   }
 }
 
-//   // Example usage:
-//   const apiClient = new HttpClient('https://api.example.com');
+// Example usage:
+// const apiClient = new HttpClient('https://api.example.com');
 
-//   // Add a request interceptor
-//   apiClient.useRequestInterceptor(async (config) => {
-//     (config.headers as Record<string, string>)['Authorization'] = 'Bearer token';
-//     return config;
-//   });
-
-//   // Add a response interceptor
-//   apiClient.useResponseInterceptor(async (data) => {
-//     console.log('Response received:', data);
-//     return data;
-//   });
-
-//   // Making a request
-//   apiClient.get('/users').then(console.log).catch(console.error);
+// apiClient.get('/users').then(response => {
+//   console.log(response.message, response.data, response.status);
+// }).catch(console.error);
