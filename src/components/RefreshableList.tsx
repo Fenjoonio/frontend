@@ -52,7 +52,6 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({ onRefresh, children }) =>
 
   return (
     <div className="relative overflow-hidden">
-      {/* Sticky pull indicator with spinner */}
       <div
         className="absolute top-0 left-0 right-0 flex items-center justify-center text-gray-500 transition-transform duration-300"
         style={{ transform: `translateY(${pullDistance}px)`, height: "10px" }}
@@ -74,8 +73,7 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({ onRefresh, children }) =>
         )}
       </div>
 
-      {/* Content */}
-      <div className="pt-10">{children}</div>
+      <div>{children}</div>
     </div>
   );
 };
