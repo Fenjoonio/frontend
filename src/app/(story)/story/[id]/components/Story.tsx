@@ -42,12 +42,14 @@ export default function Story({ id }: StoryProps) {
         {story.text}
       </p>
 
-      <span
-        className="block text-center cursor-pointer mt-10"
-        onClick={() => setShowFullText(!showFullText)}
-      >
-        {showFullText ? "نمایش بخشی از داستان" : "نمایش تمام داستان"}
-      </span>
+      {story.text.split("\n").length > 6 && (
+        <span
+          className="block text-center cursor-pointer mt-10"
+          onClick={() => setShowFullText(!showFullText)}
+        >
+          {showFullText ? "نمایش بخشی از داستان" : "نمایش تمام داستان"}
+        </span>
+      )}
     </div>
   );
 }
