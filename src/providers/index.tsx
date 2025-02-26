@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import GTMProvider from "./GTMProvider";
 import AuthProvider from "./AuthProvider";
 import QueryProvider from "./QueryProvider";
@@ -5,12 +6,14 @@ import LoadingProvider from "./LoadingProvider";
 import { ToastContainer } from "react-toastify";
 import { PropsWithChildren, Suspense } from "react";
 
-export default function Providers({ children }: PropsWithChildren) {
+export default async function Providers({ children }: PropsWithChildren) {
+  const { get } = await headers();
+
   return (
-    <Suspense fallback={<span>در حال بارگذاری ...</span>}>
+    <Suspense>
       <LoadingProvider>
         <QueryProvider>
-          <AuthProvider>
+          <AuthProvider initialAccessToken={get("accessToken") || ""}>
             <GTMProvider>{children}</GTMProvider>
           </AuthProvider>
 
