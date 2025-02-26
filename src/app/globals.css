@@ -99,7 +99,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-[#2e2e2e] text-[#e0e0e0] leading-5;
+    @apply bg-[#2e2e2e] text-[#e0e0e0] leading-5 overscroll-y-contain;
   }
 }
 
