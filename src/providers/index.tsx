@@ -1,19 +1,19 @@
-import { headers } from "next/headers";
 import GTMProvider from "./GTMProvider";
 import AuthProvider from "./AuthProvider";
 import QueryProvider from "./QueryProvider";
 import LoadingProvider from "./LoadingProvider";
 import { ToastContainer } from "react-toastify";
 import { PropsWithChildren, Suspense } from "react";
+import { getUserCredentials } from "@/app/(user)/accounts/actions";
 
 export default async function Providers({ children }: PropsWithChildren) {
-  const { get } = await headers();
+  const { accessToken } = await getUserCredentials();
 
   return (
     <Suspense>
       <LoadingProvider>
         <QueryProvider>
-          <AuthProvider initialAccessToken={get("accessToken") || ""}>
+          <AuthProvider initialAccessToken={accessToken}>
             <GTMProvider>{children}</GTMProvider>
           </AuthProvider>
 
