@@ -29,3 +29,11 @@ export type AddNewStoryBody = {
 export type AddNewStoryResponse = {
   text: string;
 };
+
+export type GetSingleStoryParams = {
+  id: number;
+};
+
+export type GetSingleStoryResponse = {
+  story: Story;
+};

@@ -1,5 +1,6 @@
-import { toast } from "react-toastify";
 import HttpClient from "./client";
+import { toast } from "react-toastify";
+import { isClientSide } from "@/lib/utils/environment";
 import { deleteUserCredentials, getUserCredentials } from "@/app/(user)/accounts/actions";
 
 const http = new HttpClient(process.env.NEXT_PUBLIC_API_BASE_URL!);
@@ -27,7 +28,11 @@ http.useResponseInterceptor(async (data, options) => {
   }
 
   if (data.status >= 400) {
-    toast.error(data.message || "مشکلی پیش آمده است");
+    if (isClientSide()) {
+      toast.error(data.message || "مشکلی پیش آمده است");
+    } else {
+      console.error(data.message);
+    }
 
     if (options.throwError) {
       throw new Error(data.message || "مشکلی پیش آمده است");
