@@ -2,8 +2,11 @@
 
 import { z } from "zod";
 import Link from "next/link";
+import { toast } from "react-toastify";
 import { cn } from "@/lib/utils/classnames";
 import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useVerifyOtp } from "@/services/accounts";
 import { useEffect, type ChangeEvent } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,8 +14,6 @@ import { toEnglishDigits } from "@/lib/utils/numbers";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { setUserCredentials } from "@/app/(user)/accounts/actions";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 const schema = z.object({
   code: z.string().length(5, { message: "کد وارد شده صحیح نیست" }),
@@ -60,6 +61,30 @@ export default function VerifyForm({ phone, redirect, className }: VerifyFormPro
   useEffect(() => {
     if (!phone) router.replace("/accounts/login");
   }, [phone, router]);
+
+  useEffect(() => {
+    const getOTPFromSMS = async () => {
+      if (!("OTPCredential" in window)) return;
+
+      try {
+        // @ts-ignore
+        const otp = await window.navigator.credentials.get({ otp: { transport: ["sms"] } });
+
+        // @ts-ignore
+        if (!otp?.code) {
+          throw new Error("کد تایید یافت نشد");
+        }
+
+        // @ts-ignore
+        setValue("code", otp?.code);
+      } catch (error) {
+        toast.error("خطا در دریافت کد یک بار مصرف");
+        console.error(error);
+      }
+    };
+
+    getOTPFromSMS();
+  });
 
   return (
     <form
