@@ -10,10 +10,14 @@ export function useGetCurrentUser() {
   });
 }
 
-export function useUpdateCurrentUser(options?: { onSuccess?: (res: User) => void }) {
+export function useUpdateCurrentUser(options?: {
+  onSuccess?: (res: User) => void;
+  onError?: (err: unknown) => void;
+}) {
   const queryClient = useQueryClient();
 
   return useMutation({
+    ...options,
     mutationKey: [USER_QUERY_KEYS.UPDATE_CURRENT_USER],
     mutationFn: updateCurrentUser,
     onSuccess: (response) => {

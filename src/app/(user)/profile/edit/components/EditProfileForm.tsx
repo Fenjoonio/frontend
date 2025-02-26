@@ -5,6 +5,7 @@ import { useGetCurrentUser, useUpdateCurrentUser } from "@/services/user";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/classnames";
+import { toast } from "react-toastify";
 
 type Inputs = {
   firstName: string;
@@ -19,7 +20,14 @@ type EditProfileFormProps = {
 
 export default function EditProfileForm({ className }: EditProfileFormProps) {
   const { data: currentUser, isPending: isCurrentUserApiPending } = useGetCurrentUser();
-  const { mutate: updateCurrentUser } = useUpdateCurrentUser();
+  const { mutate: updateCurrentUser } = useUpdateCurrentUser({
+    onSuccess: () => {
+      toast.success("ویرایش پروفایل با موفقیت انجام شد");
+    },
+    onError: () => {
+      toast.error("خطا در ویرایش پروفایل");
+    },
+  });
 
   const {
     register,
