@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+const NEEDS_LOGIN_PAGE = ["/profile/edit"];
+
 function handleOnboarding(request: NextRequest): NextResponse | undefined {
   if (request.cookies.has("isFirstTime")) return;
 
@@ -19,7 +21,12 @@ function handleAuthentication(request: NextRequest): NextResponse | undefined {
   const isFirstRun = !request.cookies.has("isFirstTime");
   const { pathname } = request.nextUrl;
 
-  if (!isLoggedIn && !isFirstRun && !pathname.includes("/accounts")) {
+  if (
+    !isLoggedIn &&
+    !isFirstRun &&
+    !pathname.includes("/accounts") &&
+    NEEDS_LOGIN_PAGE.includes(pathname)
+  ) {
     const params = new URLSearchParams();
     params.set("redirect", pathname);
 
