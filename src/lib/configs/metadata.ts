@@ -6,4 +6,7 @@ export const metadata: Metadata = {
     template: "فنجون",
   },
   description: "یک دنیا داستان‌های خواندنی کوتاه",
+  appleWebApp: {
+    capable: true,
+  },
 };
