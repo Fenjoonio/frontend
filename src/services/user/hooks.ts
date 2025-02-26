@@ -1,7 +1,7 @@
+import type { User } from "./types";
 import { USER_QUERY_KEYS } from "./constants";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCurrentUser, updateCurrentUser } from "./functions";
-import { User } from "./types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useGetCurrentUser() {
   return useQuery({
