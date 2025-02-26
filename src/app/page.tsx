@@ -47,7 +47,9 @@ export default function HomePage() {
             className="w-full block py-8 px-4 not-first:border-t border-[#505050]"
           >
             <span className="block font-bold">{getUserName(story.user)}</span>
-            <p className="w-full text-[#B0B0B0] mt-2">{story.text}</p>
+            <p className="w-full text-[#B0B0B0] whitespace-pre-line line-clamp-5 mt-2">
+              {story.text}
+            </p>
           </Link>
         ))}
 
