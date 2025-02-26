@@ -4,7 +4,7 @@ import withSerwistInit from "@serwist/next";
 const nextConfig: NextConfig = {};
 
 const withSerwist = withSerwistInit({
-  swSrc: "app/sw.ts",
+  swSrc: "src/app/sw.ts",
   swDest: "public/sw.js",
   disable: process.env.NODE_ENV !== "production",
 });

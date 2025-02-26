@@ -6,13 +6,13 @@ export const metadata: Metadata = {
     template: "فنجون",
   },
   description: "یک دنیا داستان‌های خواندنی کوتاه",
+  metadataBase: new URL("/", "https://fenjoon.vercel.app"),
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "فنجون",
     startupImage: "/manifest-assets/screenshots/apple-splash-2048-2732.jpg",
   },
-  themeColor: "#2e2e2e",
   formatDetection: {
     telephone: false,
   },
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "فنجون؛ یک فنجان خواندنی",
     description: "یک دنیا داستان‌های خواندنی کوتاه",
-    url: "https://fenjoon.vercel.app",
+    url: "/",
     siteName: "فنجون",
     images: [
       {
@@ -46,5 +46,4 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  viewport: "width=device-width, initial-scale=1",
 };
