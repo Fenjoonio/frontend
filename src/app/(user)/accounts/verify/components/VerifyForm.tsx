@@ -72,6 +72,7 @@ export default function VerifyForm({ phone, redirect, className }: VerifyFormPro
           autoFocus
           maxLength={5}
           inputMode="numeric"
+          autoComplete="one-time-code"
           placeholder="کد تایید ۵ رقمی"
           className="placeholder:text-right"
           {...register("code", {
