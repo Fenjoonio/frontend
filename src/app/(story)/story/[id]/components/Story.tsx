@@ -1,11 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { notFound } from "next/navigation";
+import { cn } from "@/lib/utils/classnames";
 import { getUserName } from "@/lib/utils/users";
 import { useGetSingleStory } from "@/services/stories";
-import { useState } from "react";
-import { cn } from "@/lib/utils/classnames";
-import { Button } from "@/components/ui/button";
 
 type StoryProps = {
   id: string;
