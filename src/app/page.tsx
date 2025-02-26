@@ -42,6 +42,7 @@ export default function HomePage() {
   const openAddStoryModalIfLoggedIn = () => {
     if (!isLoggedIn) {
       router.push("/accounts/login?redirect=/");
+      return;
     }
 
     setIsModalOpen(true);
