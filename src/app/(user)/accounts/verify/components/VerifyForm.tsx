@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 import Link from "next/link";
-import { toast } from "react-toastify";
 import { cn } from "@/lib/utils/classnames";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
@@ -67,18 +66,16 @@ export default function VerifyForm({ phone, redirect, className }: VerifyFormPro
       if (!("OTPCredential" in window)) return;
 
       try {
-        // @ts-ignore
-        const otp = await window.navigator.credentials.get({ otp: { transport: ["sms"] } });
+        const otp: any = await window.navigator.credentials.get({
+          otp: { transport: ["sms"] },
+        } as any);
 
-        // @ts-ignore
         if (!otp?.code) {
           throw new Error("کد تایید یافت نشد");
         }
 
-        // @ts-ignore
-        setValue("code", otp?.code);
+        setValue("code", otp?.code || "");
       } catch (error) {
-        toast.error("خطا در دریافت کد یک بار مصرف");
         console.error(error);
       }
     };
