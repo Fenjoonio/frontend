@@ -1,30 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import { PenIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { User } from "@/services/user";
 import { Button } from "@/components/ui/button";
+import { getUserName } from "@/lib/utils/users";
 import { useAuthContext } from "@/providers/AuthProvider";
 import PullToRefreshList from "@/components/RefreshableList";
 import { Story, useGetInfiniteStories } from "@/services/stories";
 import CreateNewStoryDialog from "./(story)/components/CreateNewStoryDialog";
-
-function getUserName(user: User) {
-  if (user.nickname) {
-    return user.nickname;
-  }
-
-  if (user.lastName && user.firstName) {
-    return `${user.firstName} ${user.lastName}`;
-  }
-
-  if (user.firstName || user.lastName) {
-    return user.firstName || user.lastName;
-  }
-
-  return `کاربر ${user.id}#`;
-}
 
 export default function HomePage() {
   const router = useRouter();
@@ -56,10 +41,14 @@ export default function HomePage() {
     <div className="flex flex-col gap-y-6">
       <PullToRefreshList onRefresh={onRefresh}>
         {stories.map((story) => (
-          <div key={story.id} className="w-full py-8 px-4 not-first:border-t border-[#505050]">
+          <Link
+            key={story.id}
+            href={`/story/${story.id}`}
+            className="w-full block py-8 px-4 not-first:border-t border-[#505050]"
+          >
             <span className="block font-bold">{getUserName(story.user)}</span>
             <p className="w-full text-[#B0B0B0] mt-2">{story.text}</p>
-          </div>
+          </Link>
         ))}
 
         {isPending && (
