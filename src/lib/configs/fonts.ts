@@ -1,7 +1,6 @@
 import localFont from "next/font/local";
 
 export const aria = localFont({
-  preload: false,
   display: "swap",
   variable: "--font-aria",
   src: [
