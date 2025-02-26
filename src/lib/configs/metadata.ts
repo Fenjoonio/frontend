@@ -13,6 +13,9 @@ export const metadata: Metadata = {
     startupImage: "/manifest-assets/screenshots/apple-splash-2048-2732.jpg",
   },
   themeColor: "#2e2e2e",
+  formatDetection: {
+    telephone: false,
+  },
   icons: [
     {
       url: "/manifest-assets/icons/icon-192x192.png",
