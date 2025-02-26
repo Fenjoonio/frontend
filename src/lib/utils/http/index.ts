@@ -27,6 +27,10 @@ http.useResponseInterceptor(async (data, options) => {
     window.location.replace(`/accounts/login?${params.toString()}`);
   }
 
+  if (data.status === 404) {
+    return data;
+  }
+
   if (data.status >= 400) {
     if (isClientSide()) {
       toast.error(data.message || "مشکلی پیش آمده است");

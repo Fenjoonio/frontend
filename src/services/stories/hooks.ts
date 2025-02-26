@@ -1,7 +1,7 @@
-import { addNewStory, getStories } from "./functions";
-import type { AddNewStoryResponse, GetStoriesParams } from "./types";
 import { STORIES_QUERY_KEYS } from "./constants";
-import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { addNewStory, getSingleStory, getStories } from "./functions";
+import type { AddNewStoryResponse, GetSingleStoryParams, GetStoriesParams } from "./types";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useGetInfiniteStories(params?: GetStoriesParams) {
   return useInfiniteQuery({
@@ -15,6 +15,13 @@ export function useGetInfiniteStories(params?: GetStoriesParams) {
         ? { page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
         : undefined;
     },
+  });
+}
+
+export function useGetSingleStory(params: GetSingleStoryParams) {
+  return useQuery({
+    queryFn: () => getSingleStory(params),
+    queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, params],
   });
 }
 
