@@ -7,14 +7,7 @@ import BottomNavigation from "@/components/BottomNavigation";
 export default function BottomNavigationSafeZone({ children }: PropsWithChildren) {
   const pathname = usePathname();
 
-  const hidePages = [
-    "/gold",
-    "/wallet/deposit",
-    "/wallet/withdraw",
-    "/accounts",
-    "/onboarding",
-    "/receipt",
-  ];
+  const hidePages: string[] = [];
   const isHidden = hidePages.some((page) => pathname.includes(page));
 
   if (isHidden) {
@@ -22,12 +15,12 @@ export default function BottomNavigationSafeZone({ children }: PropsWithChildren
   }
 
   return (
-    <div className="pb-14">
-      <div className="min-h-svh">{children}</div>
+    <>
+      <div className="min-h-svh pb-14">{children}</div>
       <BottomNavigation
         pathname={pathname}
         className="max-w-[480px] fixed bottom-0 left-0 right-0 z-10 mx-auto"
       />
-    </div>
+    </>
   );
 }
