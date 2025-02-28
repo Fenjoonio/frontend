@@ -38,7 +38,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col gap-y-6">
+    <div className="flex flex-col gap-y-6 pb-4">
       <PullToRefreshList onRefresh={onRefresh}>
         {stories.map((story) => (
           <Link
@@ -78,7 +78,7 @@ export default function HomePage() {
       </button>
 
       {hasNextPage && (
-        <Button variant="ghost" onClick={() => fetchNextPage()}>
+        <Button variant="ghost" className="mx-4" onClick={() => fetchNextPage()}>
           صفحه بعد
         </Button>
       )}
