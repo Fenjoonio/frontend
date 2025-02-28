@@ -106,3 +106,7 @@
 .ltr {
   direction: ltr;
 }
+
+*::-webkit-scrollbar {
+  display: none;
+}
