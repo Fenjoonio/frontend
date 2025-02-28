@@ -22,7 +22,7 @@ export default function BottomNavigationSafeZone({ children }: PropsWithChildren
   }
 
   return (
-    <div className="pb-safe-16">
+    <div className="pb-14">
       <div className="min-h-svh">{children}</div>
       <BottomNavigation
         pathname={pathname}
