@@ -1,2 +1,3 @@
 - Refresh Token
 - Toast errors
+- Font preload
