@@ -42,7 +42,7 @@ export default function HomePage() {
 
   return (
     <div className="pb-4">
-      <header
+      {/* <header
         style={{ height: "calc(env(safe-area-inset-top, 32px) + 48px)" }}
         className="bg-[#3a3a3a] flex items-end px-5 pb-4"
       >
@@ -61,7 +61,7 @@ export default function HomePage() {
             <Image src={BannerImage} alt="الان وقتشه" fill />
           </div>
         </SwiperSlide>
-      </Swiper>
+      </Swiper> */}
 
       <PullToRefreshList onRefresh={onRefresh}>
         {stories.map((story) => (
