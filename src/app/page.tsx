@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { PenIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
+import { Swiper, SwiperSlide } from "swiper/react";
+import BannerImage from "../../public/images/banner.png";
 import { useAuthContext } from "@/providers/AuthProvider";
 import PullToRefreshList from "@/components/RefreshableList";
 import { Story, useGetInfiniteStories } from "@/services/stories";
@@ -38,13 +41,34 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col gap-y-6 pb-4">
+    <div className="pb-4">
+      <header
+        style={{ height: "calc(env(safe-area-inset-top, 32px) + 48px)" }}
+        className="bg-[#3a3a3a] flex items-end px-5 pb-4"
+      >
+        <h1 className="text-xl font-extrabold">فنجون</h1>
+      </header>
+
+      <Swiper loop className="mt-4">
+        <SwiperSlide className="px-5">
+          <div className="w-full h-40 relative">
+            <Image src={BannerImage} alt="الان وقتشه" fill />
+          </div>
+        </SwiperSlide>
+
+        <SwiperSlide className="px-5">
+          <div className="w-full h-40 relative">
+            <Image src={BannerImage} alt="الان وقتشه" fill />
+          </div>
+        </SwiperSlide>
+      </Swiper>
+
       <PullToRefreshList onRefresh={onRefresh}>
         {stories.map((story) => (
           <Link
             key={story.id}
             href={`/story/${story.id}`}
-            className="w-full block py-8 px-4 not-first:border-t border-[#505050]"
+            className="w-full block py-8 px-5 not-first:border-t border-[#505050]"
           >
             <span className="block font-bold">{getUserName(story.user)}</span>
             <p className="w-full text-[#B0B0B0] whitespace-pre-line line-clamp-5 mt-2">
@@ -55,7 +79,7 @@ export default function HomePage() {
 
         {isPending && (
           <div className="flex flex-col gap-y-2 mt-6">
-            {Array(5)
+            {Array(3)
               .fill(0)
               .map((_, index) => (
                 <div key={index} className="p-4">
@@ -78,7 +102,7 @@ export default function HomePage() {
       </button>
 
       {hasNextPage && (
-        <Button variant="ghost" className="mx-4" onClick={() => fetchNextPage()}>
+        <Button variant="ghost" className="w-full px-4" onClick={() => fetchNextPage()}>
           صفحه بعد
         </Button>
       )}
