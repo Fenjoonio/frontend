@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+// import Image from "next/image";
 import { PenIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
-import { Swiper, SwiperSlide } from "swiper/react";
-import BannerImage from "../../public/images/banner.png";
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import BannerImage from "../../public/images/banner.png";
 import { useAuthContext } from "@/providers/AuthProvider";
 import PullToRefreshList from "@/components/RefreshableList";
 import { Story, useGetInfiniteStories } from "@/services/stories";
