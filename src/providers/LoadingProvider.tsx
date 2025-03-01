@@ -15,9 +15,10 @@ export default function LoadingProvider({ children }: PropsWithChildren) {
     };
   }, []);
 
-  if (!isLoading) {
-    return children;
-  }
-
-  return <Loading />;
+  return (
+    <>
+      {children}
+      {isLoading && <Loading />}
+    </>
+  );
 }
