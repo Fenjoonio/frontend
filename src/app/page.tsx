@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-// import Image from "next/image";
+import Image from "next/image";
 import { PenIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import BannerImage from "../../public/images/banner.png";
+import { Swiper, SwiperSlide } from "swiper/react";
+import BannerImage from "../../public/images/banner.png";
 import { useAuthContext } from "@/providers/AuthProvider";
 import PullToRefreshList from "@/components/RefreshableList";
 import { Story, useGetInfiniteStories } from "@/services/stories";
@@ -42,10 +42,7 @@ export default function HomePage() {
 
   return (
     <div className="pb-4">
-      {/* <header
-        style={{ height: "calc(env(safe-area-inset-top, 32px) + 48px)" }}
-        className="bg-[#3a3a3a] flex items-end px-5 pb-4"
-      >
+      <header className="h-20 flex items-end bg-[#3a3a3a] px-5 pb-4">
         <h1 className="text-xl font-extrabold">فنجون</h1>
       </header>
 
@@ -61,7 +58,7 @@ export default function HomePage() {
             <Image src={BannerImage} alt="الان وقتشه" fill />
           </div>
         </SwiperSlide>
-      </Swiper> */}
+      </Swiper>
 
       <PullToRefreshList onRefresh={onRefresh}>
         {stories.map((story) => (
