@@ -1,14 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { PenIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
+import UserAvatar from "@/components/UserAvatar";
 import { Swiper, SwiperSlide } from "swiper/react";
-import BannerImage from "../../public/images/banner.png";
 import { useAuthContext } from "@/providers/AuthProvider";
 import PullToRefreshList from "@/components/RefreshableList";
 import { Story, useGetInfiniteStories } from "@/services/stories";
@@ -48,29 +47,50 @@ export default function HomePage() {
 
       <Swiper loop className="mt-4">
         <SwiperSlide className="px-5">
-          <div className="w-full h-40 relative">
-            <Image src={BannerImage} alt="الان وقتشه" fill />
-          </div>
+          <Link
+            href="/"
+            className="w-full h-48 flex flex-col justify-center items-center bg-[#B07B56] rounded-sm"
+          >
+            <span className="text-xl font-black">دیگه وقتشه!</span>
+            <span className="text-xl font-black">همین الان نوشتن رو شروع کن!</span>
+            <span className="bg-white text-[#B07B56] rounded-sm py-1 px-6 mt-4">بزن بریم!</span>
+          </Link>
         </SwiperSlide>
 
         <SwiperSlide className="px-5">
-          <div className="w-full h-40 relative">
-            <Image src={BannerImage} alt="الان وقتشه" fill />
-          </div>
+          <Link
+            href="/"
+            className="w-full h-48 flex flex-col justify-center items-center bg-[#466F4F] rounded-sm"
+          >
+            <span className="text-xl font-black">دیگه وقتشه!</span>
+            <span className="text-xl font-black">همین الان نوشتن رو شروع کن!</span>
+            <span className="bg-white text-[#466F4F] rounded-sm py-1 px-6 mt-4">بزن بریم!</span>
+          </Link>
         </SwiperSlide>
       </Swiper>
 
-      <PullToRefreshList onRefresh={onRefresh}>
+      <h3 className="text-xs text-[#B0B0B0] mt-6 px-5">آخرین داستان‌ها</h3>
+
+      <PullToRefreshList onRefresh={onRefresh} className="mx-5 mt-4">
         {stories.map((story) => (
           <Link
             key={story.id}
             href={`/story/${story.id}`}
-            className="w-full block py-8 px-5 not-first:border-t border-[#505050]"
+            className="flex gap-x-2 pb-6 not-first:pt-6 not-first:border-t border-[#505050]"
           >
-            <span className="block font-bold">{getUserName(story.user)}</span>
-            <p className="w-full text-[#B0B0B0] whitespace-pre-line line-clamp-5 mt-2">
-              {story.text}
-            </p>
+            <div>
+              <UserAvatar user={story.user} />
+            </div>
+            <div>
+              <div className="flex gap-x-2 items-center">
+                <span className="font-bold">{getUserName(story.user)}</span>
+                <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
+                <span className="text-[10px] text-[#B0B0B0] mt-1">یک روز پیش</span>
+              </div>
+              <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 mt-1">
+                {story.text}
+              </p>
+            </div>
           </Link>
         ))}
 
@@ -99,7 +119,11 @@ export default function HomePage() {
       </button>
 
       {hasNextPage && (
-        <Button variant="ghost" className="w-full px-4" onClick={() => fetchNextPage()}>
+        <Button
+          variant="ghost"
+          className="w-[calc(100%-40px)] mx-5"
+          onClick={() => fetchNextPage()}
+        >
           صفحه بعد
         </Button>
       )}

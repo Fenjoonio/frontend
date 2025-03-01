@@ -1,11 +1,13 @@
+import { cn } from "@/lib/utils/classnames";
 import React, { useState, useRef, useEffect } from "react";
 
 interface PullToRefreshProps {
   onRefresh: () => Promise<void>;
   children: React.ReactNode;
+  className?: string;
 }
 
-const PullToRefresh: React.FC<PullToRefreshProps> = ({ onRefresh, children }) => {
+const PullToRefresh: React.FC<PullToRefreshProps> = ({ onRefresh, children, className }) => {
   const [pullDistance, setPullDistance] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const startY = useRef(0);
@@ -51,7 +53,7 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({ onRefresh, children }) =>
   }, [onRefresh, refreshing, pullDistance]);
 
   return (
-    <div className="relative overflow-hidden">
+    <div className={cn("relative overflow-hidden", className)}>
       <div
         className="absolute top-0 left-0 right-0 flex items-center justify-center text-gray-500 transition-transform duration-300"
         style={{ transform: `translateY(${pullDistance}px)`, height: "10px" }}
