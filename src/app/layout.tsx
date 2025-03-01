@@ -1,3 +1,4 @@
+import "swiper/css";
 import "./globals.css";
 import Providers from "@/providers";
 import type { Viewport } from "next";
