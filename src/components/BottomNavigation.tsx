@@ -26,7 +26,10 @@ export default function BottomNavigation({ pathname, className }: BottomNavigati
   const isActive = (href: string) => pathname === href;
 
   return (
-    <nav className={cn("bg-[#2e2e2e] border-t border-[#505050] pt-2 pb-2 px-4", className)}>
+    <nav
+      style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 8px)" }}
+      className={cn("bg-[#2e2e2e] border-t border-[#505050] pt-2 px-4", className)}
+    >
       <ul className="flex justify-around">
         {ITEMS.map((item) => (
           <li key={item.id}>
