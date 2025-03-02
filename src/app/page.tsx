@@ -41,7 +41,7 @@ export default function HomePage() {
 
   return (
     <div className="pb-4">
-      <header className="h-20 flex items-end bg-[#3a3a3a] px-5 pb-4">
+      <header className="h-20 flex items-end sticky top-0 z-10 bg-[#3a3a3a] px-5 pb-4">
         <h1 className="text-xl font-extrabold">فنجون</h1>
       </header>
 
@@ -69,7 +69,7 @@ export default function HomePage() {
         </SwiperSlide>
       </Swiper>
 
-      <h3 className="text-xs text-[#B0B0B0] mt-6 px-5">آخرین داستان‌ها</h3>
+      <h3 className="text-sm text-[#B0B0B0] mt-6 px-5">آخرین داستان‌ها</h3>
 
       <PullToRefreshList onRefresh={onRefresh} className="mx-5 mt-4">
         {stories.map((story) => (
