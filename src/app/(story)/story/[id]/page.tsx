@@ -1,5 +1,6 @@
 import Story from "./components/Story";
 import BackArrow from "@/components/BackArrow";
+import MenuSheet from "./components/MenuSheet";
 
 type StoryPageProps = {
   params: Promise<{ id: string }>;
@@ -12,9 +13,14 @@ export default async function StoryPage({ params }: StoryPageProps) {
     <section className="pb-20">
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
-        className="flex items-end sticky top-0 z-10 bg-[#3a3a3a] pb-3 px-2"
+        className="flex items-end justify-between sticky top-0 z-10 pb-3 px-2"
       >
         <BackArrow />
+
+        <MenuSheet
+          storyId={id}
+          className="w-10 h-10 flex items-center justify-center cursor-pointer"
+        />
       </header>
 
       <Story id={id} />
