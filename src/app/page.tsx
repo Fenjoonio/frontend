@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import dayjs from "@/lib/utils/day";
 import { PenIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -39,9 +40,16 @@ export default function HomePage() {
     await refetch();
   };
 
+  const formatStoryCreateAt = (date: string) => {
+    return dayjs(date).calendar("jalali").fromNow();
+  };
+
   return (
     <div className="pb-4">
-      <header className="h-20 flex items-end sticky top-0 z-10 bg-[#3a3a3a] px-5 pb-4">
+      <header
+        style={{ paddingTop: "calc(env(safe-area-inset-top) + 20px)" }}
+        className="flex items-end sticky top-0 z-10 bg-[#3a3a3a] pb-4 px-5"
+      >
         <h1 className="text-xl font-extrabold">فنجون</h1>
       </header>
 
@@ -78,14 +86,14 @@ export default function HomePage() {
             href={`/story/${story.id}`}
             className="flex gap-x-2 pb-6 not-first:pt-6 not-first:border-t border-[#505050]"
           >
-            <div>
-              <UserAvatar user={story.user} />
-            </div>
+            <UserAvatar user={story.user} />
             <div>
               <div className="flex gap-x-2 items-center">
                 <span className="font-bold">{getUserName(story.user)}</span>
                 <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
-                <span className="text-[10px] text-[#B0B0B0] mt-1">یک روز پیش</span>
+                <span className="text-[10px] text-[#B0B0B0]">
+                  {formatStoryCreateAt(story.createdAt)}
+                </span>
               </div>
               <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 mt-1">
                 {story.text}
@@ -95,14 +103,22 @@ export default function HomePage() {
         ))}
 
         {isPending && (
-          <div className="flex flex-col gap-y-2 mt-6">
-            {Array(3)
+          <div className="flex flex-col gap-y-2">
+            {Array(5)
               .fill(0)
               .map((_, index) => (
-                <div key={index} className="p-4">
-                  <div className="w-20 h-4 bg-[#505050] opacity-40 rounded-full animate-pulse"></div>
-                  <div className="w-full h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-4"></div>
-                  <div className="w-[80%] h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-2"></div>
+                <div
+                  key={index}
+                  className="flex gap-x-2 pb-6 not-first:pt-6 not-first:border-t border-[#505050]"
+                >
+                  <div>
+                    <div className="w-7 h-7 bg-[#505050] opacity-40 rounded-lg animate-pulse"></div>
+                  </div>
+                  <div className="flex-1 mt-1">
+                    <div className="w-20 h-4 bg-[#505050] opacity-40 rounded-full animate-pulse"></div>
+                    <div className="w-full h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-4"></div>
+                    <div className="w-[80%] h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-2"></div>
+                  </div>
                 </div>
               ))}
           </div>
