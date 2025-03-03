@@ -12,8 +12,7 @@ type StoryProps = {
 
 export default function Story({ id }: StoryProps) {
   const [showFullText, setShowFullText] = useState(false);
-  const { data, isPending, isFetched } = useGetSingleStory({ id: +id });
-  const story = data?.story;
+  const { data: story, isPending, isFetched } = useGetSingleStory({ id: +id });
 
   if (isFetched && !story) {
     notFound();

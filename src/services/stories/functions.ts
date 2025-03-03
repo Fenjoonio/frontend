@@ -1,11 +1,11 @@
 import http from "@/lib/utils/http";
 import type {
+  Story,
   AddNewStoryBody,
   AddNewStoryResponse,
   GetStoriesParams,
   GetStoriesResponse,
   GetSingleStoryParams,
-  GetSingleStoryResponse,
 } from "./types";
 
 export async function getStories(params: GetStoriesParams) {
@@ -15,7 +15,7 @@ export async function getStories(params: GetStoriesParams) {
 }
 
 export async function getSingleStory(params: GetSingleStoryParams) {
-  const response = await http.get<GetSingleStoryResponse>(`/v1/stories/${params.id}`);
+  const response = await http.get<Story>(`/v1/stories/${params.id}`);
 
   return response.data;
 }
