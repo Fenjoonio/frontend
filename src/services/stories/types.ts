@@ -3,8 +3,8 @@ import type { User } from "@/services/user";
 export type Story = {
   id: number;
   text: string;
-  userId: number;
   user: User;
+  createdAt: string;
 };
 
 export type GetStoriesParams = {
