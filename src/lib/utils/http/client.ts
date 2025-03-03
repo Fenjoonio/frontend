@@ -74,18 +74,14 @@ export default class HttpClient {
         throw error;
       }
 
-      return {
-        status: 500,
-        data: <T>{},
-        message: "مشکلی پیش آمده است",
-      };
+      return { status: 500, data: <T>{}, message: "مشکلی پیش آمده است" };
     }
   }
 
   get<T = unknown>(
     url: string,
     options?: RequestInit & { params?: Record<string, any>; throwError?: boolean }
-  ): Promise<{ message: string; data: T; status: number }> {
+  ): Promise<APIResponse<T>> {
     return this.request<T>("GET", url, options);
   }
 
@@ -93,7 +89,7 @@ export default class HttpClient {
     url: string,
     body: unknown,
     options: RequestInit & { params?: Record<string, any>; throwError?: boolean } = {}
-  ): Promise<{ message: string; data: T; status: number }> {
+  ): Promise<APIResponse<T>> {
     return this.request<T>("POST", url, {
       ...options,
       body: JSON.stringify(body),
@@ -105,7 +101,7 @@ export default class HttpClient {
     url: string,
     body: unknown,
     options: RequestInit & { params?: Record<string, any>; throwError?: boolean } = {}
-  ): Promise<{ message: string; data: T; status: number }> {
+  ): Promise<APIResponse<T>> {
     return this.request<T>("PUT", url, {
       ...options,
       body: JSON.stringify(body),
@@ -117,7 +113,7 @@ export default class HttpClient {
     url: string,
     body: unknown,
     options: RequestInit & { params?: Record<string, any>; throwError?: boolean } = {}
-  ): Promise<{ message: string; data: T; status: number }> {
+  ): Promise<APIResponse<T>> {
     return this.request<T>("PATCH", url, {
       ...options,
       body: JSON.stringify(body),
@@ -128,14 +124,7 @@ export default class HttpClient {
   delete<T = unknown>(
     url: string,
     options?: RequestInit & { params?: Record<string, any>; throwError?: boolean }
-  ): Promise<{ message: string; data: T; status: number }> {
+  ): Promise<APIResponse<T>> {
     return this.request<T>("DELETE", url, options);
   }
 }
-
-// Example usage:
-// const apiClient = new HttpClient('https://api.example.com');
-
-// apiClient.get('/users').then(response => {
-//   console.log(response.message, response.data, response.status);
-// }).catch(console.error);
