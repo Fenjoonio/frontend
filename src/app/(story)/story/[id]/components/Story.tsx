@@ -13,14 +13,15 @@ type StoryProps = {
 export default function Story({ id }: StoryProps) {
   const [showFullText, setShowFullText] = useState(false);
   const { data: story, isPending, isFetched } = useGetSingleStory({ id: +id });
+  const hasStory = story && Object.keys(story).length;
 
-  if (isFetched && !story) {
+  if (isFetched && !hasStory) {
     notFound();
   }
 
-  if (isPending || !story) {
+  if (isPending || !hasStory) {
     return (
-      <div className="w-full py-9 px-4">
+      <div className="w-full p-5">
         <div className="w-20 h-4 bg-[#505050] opacity-40 rounded-full animate-pulse"></div>
         <div className="w-full h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-4"></div>
         <div className="w-[80%] h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-2"></div>
@@ -30,7 +31,7 @@ export default function Story({ id }: StoryProps) {
   }
 
   return (
-    <div key={story.id} className="w-full py-8 px-4">
+    <div key={story.id} className="w-full p-5">
       <span className="block font-bold">{getUserName(story.user)}</span>
       <p
         className={cn("w-full text-[#B0B0B0] whitespace-pre-line mt-2", {
