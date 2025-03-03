@@ -95,7 +95,7 @@ export default function HomePage() {
                   {formatStoryCreateAt(story.createdAt)}
                 </span>
               </div>
-              <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 mt-1">
+              <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-6 mt-1">
                 {story.text}
               </p>
             </div>
