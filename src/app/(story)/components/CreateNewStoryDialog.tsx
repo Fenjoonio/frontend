@@ -20,12 +20,15 @@ type CreateNewStoryDialogProps = {
 
 export default function CreateNewStoryDialog({ open, onOpenChange }: CreateNewStoryDialogProps) {
   const [text, setText] = useState("");
-  const { mutate, isPending } = useAddNewStory();
+  const { mutate, isPending } = useAddNewStory({
+    onSuccess: () => {
+      setText("");
+      onOpenChange(false);
+    },
+  });
 
   const createNewStory = () => {
-    setText("");
     mutate({ text });
-    onOpenChange(false);
   };
 
   return (
