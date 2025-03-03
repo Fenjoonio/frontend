@@ -2,10 +2,12 @@ import http from "@/lib/utils/http";
 import type {
   Story,
   AddNewStoryBody,
+  DeleteStoryParams,
   AddNewStoryResponse,
   GetStoriesParams,
   GetStoriesResponse,
   GetSingleStoryParams,
+  DeleteStoryResponse,
 } from "./types";
 
 export async function getStories(params: GetStoriesParams) {
@@ -22,6 +24,12 @@ export async function getSingleStory(params: GetSingleStoryParams) {
 
 export async function addNewStory(body: AddNewStoryBody) {
   const response = await http.post<AddNewStoryResponse>("/v1/stories", body, { throwError: true });
+
+  return response.data;
+}
+
+export async function deleteStory(params: DeleteStoryParams) {
+  const response = await http.delete<DeleteStoryResponse>(`/v1/stories/${params.id}`);
 
   return response.data;
 }

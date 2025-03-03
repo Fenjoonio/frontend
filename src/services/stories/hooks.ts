@@ -1,7 +1,12 @@
 import { STORIES_QUERY_KEYS } from "./constants";
-import { addNewStory, getSingleStory, getStories } from "./functions";
-import type { AddNewStoryResponse, GetSingleStoryParams, GetStoriesParams } from "./types";
+import { addNewStory, deleteStory, getSingleStory, getStories } from "./functions";
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type {
+  AddNewStoryResponse,
+  DeleteStoryResponse,
+  GetSingleStoryParams,
+  GetStoriesParams,
+} from "./types";
 
 export function useGetInfiniteStories(params?: GetStoriesParams) {
   return useInfiniteQuery({
@@ -31,6 +36,19 @@ export function useAddNewStory(options?: { onSuccess?: (res: AddNewStoryResponse
   return useMutation({
     mutationKey: [STORIES_QUERY_KEYS.ADD_NEW_STORY],
     mutationFn: addNewStory,
+    onSuccess: (response) => {
+      options?.onSuccess?.(response);
+      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORIES] });
+    },
+  });
+}
+
+export function useDeleteStory(options?: { onSuccess?: (res: DeleteStoryResponse) => void }) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: [STORIES_QUERY_KEYS.DELETE_STORY],
+    mutationFn: deleteStory,
     onSuccess: (response) => {
       options?.onSuccess?.(response);
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORIES] });

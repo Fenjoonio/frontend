@@ -33,3 +33,11 @@ export type AddNewStoryResponse = {
 export type GetSingleStoryParams = {
   id: number;
 };
+
+export type DeleteStoryParams = {
+  id: string;
+};
+
+export type DeleteStoryResponse = {
+  id: string;
+};
