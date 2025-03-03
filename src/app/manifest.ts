@@ -19,12 +19,6 @@ export default function manifest(): MetadataRoute.Manifest {
     launch_handler: {
       client_mode: "auto",
     },
-    protocol_handlers: [
-      {
-        protocol: "fenjoon",
-        url: "/",
-      },
-    ],
     icons: [
       {
         src: "/manifest-assets/icons/icon-192x192.png",
