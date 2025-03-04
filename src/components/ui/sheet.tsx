@@ -49,7 +49,7 @@ function SheetContent({
   side = "bottom",
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
-  side?: "top" | "right" | "bottom" | "left"
+  side?: "top" | "right" | "bottom" | "left";
 }) {
   return (
     <SheetPortal>
@@ -57,7 +57,7 @@ function SheetContent({
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(
-          "max-w-[480px] mx-auto bg-[#2e2e2e] outline-none data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col gap-4 shadow-lg rounded-t-md transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
+          "max-w-[480px] mx-auto bg-[#2e2e2e] px-5 outline-none data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col gap-4 shadow-lg rounded-t-md transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
           side === "right" &&
             "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
           side === "left" &&
@@ -74,40 +74,25 @@ function SheetContent({
         {children}
       </SheetPrimitive.Content>
     </SheetPortal>
-  )
+  );
 }
 
 function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="sheet-header"
-      className={cn("flex flex-col gap-1.5 p-4", className)}
-      {...props}
-    />
-  )
+  return <div data-slot="sheet-header" className={cn("flex flex-col", className)} {...props} />;
 }
 
 function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="sheet-footer"
-      className={cn("mt-auto flex flex-col gap-2 p-4", className)}
-      {...props}
-    />
-  )
+  return <div data-slot="sheet-footer" className={cn("mt-auto", className)} {...props} />;
 }
 
-function SheetTitle({
-  className,
-  ...props
-}: React.ComponentProps<typeof SheetPrimitive.Title>) {
+function SheetTitle({ className, ...props }: React.ComponentProps<typeof SheetPrimitive.Title>) {
   return (
     <SheetPrimitive.Title
       data-slot="sheet-title"
-      className={cn("text-foreground font-semibold", className)}
+      className={cn("font-bold", className)}
       {...props}
     />
-  )
+  );
 }
 
 function SheetDescription({
@@ -117,10 +102,10 @@ function SheetDescription({
   return (
     <SheetPrimitive.Description
       data-slot="sheet-description"
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("text-sm text-[#B0B0B0] mt-1", className)}
       {...props}
     />
-  )
+  );
 }
 
 export {
