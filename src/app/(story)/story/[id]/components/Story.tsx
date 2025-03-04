@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { cn } from "@/lib/utils/classnames";
 import { getUserName } from "@/lib/utils/users";
 import { useGetSingleStory } from "@/services/stories";
+import { formatStoryCreateAt } from "@/lib/utils/story";
 
 type StoryProps = {
   id: string;
@@ -32,9 +33,14 @@ export default function Story({ id }: StoryProps) {
 
   return (
     <div key={story.id} className="w-full p-5">
-      <span className="block font-bold">{getUserName(story.user)}</span>
+      <div className="flex gap-x-2 items-center">
+        <span className="font-bold">{getUserName(story.user)}</span>
+        <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
+        <span className="text-[10px] text-[#B0B0B0]">{formatStoryCreateAt(story.createdAt)}</span>
+      </div>
+
       <p
-        className={cn("w-full text-[#B0B0B0] whitespace-pre-line mt-2", {
+        className={cn("w-full text-sm text-[#B0B0B0] whitespace-pre-line leading-6 mt-2", {
           "line-clamp-6": !showFullText,
         })}
         onClick={() => setShowFullText(!showFullText)}
