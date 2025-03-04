@@ -1,13 +1,15 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils/classnames";
+import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
 import UserAvatar from "@/components/UserAvatar";
 import { MessagesSquareIcon } from "lucide-react";
 import type { Comment } from "@/services/stories";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import { useGetInfiniteStoryComments } from "@/services/stories";
+import CommentSheet from "@/app/(story)/components/CommentSheet";
 
 type CommentProps = {
   comment: Comment;
@@ -67,6 +69,7 @@ type InfiniteCommentsListProps = {
 };
 
 export default function Comments({ id }: InfiniteCommentsListProps) {
+  const [isCommentSheetOpen, setIsCommentSheetOpen] = useState(false);
   const { data, isPending, isFetching, isError } = useGetInfiniteStoryComments({ id });
 
   const comments = useMemo<Comment[]>(() => {
@@ -94,6 +97,12 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
           </>
         )}
       </div>
+
+      <Button variant="ghost" className="w-full mt-8" onClick={() => setIsCommentSheetOpen(true)}>
+        اضافه کردن نقد جدید
+      </Button>
+
+      <CommentSheet id={id} isOpen={isCommentSheetOpen} onOpenChange={setIsCommentSheetOpen} />
     </section>
   );
 }
