@@ -1,6 +1,7 @@
 import { STORIES_QUERY_KEYS } from "./constants";
 import {
   addNewStory,
+  addStoryComment,
   deleteStory,
   getSingleStory,
   getStories,
@@ -9,6 +10,7 @@ import {
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
   AddNewStoryResponse,
+  Comment,
   DeleteStoryResponse,
   GetSingleStoryParams,
   GetStoriesParams,
@@ -74,6 +76,19 @@ export function useGetInfiniteStoryComments(params: GetStoryCommentsParams) {
       return nextPage <= lastPage.pagination.pages
         ? { id: params.id, page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
         : undefined;
+    },
+  });
+}
+
+export function useAddStoryComment(options?: { onSuccess?: (res: Comment) => void }) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: [STORIES_QUERY_KEYS.ADD_STORY_COMMENT],
+    mutationFn: addStoryComment,
+    onSuccess: (response) => {
+      options?.onSuccess?.(response);
+      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORY_COMMENTS] });
     },
   });
 }

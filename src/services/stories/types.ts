@@ -64,3 +64,8 @@ export type GetStoryCommentsResponse = {
   };
   comments: Comment[];
 };
+
+export type AddStoryCommentBody = {
+  id: string;
+  text: string;
+};

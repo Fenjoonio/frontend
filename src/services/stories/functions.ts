@@ -1,6 +1,7 @@
 import http from "@/lib/utils/http";
 import type {
   Story,
+  Comment,
   AddNewStoryBody,
   DeleteStoryParams,
   AddNewStoryResponse,
@@ -10,6 +11,7 @@ import type {
   DeleteStoryResponse,
   GetStoryCommentsParams,
   GetStoryCommentsResponse,
+  AddStoryCommentBody,
 } from "./types";
 
 export async function getStories(params: GetStoriesParams) {
@@ -38,6 +40,12 @@ export async function deleteStory(params: DeleteStoryParams) {
 
 export async function getStoryComments(params: GetStoryCommentsParams) {
   const response = await http.get<GetStoryCommentsResponse>(`/v1/stories/${params.id}/comments`);
+
+  return response.data;
+}
+
+export async function addStoryComment({ id, ...body }: AddStoryCommentBody) {
+  const response = await http.post<Comment>(`/v1/stories/${id}/comments`, body);
 
   return response.data;
 }
