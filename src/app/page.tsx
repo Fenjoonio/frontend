@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import dayjs from "@/lib/utils/day";
 import { PenIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -13,6 +12,7 @@ import { useAuthContext } from "@/providers/AuthProvider";
 import PullToRefreshList from "@/components/RefreshableList";
 import { Story, useGetInfiniteStories } from "@/services/stories";
 import CreateNewStoryDialog from "./(story)/components/CreateNewStoryDialog";
+import { formatStoryCreateAt } from "@/lib/utils/story";
 
 export default function HomePage() {
   const router = useRouter();
@@ -38,10 +38,6 @@ export default function HomePage() {
 
   const onRefresh = async () => {
     await refetch();
-  };
-
-  const formatStoryCreateAt = (date: string) => {
-    return dayjs(date).calendar("jalali").fromNow();
   };
 
   return (
