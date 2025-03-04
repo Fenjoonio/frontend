@@ -7,6 +7,13 @@ export type Story = {
   createdAt: string;
 };
 
+export type Comment = {
+  id: number;
+  user: User;
+  text: string;
+  createdAt: string;
+};
+
 export type GetStoriesParams = {
   page: number;
   limit: number;
@@ -40,4 +47,20 @@ export type DeleteStoryParams = {
 
 export type DeleteStoryResponse = {
   id: string;
+};
+
+export type GetStoryCommentsParams = {
+  id: string;
+  page?: number;
+  limit?: number;
+};
+
+export type GetStoryCommentsResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  comments: Comment[];
 };

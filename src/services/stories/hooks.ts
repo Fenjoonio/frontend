@@ -1,11 +1,18 @@
 import { STORIES_QUERY_KEYS } from "./constants";
-import { addNewStory, deleteStory, getSingleStory, getStories } from "./functions";
+import {
+  addNewStory,
+  deleteStory,
+  getSingleStory,
+  getStories,
+  getStoryComments,
+} from "./functions";
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
   AddNewStoryResponse,
   DeleteStoryResponse,
   GetSingleStoryParams,
   GetStoriesParams,
+  GetStoryCommentsParams,
 } from "./types";
 
 export function useGetInfiniteStories(params?: GetStoriesParams) {
@@ -52,6 +59,21 @@ export function useDeleteStory(options?: { onSuccess?: (res: DeleteStoryResponse
     onSuccess: (response) => {
       options?.onSuccess?.(response);
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORIES] });
+    },
+  });
+}
+
+export function useGetInfiniteStoryComments(params: GetStoryCommentsParams) {
+  return useInfiniteQuery({
+    initialPageParam: params,
+    queryKey: [STORIES_QUERY_KEYS.GET_STORIES, params],
+    queryFn: ({ pageParam }) => getStoryComments(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { id: params.id, page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
     },
   });
 }

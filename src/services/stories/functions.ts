@@ -8,6 +8,8 @@ import type {
   GetStoriesResponse,
   GetSingleStoryParams,
   DeleteStoryResponse,
+  GetStoryCommentsParams,
+  GetStoryCommentsResponse,
 } from "./types";
 
 export async function getStories(params: GetStoriesParams) {
@@ -30,6 +32,12 @@ export async function addNewStory(body: AddNewStoryBody) {
 
 export async function deleteStory(params: DeleteStoryParams) {
   const response = await http.delete<DeleteStoryResponse>(`/v1/stories/${params.id}`);
+
+  return response.data;
+}
+
+export async function getStoryComments(params: GetStoryCommentsParams) {
+  const response = await http.get<GetStoryCommentsResponse>(`/v1/stories/${params.id}/comments`);
 
   return response.data;
 }
