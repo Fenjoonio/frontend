@@ -7,7 +7,7 @@ import BottomNavigation from "@/components/BottomNavigation";
 export default function BottomNavigationSafeZone({ children }: PropsWithChildren) {
   const pathname = usePathname();
 
-  const hidePages: string[] = [];
+  const hidePages: string[] = ["story"];
   const isHidden = hidePages.some((page) => pathname.includes(page));
 
   if (isHidden) {
