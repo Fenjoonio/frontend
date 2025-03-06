@@ -1,13 +1,16 @@
 "use client";
 
 import Loading from "@/components/Loading";
-import { isDev, isApp } from "@/lib/utils/environment";
-import { type PropsWithChildren, useLayoutEffect, useState } from "react";
+import { type PropsWithChildren, useEffect, useState } from "react";
 
-export default function LoadingProvider({ children }: PropsWithChildren) {
-  const [isLoading, setIsLoading] = useState(!(isDev() || isApp()));
+type LoadingProviderProps = PropsWithChildren<{
+  initialValue?: boolean;
+}>;
 
-  useLayoutEffect(() => {
+export default function LoadingProvider({ initialValue = false, children }: LoadingProviderProps) {
+  const [isLoading, setIsLoading] = useState(initialValue);
+
+  useEffect(() => {
     const timeout = setTimeout(() => setIsLoading(false), 1500);
 
     return () => {

@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import GTMProvider from "./GTMProvider";
 import AuthProvider from "./AuthProvider";
 import QueryProvider from "./QueryProvider";
@@ -7,11 +8,12 @@ import { PropsWithChildren, Suspense } from "react";
 import { getUserCredentials } from "@/app/(user)/accounts/actions";
 
 export default async function Providers({ children }: PropsWithChildren) {
+  const { get } = await cookies();
   const { accessToken } = await getUserCredentials();
 
   return (
     <Suspense>
-      <LoadingProvider>
+      <LoadingProvider initialValue={get("isWebView")?.value !== "true"}>
         <QueryProvider>
           <AuthProvider initialAccessToken={accessToken}>
             <GTMProvider>{children}</GTMProvider>
