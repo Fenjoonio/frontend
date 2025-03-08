@@ -2,7 +2,7 @@ import http from "@/lib/utils/http";
 import type { VerifyOtp, OtpRequest, RefreshResponse } from "./types";
 
 export async function otpRequest(payload: { phone: string }) {
-  const response = await http.post<OtpRequest>("/v1/auth/otp/send", {
+  const response = await http.post<OtpRequest>("v1/auth/otp/send", {
     phone: payload.phone,
   });
 
@@ -10,7 +10,7 @@ export async function otpRequest(payload: { phone: string }) {
 }
 
 export async function verifyOtp(payload: { phone: string; otpCode: string }) {
-  const response = await http.post<VerifyOtp>("/v1/auth/otp/verify", {
+  const response = await http.post<VerifyOtp>("v1/auth/otp/verify", {
     phone: payload.phone,
     code: payload.otpCode,
   });
@@ -19,7 +19,7 @@ export async function verifyOtp(payload: { phone: string; otpCode: string }) {
 }
 
 export async function refresh(payload: { refreshToken: string }) {
-  const response = await http.post<RefreshResponse>("/v1/auth/refresh", {
+  const response = await http.post<RefreshResponse>("v1/auth/refresh", {
     refreshToken: payload.refreshToken,
   });
 
