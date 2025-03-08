@@ -1,49 +1,42 @@
-import HttpClient from "./client";
-import { toast } from "react-toastify";
-import { isClientSide } from "@/lib/utils/environment";
-import { deleteUserCredentials, getUserCredentials } from "@/app/(user)/accounts/actions";
+import hooks from "./hooks";
+import ky, { Input, Options } from "ky";
+import type { ApiResponse } from "./types";
+import { ApiError } from "@/lib/exceptions";
 
-const http = new HttpClient(process.env.NEXT_PUBLIC_API_BASE_URL!);
+const request = ky.create({ hooks, retry: 0, prefixUrl: process.env.NEXT_PUBLIC_API_BASE_URL });
 
-http.useRequestInterceptor(async (config) => {
-  const { accessToken } = await getUserCredentials();
-  if (!accessToken) {
-    return;
-  }
+const handleRequest = async <T = unknown>(
+  method: "get" | "post" | "patch" | "delete",
+  input: Input,
+  options?: Options,
+  json?: unknown
+): Promise<ApiResponse<T>> => {
+  try {
+    const requestOptions = json ? { json, ...options } : options;
+    const response = await request<ApiResponse<T>>(input, { method, ...requestOptions });
+    const data = await response.json();
 
-  const headers = (config.headers as Record<string, string>) || {};
-  headers.Authorization = `Bearer ${accessToken}`;
-
-  return config;
-});
-
-http.useResponseInterceptor(async (data, options) => {
-  if (data.status === 401) {
-    await deleteUserCredentials();
-
-    const params = new URLSearchParams();
-    params.set("redirect", window.location.pathname);
-
-    window.location.replace(`/accounts/login?${params.toString()}`);
-  }
-
-  if (data.status === 404) {
     return data;
-  }
+  } catch (error) {
+    const err = error as ApiError;
 
-  if (data.status >= 400) {
-    if (isClientSide()) {
-      toast.error(data.message || "مشکلی پیش آمده است");
-    } else {
-      console.error(data.message);
+    // We need this to make sure react-query works.
+    if (options?.throwHttpErrors !== false) {
+      throw error;
     }
 
-    if (options.throwError) {
-      throw new Error(data.message || "مشکلی پیش آمده است");
-    }
+    return { data: null as T, status: err.status || 500, message: err.message };
   }
+};
 
-  return data;
-});
+const http = {
+  get: <T = unknown>(input: Input, options?: Options) => handleRequest<T>("get", input, options),
+  post: <T = unknown>(input: Input, json?: unknown, options?: Options) =>
+    handleRequest<T>("post", input, options, json),
+  patch: <T = unknown>(input: Input, json?: unknown, options?: Options) =>
+    handleRequest<T>("patch", input, options, json),
+  delete: <T = unknown>(input: Input, options?: Options) =>
+    handleRequest<T>("delete", input, options),
+};
 
 export default http;
