@@ -8,11 +8,11 @@ import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
 import UserAvatar from "@/components/UserAvatar";
 import { Swiper, SwiperSlide } from "swiper/react";
+import PullToRefresh from "@/components/PullToRefresh";
+import { formatStoryCreateAt } from "@/lib/utils/story";
 import { useAuthContext } from "@/providers/AuthProvider";
-import PullToRefreshList from "@/components/RefreshableList";
 import { Story, useGetInfiniteStories } from "@/services/stories";
 import CreateNewStoryDialog from "./(story)/components/CreateNewStoryDialog";
-import { formatStoryCreateAt } from "@/lib/utils/story";
 
 export default function HomePage() {
   const router = useRouter();
@@ -75,7 +75,7 @@ export default function HomePage() {
 
       <h3 className="text-sm text-[#B0B0B0] mt-6 px-5">آخرین داستان‌ها</h3>
 
-      <PullToRefreshList onRefresh={onRefresh} className="mx-5 mt-4">
+      <PullToRefresh onRefresh={onRefresh} className="mx-5 mt-4">
         {stories.map((story) => (
           <Link
             key={story.id}
@@ -119,7 +119,7 @@ export default function HomePage() {
               ))}
           </div>
         )}
-      </PullToRefreshList>
+      </PullToRefresh>
 
       <CreateNewStoryDialog open={isModalOpen} onOpenChange={setIsModalOpen} />
 
