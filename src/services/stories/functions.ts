@@ -15,7 +15,7 @@ import type {
 } from "./types";
 
 export async function getStories(params: GetStoriesParams) {
-  const response = await http.get<GetStoriesResponse>("v1/stories1", { searchParams: params });
+  const response = await http.get<GetStoriesResponse>("v1/stories", { searchParams: params });
 
   return response.data;
 }
