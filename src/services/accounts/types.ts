@@ -11,6 +11,8 @@ export type VerifyOtp = {
 };
 
 export type RefreshResponse = {
-  accessToken: string;
-  refreshToken: string;
+  tokens: {
+    accessToken: string;
+    refreshToken: string;
+  };
 };
