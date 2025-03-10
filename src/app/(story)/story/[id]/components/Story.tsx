@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils/classnames";
 import { getUserName } from "@/lib/utils/users";
 import { useGetSingleStory } from "@/services/stories";
 import { formatStoryCreateAt } from "@/lib/utils/story";
+import StoryLikeButton from "@/app/(story)/components/StoryLikeButton";
 
 type StoryProps = {
   id: string;
@@ -56,6 +57,15 @@ export default function Story({ id }: StoryProps) {
           {showFullText ? "نمایش بخشی از داستان" : "نمایش تمام داستان"}
         </span>
       )}
+
+      <div className="flex items-center gap-x-2 mt-8">
+        <StoryLikeButton
+          storyId={story.id}
+          isLikedByUser={story.isLikedByUser}
+          className="w-5 h-5 text-[#B0B0B0]"
+        />
+        <span className="text-sm text-[#B0B0B0]">{story.likesCount}</span>
+      </div>
     </div>
   );
 }

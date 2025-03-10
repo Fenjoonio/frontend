@@ -2,9 +2,13 @@ import type { User } from "@/services/user";
 
 export type Story = {
   id: number;
-  text: string;
   user: User;
+  text: string;
   createdAt: string;
+  likesCount: number;
+  sharesCount: number;
+  commentsCount: number;
+  isLikedByUser: boolean;
 };
 
 export type Comment = {
@@ -68,4 +72,12 @@ export type GetStoryCommentsResponse = {
 export type AddStoryCommentBody = {
   id: string;
   text: string;
+};
+
+export type LikeStoryParams = {
+  id: number;
+};
+
+export type DislikeStoryParams = {
+  id: number;
 };

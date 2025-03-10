@@ -3,18 +3,22 @@ import {
   addNewStory,
   addStoryComment,
   deleteStory,
+  dislikeStory,
   getSingleStory,
   getStories,
   getStoryComments,
+  likeStory,
 } from "./functions";
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
   AddNewStoryResponse,
   Comment,
   DeleteStoryResponse,
+  DislikeStoryParams,
   GetSingleStoryParams,
   GetStoriesParams,
   GetStoryCommentsParams,
+  LikeStoryParams,
 } from "./types";
 
 export function useGetInfiniteStories(params?: GetStoriesParams) {
@@ -89,6 +93,36 @@ export function useAddStoryComment(options?: { onSuccess?: (res: Comment) => voi
     onSuccess: (response) => {
       options?.onSuccess?.(response);
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORY_COMMENTS] });
+    },
+  });
+}
+
+export function useLikeStory(params: LikeStoryParams, options?: { onSuccess?: () => void }) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: [STORIES_QUERY_KEYS.LIKE_STORY],
+    mutationFn: () => likeStory(params),
+    onSuccess: () => {
+      options?.onSuccess?.();
+      // TODO: Invalid only the current page
+      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORIES], exact: false });
+      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, params] });
+    },
+  });
+}
+
+export function useDislikeStory(params: DislikeStoryParams, options?: { onSuccess?: () => void }) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: [STORIES_QUERY_KEYS.DISLIKE_STORY],
+    mutationFn: () => dislikeStory(params),
+    onSuccess: () => {
+      options?.onSuccess?.();
+      // TODO: Invalid only the current page
+      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORIES], exact: false });
+      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, params] });
     },
   });
 }

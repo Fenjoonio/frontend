@@ -12,6 +12,8 @@ import type {
   GetStoryCommentsParams,
   GetStoryCommentsResponse,
   AddStoryCommentBody,
+  LikeStoryParams,
+  DislikeStoryParams,
 } from "./types";
 
 export async function getStories(params: GetStoriesParams) {
@@ -46,6 +48,18 @@ export async function getStoryComments(params: GetStoryCommentsParams) {
 
 export async function addStoryComment({ id, ...body }: AddStoryCommentBody) {
   const response = await http.post<Comment>(`v1/stories/${id}/comments`, body);
+
+  return response.data;
+}
+
+export async function likeStory({ id }: LikeStoryParams) {
+  const response = await http.post(`v1/stories/${id}/likes`);
+
+  return response.data;
+}
+
+export async function dislikeStory({ id }: DislikeStoryParams) {
+  const response = await http.delete(`v1/stories/${id}/likes`);
 
   return response.data;
 }
