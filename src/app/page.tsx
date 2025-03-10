@@ -53,11 +53,12 @@ export default function HomePage() {
       <Swiper loop className="mt-4">
         <SwiperSlide className="px-5">
           <Link
-            href="/"
+            href="https://survey.porsline.ir/s/NjmYt7vS"
             className="w-full h-48 flex flex-col justify-center items-center bg-[#B07B56] rounded-sm"
           >
-            <span className="text-xl font-black">دیگه وقتشه!</span>
-            <span className="text-xl font-black">همین الان نوشتن رو شروع کن!</span>
+            <span className="text-xl text-center font-black">
+              لایک و کامنت اومد به فنجون <br /> بعدی رو تو بگو!
+            </span>
             <span className="bg-white text-[#B07B56] rounded-sm py-1 px-6 mt-4">بزن بریم!</span>
           </Link>
         </SwiperSlide>
