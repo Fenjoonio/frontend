@@ -53,7 +53,7 @@ export default function CommentSheet({ id, isOpen, onOpenChange }: CommentSheetP
           </SheetClose>
 
           <Button type="submit" disabled={isPending} className="flex-1" onClick={comment}>
-            ثبت داستان
+            ثبت نقد
           </Button>
         </SheetFooter>
       </SheetContent>
