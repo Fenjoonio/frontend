@@ -68,7 +68,7 @@ export function useDeleteStory(options?: { onSuccess?: (res: DeleteStoryResponse
 export function useGetInfiniteStoryComments(params: GetStoryCommentsParams) {
   return useInfiniteQuery({
     initialPageParam: params,
-    queryKey: [STORIES_QUERY_KEYS.GET_STORIES, params],
+    queryKey: [STORIES_QUERY_KEYS.GET_STORY_COMMENTS, params],
     queryFn: ({ pageParam }) => getStoryComments(pageParam),
     getNextPageParam: (lastPage) => {
       const nextPage = lastPage.pagination.page + 1;
