@@ -14,6 +14,7 @@ import type {
   AddStoryCommentBody,
   LikeStoryParams,
   DislikeStoryParams,
+  EditStoryBody,
 } from "./types";
 
 export async function getStories(params: GetStoriesParams) {
@@ -30,6 +31,12 @@ export async function getSingleStory(params: GetSingleStoryParams) {
 
 export async function addNewStory(body: AddNewStoryBody) {
   const response = await http.post<AddNewStoryResponse>("v1/stories", body);
+
+  return response.data;
+}
+
+export async function editStory({ id, ...body }: EditStoryBody) {
+  const response = await http.put<Story>(`v1/stories/${id}`, body);
 
   return response.data;
 }

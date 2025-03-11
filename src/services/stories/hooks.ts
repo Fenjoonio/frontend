@@ -4,6 +4,7 @@ import {
   addStoryComment,
   deleteStory,
   dislikeStory,
+  editStory,
   getSingleStory,
   getStories,
   getStoryComments,
@@ -11,10 +12,12 @@ import {
 } from "./functions";
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
-  AddNewStoryResponse,
+  Story,
   Comment,
+  AddNewStoryResponse,
   DeleteStoryResponse,
   DislikeStoryParams,
+  EditStoryBody,
   GetSingleStoryParams,
   GetStoriesParams,
   GetStoryCommentsParams,
@@ -52,6 +55,27 @@ export function useAddNewStory(options?: { onSuccess?: (res: AddNewStoryResponse
     onSuccess: (response) => {
       options?.onSuccess?.(response);
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORIES] });
+    },
+  });
+}
+
+export function useEditStory(
+  params: Pick<EditStoryBody, "id">,
+  options?: { onSuccess?: (res: Story) => void }
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: [STORIES_QUERY_KEYS.EDIT_STORY, params],
+    mutationFn: editStory,
+    onSuccess: (response) => {
+      options?.onSuccess?.(response);
+
+      // TODO: Invalid only the current page
+      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORIES], exact: false });
+      queryClient.invalidateQueries({
+        queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, { id: params.id }],
+      });
     },
   });
 }

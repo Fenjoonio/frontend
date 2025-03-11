@@ -41,12 +41,17 @@ export type AddNewStoryResponse = {
   text: string;
 };
 
+export type EditStoryBody = {
+  id: number;
+  text: string;
+};
+
 export type GetSingleStoryParams = {
   id: number;
 };
 
 export type DeleteStoryParams = {
-  id: string;
+  id: number;
 };
 
 export type DeleteStoryResponse = {
