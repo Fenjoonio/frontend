@@ -6,7 +6,7 @@ import { ApiError } from "@/lib/exceptions";
 const request = ky.create({ hooks, retry: 0, prefixUrl: process.env.NEXT_PUBLIC_API_BASE_URL });
 
 const handleRequest = async <T = unknown>(
-  method: "get" | "post" | "patch" | "delete",
+  method: "get" | "post" | "patch" | "put" | "delete",
   input: Input,
   options?: Options,
   json?: unknown
@@ -35,6 +35,8 @@ const http = {
     handleRequest<T>("post", input, options, json),
   patch: <T = unknown>(input: Input, json?: unknown, options?: Options) =>
     handleRequest<T>("patch", input, options, json),
+  put: <T = unknown>(input: Input, json?: unknown, options?: Options) =>
+    handleRequest<T>("put", input, options, json),
   delete: <T = unknown>(input: Input, options?: Options) =>
     handleRequest<T>("delete", input, options),
 };
