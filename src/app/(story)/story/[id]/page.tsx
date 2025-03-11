@@ -19,7 +19,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
         <BackArrow />
 
         <MenuSheet
-          storyId={id}
+          storyId={+id}
           className="w-10 h-10 flex items-center justify-center cursor-pointer"
         />
       </header>
