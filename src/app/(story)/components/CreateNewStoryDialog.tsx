@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -10,7 +11,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useAddNewStory } from "@/services/stories";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { useState } from "react";
 
 type CreateNewStoryDialogProps = {
@@ -36,7 +36,9 @@ export default function CreateNewStoryDialog({ open, onOpenChange }: CreateNewSt
       <DialogContent className="h-svh bg-[#2e2e2e] text-[#e0e0e0]">
         <DialogHeader>
           <DialogTitle>داستان جدید</DialogTitle>
-          <DialogDescription>متن داستانک خودتون رو وارد کنید (حداکثر ۲۵۰ حرف)</DialogDescription>
+          <DialogDescription>
+            متن داستانک خودتون رو وارد کنید (دقت کن که متن داستان بین ۵۰ تا نهایتا ۲۵۰ حرف باشه)
+          </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <textarea
