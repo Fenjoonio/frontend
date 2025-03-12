@@ -23,7 +23,6 @@ import type {
   GetStoriesParams,
   GetStoryCommentsParams,
   LikeStoryParams,
-  ShareStoryParams,
 } from "./types";
 
 export function useGetInfiniteStories(params?: GetStoriesParams) {
