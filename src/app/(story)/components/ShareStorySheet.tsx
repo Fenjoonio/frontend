@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { postMessage } from "@/lib/utils/app";
 import { Button } from "@/components/ui/button";
+import { isApp } from "@/lib/utils/environment";
 import StorySharePreview from "./StorySharePreview";
 import { useGetSingleStory, useShareStory } from "@/services/stories";
 import {
@@ -13,7 +16,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import useShare from "@/hooks/useShare";
 
 type ShareStorySheetProps = {
   storyId: number;
@@ -22,7 +24,6 @@ type ShareStorySheetProps = {
 };
 
 export default function ShareStorySheet({ storyId, isOpen, onOpenChange }: ShareStorySheetProps) {
-  const { share } = useShare();
   const [imageBlob, setImageBlob] = useState<Blob>();
   const { data: story, isPending: isStoryPending } = useGetSingleStory({ id: storyId });
   const { mutate } = useShareStory();
@@ -31,10 +32,23 @@ export default function ShareStorySheet({ storyId, isOpen, onOpenChange }: Share
     if (!imageBlob || !story?.text || !story.id) return;
 
     mutate({ id: story.id });
-    share({
+
+    const data = {
       text: story.text,
-      files: [new File([imageBlob], `fenjoon-story-${story.id}.png`, { type: imageBlob?.type })],
-    });
+      files: [new File([imageBlob], `fenjoon-story-${story.id}.png`, { type: imageBlob.type })],
+    };
+
+    if (isApp()) {
+      postMessage("share", { message: data.text, blob: imageBlob });
+      return;
+    }
+
+    if (!("share" in navigator) || !navigator.canShare(data)) {
+      toast.error("مرورگر شما از این قابلیت پشتیبانی نمی‌کند");
+      return;
+    }
+
+    await navigator.share(data);
   };
 
   return (

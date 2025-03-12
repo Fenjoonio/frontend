@@ -1,6 +1,10 @@
 import { isClientSide } from "./environment";
 
-export function postMessage(type: string, data: Record<string, any>) {
+type PostMessageType = "share";
+type ShareData = { title?: string; message?: string; url?: string; blob?: Blob };
+
+export function postMessage(type: "share", data: ShareData): void;
+export function postMessage(type: PostMessageType, data: ShareData) {
   if (!isClientSide()) {
     console.warn("React native postMessage is not working on the server side");
     return;
