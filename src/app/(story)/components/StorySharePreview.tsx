@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { cn } from "@/lib/utils/classnames";
 import { getUserName } from "@/lib/utils/users";
-import { useToBlob } from "@hugocxl/react-to-image";
+import { useToPng } from "@hugocxl/react-to-image";
 import { useGetSingleStory } from "@/services/stories";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import { HeartIcon, MessageSquareTextIcon } from "lucide-react";
@@ -11,7 +11,7 @@ import { HeartIcon, MessageSquareTextIcon } from "lucide-react";
 type StorySharePreviewProps = {
   storyId: number;
   className?: string;
-  onImageCreate: (imageBlob: Blob) => void;
+  onImageCreate: (image: string) => void;
 };
 
 export default function StorySharePreview({
@@ -21,20 +21,20 @@ export default function StorySharePreview({
 }: StorySharePreviewProps) {
   const { data: story } = useGetSingleStory({ id: storyId });
 
-  const [, toBlob, ref] = useToBlob({
+  const [, toPNG, ref] = useToPng({
     width: 335,
     height: 335,
     canvasWidth: 1024,
     canvasHeight: 1024,
     skipAutoScale: false,
     backgroundColor: "#2e2e2e00",
-    onSuccess(blob) {
-      onImageCreate(blob!);
+    onSuccess(image) {
+      onImageCreate(image);
     },
   });
 
   useEffect(() => {
-    toBlob();
+    toPNG();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

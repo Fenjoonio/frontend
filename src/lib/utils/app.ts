@@ -1,7 +1,7 @@
 import { isClientSide } from "./environment";
 
 type PostMessageType = "share";
-type ShareData = { title?: string; message?: string; url?: string; blob?: Blob };
+type ShareData = { title?: string; message?: string; url?: string; image?: string };
 
 export function postMessage(type: "share", data: ShareData): void;
 export function postMessage(type: PostMessageType, data: ShareData) {

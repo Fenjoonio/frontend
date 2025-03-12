@@ -24,24 +24,25 @@ type ShareStorySheetProps = {
 };
 
 export default function ShareStorySheet({ storyId, isOpen, onOpenChange }: ShareStorySheetProps) {
-  const [imageBlob, setImageBlob] = useState<Blob>();
+  const [image, setImage] = useState("");
   const { data: story, isPending: isStoryPending } = useGetSingleStory({ id: storyId });
   const { mutate } = useShareStory();
 
   const shareStory = async () => {
-    if (!imageBlob || !story?.text || !story.id) return;
+    if (!image || !story?.text || !story.id) return;
 
     mutate({ id: story.id });
 
+    if (isApp()) {
+      postMessage("share", { message: story.text, image });
+      return;
+    }
+
+    const imageBlob = await fetch(image).then((res) => res.blob());
     const data = {
       text: story.text,
       files: [new File([imageBlob], `fenjoon-story-${story.id}.png`, { type: imageBlob.type })],
     };
-
-    if (isApp()) {
-      postMessage("share", { message: data.text, blob: imageBlob });
-      return;
-    }
 
     if (!("share" in navigator) || !navigator.canShare(data)) {
       toast.error("مرورگر شما از این قابلیت پشتیبانی نمی‌کند");
@@ -65,7 +66,7 @@ export default function ShareStorySheet({ storyId, isOpen, onOpenChange }: Share
           <StorySharePreview
             storyId={storyId}
             className="border border-[#505050] rounded-sm overflow-hidden select-none"
-            onImageCreate={setImageBlob}
+            onImageCreate={setImage}
           />
         )}
 
