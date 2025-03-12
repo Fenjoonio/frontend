@@ -86,3 +86,7 @@ export type LikeStoryParams = {
 export type DislikeStoryParams = {
   id: number;
 };
+
+export type ShareStoryParams = {
+  id: number;
+};

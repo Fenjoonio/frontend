@@ -15,6 +15,7 @@ import type {
   LikeStoryParams,
   DislikeStoryParams,
   EditStoryBody,
+  ShareStoryParams,
 } from "./types";
 
 export async function getStories(params: GetStoriesParams) {
@@ -67,6 +68,12 @@ export async function likeStory({ id }: LikeStoryParams) {
 
 export async function dislikeStory({ id }: DislikeStoryParams) {
   const response = await http.delete(`v1/stories/${id}/likes`);
+
+  return response.data;
+}
+
+export async function shareStory({ id }: ShareStoryParams) {
+  const response = await http.post(`v1/stories/${id}/shares`);
 
   return response.data;
 }

@@ -9,6 +9,7 @@ import {
   getStories,
   getStoryComments,
   likeStory,
+  shareStory,
 } from "./functions";
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
@@ -22,6 +23,7 @@ import type {
   GetStoriesParams,
   GetStoryCommentsParams,
   LikeStoryParams,
+  ShareStoryParams,
 } from "./types";
 
 export function useGetInfiniteStories(params?: GetStoriesParams) {
@@ -148,5 +150,13 @@ export function useDislikeStory(params: DislikeStoryParams, options?: { onSucces
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORIES], exact: false });
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, params] });
     },
+  });
+}
+
+export function useShareStory(options?: { onSuccess?: () => void }) {
+  return useMutation({
+    ...options,
+    mutationKey: [STORIES_QUERY_KEYS.SHARE_STORY],
+    mutationFn: shareStory,
   });
 }
