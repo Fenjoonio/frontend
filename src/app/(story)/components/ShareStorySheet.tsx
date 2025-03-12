@@ -13,6 +13,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import useShare from "@/hooks/useShare";
 
 type ShareStorySheetProps = {
   storyId: number;
@@ -21,27 +22,19 @@ type ShareStorySheetProps = {
 };
 
 export default function ShareStorySheet({ storyId, isOpen, onOpenChange }: ShareStorySheetProps) {
+  const { share } = useShare();
   const [imageBlob, setImageBlob] = useState<Blob>();
   const { data: story, isPending: isStoryPending } = useGetSingleStory({ id: storyId });
-  const { mutate: shareStory } = useShareStory({
-    onSuccess: () => {
-      onOpenChange(false);
-    },
-  });
+  const { mutate } = useShareStory();
 
-  const share = async () => {
+  const shareStory = async () => {
     if (!imageBlob || !story?.text || !story.id) return;
 
-    const data = {
+    mutate({ id: story.id });
+    share({
       text: story.text,
       files: [new File([imageBlob], `fenjoon-story-${story.id}.png`, { type: imageBlob?.type })],
-    };
-
-    if (!navigator.canShare(data)) return;
-
-    shareStory({ id: story.id });
-
-    await navigator.share(data);
+    });
   };
 
   return (
@@ -69,7 +62,7 @@ export default function ShareStorySheet({ storyId, isOpen, onOpenChange }: Share
             </Button>
           </SheetClose>
 
-          <Button type="submit" className="flex-1" onClick={share}>
+          <Button type="submit" className="flex-1" onClick={shareStory}>
             اشتراک‌گذاری
           </Button>
         </SheetFooter>
