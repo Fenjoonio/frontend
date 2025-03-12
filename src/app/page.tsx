@@ -95,13 +95,12 @@ export default function HomePage() {
                   </span>
                 </div>
 
-                {/* NOTE: I used padding-bottom to make more room to touch for the user */}
-                <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-6 pb-4 mt-1">
+                <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-6 mt-1">
                   {story.text}
                 </p>
               </Link>
 
-              <div className="flex gap-x-4">
+              <div className="flex items-center gap-x-4 mt-4">
                 <div className="flex items-center gap-x-2">
                   <StoryLikeButton
                     storyId={story.id}
