@@ -4,6 +4,7 @@ import AuthProvider from "./AuthProvider";
 import QueryProvider from "./QueryProvider";
 import LoadingProvider from "./LoadingProvider";
 import { ToastContainer } from "react-toastify";
+import { isDev } from "@/lib/utils/environment";
 import { PropsWithChildren, Suspense } from "react";
 import { getUserCredentials } from "@/app/(user)/accounts/actions";
 
@@ -13,7 +14,7 @@ export default async function Providers({ children }: PropsWithChildren) {
 
   return (
     <Suspense>
-      <LoadingProvider initialValue={get("isWebView")?.value !== "true"}>
+      <LoadingProvider initialValue={!isDev() && get("isWebView")?.value !== "true"}>
         <QueryProvider>
           <AuthProvider initialAccessToken={accessToken}>
             <GTMProvider>{children}</GTMProvider>
