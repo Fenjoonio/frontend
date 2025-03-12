@@ -10,15 +10,18 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import PullToRefresh from "@/components/PullToRefresh";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import { useAuthContext } from "@/providers/AuthProvider";
-import { MessageSquareTextIcon, PenIcon } from "lucide-react";
 import { Story, useGetInfiniteStories } from "@/services/stories";
 import StoryLikeButton from "./(story)/components/StoryLikeButton";
+import ShareStorySheet from "./(story)/components/ShareStorySheet";
+import { MessageSquareTextIcon, PenIcon, Share2Icon } from "lucide-react";
 import CreateNewStoryDialog from "./(story)/components/CreateNewStoryDialog";
 
 export default function HomePage() {
   const router = useRouter();
   const { isLoggedIn } = useAuthContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sharedStoryId, setSharedStoryId] = useState(0);
+  const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
   const { data, refetch, fetchNextPage, hasNextPage, isPending } = useGetInfiniteStories({
     page: 1,
     limit: 5,
@@ -39,6 +42,11 @@ export default function HomePage() {
 
   const onRefresh = async () => {
     await refetch();
+  };
+
+  const share = (storyId: number) => {
+    setSharedStoryId(storyId);
+    setIsShareSheetOpen(true);
   };
 
   return (
@@ -114,6 +122,11 @@ export default function HomePage() {
                   <MessageSquareTextIcon className="w-5 h-5 text-[#B0B0B0]" />
                   <span className="text-sm text-[#B0B0B0]">{story.commentsCount}</span>
                 </div>
+
+                <Share2Icon
+                  className="w-5 h-5 text-[#B0B0B0] ms-auto"
+                  onClick={() => share(story.id)}
+                />
               </div>
             </div>
           </div>
@@ -159,6 +172,14 @@ export default function HomePage() {
         >
           صفحه بعد
         </Button>
+      )}
+
+      {isShareSheetOpen && (
+        <ShareStorySheet
+          storyId={sharedStoryId}
+          isOpen={isShareSheetOpen}
+          onOpenChange={setIsShareSheetOpen}
+        />
       )}
     </div>
   );
