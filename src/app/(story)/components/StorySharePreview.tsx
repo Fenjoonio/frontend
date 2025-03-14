@@ -1,17 +1,89 @@
 "use client";
 
-import { useEffect } from "react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils/classnames";
 import { getUserName } from "@/lib/utils/users";
-import { useToPng } from "@hugocxl/react-to-image";
-import { useGetSingleStory } from "@/services/stories";
+import { useToBlob } from "@hugocxl/react-to-image";
 import { formatStoryCreateAt } from "@/lib/utils/story";
+import { Story, useGetSingleStory } from "@/services/stories";
 import { HeartIcon, MessageSquareTextIcon } from "lucide-react";
+
+type ImageTemplateProps = {
+  story: Story;
+  className?: string;
+  onImageCreate: (blob: Blob) => void;
+};
+
+function ImageTemplate({ story, className, onImageCreate }: ImageTemplateProps) {
+  const [, toBlob, ref] = useToBlob({
+    backgroundColor: "#2e2e2e",
+    onSuccess: (image) => onImageCreate(image!),
+  });
+
+  useEffect(() => {
+    toBlob();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const userName = getUserName(story.user);
+
+  return (
+    <div className={className}>
+      <div
+        ref={ref}
+        className="w-full h-full min-w-[1024px] min-h-[1024px] flex justify-center items-center relative"
+      >
+        <div className="flex gap-x-4">
+          <div className="w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-[#9C6B4A]">
+            <div className="w-5 h-5 flex justify-center items-center overflow-hidden text-[20px] font-bold">
+              {userName[0]}
+            </div>
+          </div>
+          <div className="max-w-[544px] flex-1 mt-3">
+            <div>
+              <div className="flex gap-x-2 items-center">
+                <span className="text-[24px] leading-[140%] font-semibold">{userName}</span>
+                <span className="w-1 h-1 bg-[#505050] rounded-lg -mt-1"></span>
+                <span className="text-[18px] text-[#B0B0B0]">
+                  {formatStoryCreateAt(story.createdAt)}
+                </span>
+              </div>
+              <p className="w-full text-[22px] text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-[140%] mt-1">
+                {story.text}
+              </p>
+            </div>
+            <div className="flex gap-x-5 mt-6">
+              <div className="flex gap-x-3 items-center">
+                <HeartIcon
+                  className={cn("w-6 h-6 text-[#B0B0B0]", {
+                    "fill-[#C46B5A] stroke-[#C46B5A]": story.isLikedByUser,
+                  })}
+                />
+                <span className="text-[20px] text-[#B0B0B0]">{story.likesCount || "۰"}</span>
+              </div>
+              <div className="flex gap-x-3 items-center">
+                <MessageSquareTextIcon className="w-6 h-6 text-[#B0B0B0]" />
+                <span className="text-[20px] text-[#B0B0B0]">{story.commentsCount || "۰"}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full flex items-center justify-between absolute bottom-16 right-0 px-20">
+          <h1 className="text-3xl font-extrabold">فـــ</h1>
+          {/* <span className="text-[12px] text-[#B0B0B0] font-sans font-extrabold">Fenjoon.io</span> */}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 type StorySharePreviewProps = {
   storyId: number;
   className?: string;
-  onImageCreate: (image: string) => void;
+  onImageCreate: (imageBlob: Blob) => void;
 };
 
 export default function StorySharePreview({
@@ -19,83 +91,29 @@ export default function StorySharePreview({
   className,
   onImageCreate,
 }: StorySharePreviewProps) {
+  const [imageUrl, setImageUrl] = useState("");
   const { data: story } = useGetSingleStory({ id: storyId });
 
-  const [, toPNG, ref] = useToPng({
-    width: 335,
-    height: 335,
-    canvasWidth: 1024,
-    canvasHeight: 1024,
-    skipAutoScale: false,
-    backgroundColor: "#2e2e2e00",
-    onSuccess(image) {
-      onImageCreate(image);
-    },
-  });
-
-  useEffect(() => {
-    toPNG();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   if (!story) {
-    return;
+    return <div className="bg-[#505050]/20 aspect-square rounded-lg animate-pulse"></div>;
   }
 
-  const userName = getUserName(story.user);
+  const onPreviewImageCreate = (imageBlob: Blob) => {
+    setImageUrl(URL.createObjectURL(imageBlob));
+    onImageCreate(imageBlob);
+  };
 
   return (
-    <div ref={ref} className={cn("aspect-square", className)}>
-      <div className="w-full h-full min-w-[335px] min-h-[335px] flex justify-center items-center relative bg-[#2e2e2e]">
-        <div
-          key={story.id}
-          className="w-[60%] flex gap-x-2 pb-6 not-first:pt-6 not-first:border-t border-[#505050]"
-        >
-          <div className="w-5 h-5 shrink-0 flex items-center justify-center rounded-[6px] bg-[#9C6B4A]">
-            <div className="w-4 h-4 flex justify-center items-center overflow-hidden text-[8px] font-bold">
-              {userName[0]}
-            </div>
-          </div>
-
-          <div className="flex-1 mt-[4px]">
-            <div>
-              <div className="flex gap-x-[6px] items-center">
-                <span className="text-[10px] font-bold">{getUserName(story.user)}</span>
-                <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
-                <span className="text-[6px] text-[#B0B0B0] mt-[2px]">
-                  {formatStoryCreateAt(story.createdAt)}
-                </span>
-              </div>
-
-              <p className="w-full text-[7px] text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-[140%] mt-[2px]">
-                {story.text}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-x-2 mt-1">
-              <div className="flex items-center gap-x-1">
-                <HeartIcon
-                  className={cn("w-2 h-2 text-[#B0B0B0]", {
-                    "fill-[#C46B5A] stroke-[#C46B5A]": story.isLikedByUser,
-                  })}
-                />
-                <span className="text-[7px] text-[#B0B0B0] mt-1">{story.likesCount || "۰"}</span>
-              </div>
-
-              <div className="flex items-center gap-x-1">
-                <MessageSquareTextIcon className="w-2 h-2 text-[#B0B0B0]" />
-                <span className="text-[7px] text-[#B0B0B0] mt-1">{story.commentsCount || "۰"}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="w-full flex items-center justify-between absolute bottom-4 right-0 px-6">
-          <span className="text-[10px] font-extrabold">فـــ</span>
-          <span className="text-[5px] text-[#B0B0B0] font-sans">Fenjoon.io</span>
-        </div>
+    <>
+      <div className={cn("aspect-square relative", className)}>
+        {!!imageUrl && <Image src={imageUrl} alt="پیش نمایش تصویر" fill />}
       </div>
-    </div>
+
+      <ImageTemplate
+        story={story}
+        className="fixed -top-[9999px] -left-[9999px]"
+        onImageCreate={onPreviewImageCreate}
+      />
+    </>
   );
 }

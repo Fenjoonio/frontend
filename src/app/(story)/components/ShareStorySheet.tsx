@@ -24,15 +24,14 @@ type ShareStorySheetProps = {
 };
 
 export default function ShareStorySheet({ storyId, isOpen, onOpenChange }: ShareStorySheetProps) {
-  const [image, setImage] = useState("");
+  const [imageBlob, setImageBlob] = useState<Blob>();
   const { data: story, isPending: isStoryPending } = useGetSingleStory({ id: storyId });
   const { mutate } = useShareStory();
 
   const shareStory = async () => {
-    if (!image || !story?.text || !story.id) return;
+    if (!imageBlob || !story?.text || !story.id) return;
 
     mutate({ id: story.id });
-    const imageBlob = await fetch(image).then((res) => res.blob());
 
     if (isApp()) {
       const fileReader = new FileReader();
@@ -65,15 +64,11 @@ export default function ShareStorySheet({ storyId, isOpen, onOpenChange }: Share
           <SheetDescription></SheetDescription>
         </SheetHeader>
 
-        {isStoryPending ? (
-          <div className="bg-[#505050]/20 aspect-square rounded-lg animate-pulse"></div>
-        ) : (
-          <StorySharePreview
-            storyId={storyId}
-            className="border border-[#505050] rounded-sm overflow-hidden select-none"
-            onImageCreate={setImage}
-          />
-        )}
+        <StorySharePreview
+          storyId={storyId}
+          className="border border-[#505050] rounded-sm overflow-hidden select-none"
+          onImageCreate={setImageBlob}
+        />
 
         <SheetFooter className="flex gap-x-2 items-end pb-5">
           <SheetClose asChild>
@@ -82,7 +77,7 @@ export default function ShareStorySheet({ storyId, isOpen, onOpenChange }: Share
             </Button>
           </SheetClose>
 
-          <Button type="submit" className="flex-1" onClick={shareStory}>
+          <Button type="submit" disabled={isStoryPending} className="flex-1" onClick={shareStory}>
             اشتراک‌گذاری
           </Button>
         </SheetFooter>
