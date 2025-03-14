@@ -44,17 +44,17 @@ function ImageTemplate({ story, className, onImageCreate }: ImageTemplateProps) 
           <div className="max-w-[544px] flex-1 mt-3">
             <div>
               <div className="flex gap-x-2 items-center">
-                <span className="text-[24px] leading-[140%] font-semibold">{userName}</span>
+                <span className="text-[24px] font-semibold">{userName}</span>
                 <span className="w-1 h-1 bg-[#505050] rounded-lg -mt-1"></span>
                 <span className="text-[18px] text-[#B0B0B0]">
                   {formatStoryCreateAt(story.createdAt)}
                 </span>
               </div>
-              <p className="w-full text-[22px] text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-[140%] mt-1">
+              <p className="w-full text-[22px] text-[#B0B0B0] whitespace-pre-line line-clamp-6 mt-2">
                 {story.text}
               </p>
             </div>
-            <div className="flex gap-x-5 mt-6">
+            <div className="flex gap-x-5 mt-4">
               <div className="flex gap-x-3 items-center">
                 <HeartIcon
                   className={cn("w-6 h-6 text-[#B0B0B0]", {
