@@ -32,13 +32,18 @@ export default function ShareStorySheet({ storyId, isOpen, onOpenChange }: Share
     if (!image || !story?.text || !story.id) return;
 
     mutate({ id: story.id });
+    const imageBlob = await fetch(image).then((res) => res.blob());
 
     if (isApp()) {
-      postMessage("share", { message: story.text, image });
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        postMessage("share", { message: story.text, url: String(fileReader.result) });
+      };
+
+      fileReader.readAsDataURL(imageBlob);
       return;
     }
 
-    const imageBlob = await fetch(image).then((res) => res.blob());
     const data = {
       text: story.text,
       files: [new File([imageBlob], `fenjoon-story-${story.id}.png`, { type: imageBlob.type })],
