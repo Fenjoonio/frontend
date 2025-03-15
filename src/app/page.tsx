@@ -24,7 +24,7 @@ export default function HomePage() {
   const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
   const { data, refetch, fetchNextPage, hasNextPage, isFetching } = useGetInfiniteStories({
     page: 1,
-    limit: 5,
+    limit: 10,
   });
 
   const stories = useMemo<Story[]>(() => {
