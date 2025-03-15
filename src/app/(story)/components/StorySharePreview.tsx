@@ -50,7 +50,7 @@ function ImageTemplate({ story, className, onImageCreate }: ImageTemplateProps) 
                   {formatStoryCreateAt(story.createdAt)}
                 </span>
               </div>
-              <p className="w-full text-[22px] text-[#B0B0B0] whitespace-pre-line line-clamp-6 mt-2">
+              <p className="w-full text-[26px] text-[#B0B0B0] whitespace-pre-line line-clamp-6 mt-2">
                 {story.text}
               </p>
             </div>
