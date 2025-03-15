@@ -11,7 +11,7 @@ const ITEMS = [
   },
   {
     id: 3,
-    href: "/profile/edit",
+    href: "/profile",
     title: "پروفایل",
     Icon: UserIcon,
   },
