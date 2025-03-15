@@ -37,20 +37,20 @@ function ImageTemplate({ story, className, onImageCreate }: ImageTemplateProps) 
       >
         <div className="flex gap-x-4">
           <div className="w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-[#9C6B4A]">
-            <div className="w-5 h-5 flex justify-center items-center overflow-hidden text-[20px] font-bold">
+            <div className="w-5 h-5 flex justify-center items-center overflow-hidden text-xl font-bold">
               {userName[0]}
             </div>
           </div>
           <div className="max-w-[544px] flex-1 mt-3">
             <div>
               <div className="flex gap-x-2 items-center">
-                <span className="text-[24px] font-semibold">{userName}</span>
+                <span className="text-2xl font-semibold">{userName}</span>
                 <span className="w-1 h-1 bg-[#505050] rounded-lg -mt-1"></span>
                 <span className="text-[18px] text-[#B0B0B0]">
                   {formatStoryCreateAt(story.createdAt)}
                 </span>
               </div>
-              <p className="w-full text-[26px] text-[#B0B0B0] whitespace-pre-line line-clamp-6 mt-2">
+              <p className="w-full text-2xl text-[#B0B0B0] whitespace-pre-line line-clamp-6 mt-2">
                 {story.text}
               </p>
             </div>
