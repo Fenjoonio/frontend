@@ -61,6 +61,17 @@ export default function HomePage() {
       <Swiper loop className="mt-4">
         <SwiperSlide className="px-5">
           <Link
+            href="https://github.com/freakingeek/fenjoon-app/releases/download/0.1.0/Fenjoon-v0.1.0.apk"
+            className="w-full h-48 flex flex-col justify-center items-center bg-[#466F4F] rounded-sm"
+          >
+            <span className="text-xl font-black">فنجون جدید رسید!</span>
+            <span className="text-xl font-black mt-1">از اینجا می‌تونی آخرین نسخه رو نصب کنی</span>
+            <span className="bg-white text-[#466F4F] rounded-sm py-1 px-6 mt-4">لینک دانلود</span>
+          </Link>
+        </SwiperSlide>
+
+        <SwiperSlide className="px-5">
+          <Link
             href="https://survey.porsline.ir/s/NjmYt7vS"
             className="w-full h-48 flex flex-col justify-center items-center bg-[#B07B56] rounded-sm"
           >
@@ -68,17 +79,6 @@ export default function HomePage() {
               لایک و کامنت اومد به فنجون <br /> بعدی رو تو بگو!
             </span>
             <span className="bg-white text-[#B07B56] rounded-sm py-1 px-6 mt-4">بزن بریم!</span>
-          </Link>
-        </SwiperSlide>
-
-        <SwiperSlide className="px-5">
-          <Link
-            href="/"
-            className="w-full h-48 flex flex-col justify-center items-center bg-[#466F4F] rounded-sm"
-          >
-            <span className="text-xl font-black">دیگه وقتشه!</span>
-            <span className="text-xl font-black">همین الان نوشتن رو شروع کن!</span>
-            <span className="bg-white text-[#466F4F] rounded-sm py-1 px-6 mt-4">بزن بریم!</span>
           </Link>
         </SwiperSlide>
       </Swiper>
