@@ -91,7 +91,7 @@ export default function HomePage() {
             <div key={story.id} className="flex gap-x-2 pb-6 not-first:pt-6">
               <UserAvatar user={story.user} />
 
-              <div className="flex-1">
+              <div className="flex-1 mt-1">
                 <Link href={`/story/${story.id}`}>
                   <div className="flex gap-x-2 items-center">
                     <span className="font-bold">{getUserName(story.user)}</span>
