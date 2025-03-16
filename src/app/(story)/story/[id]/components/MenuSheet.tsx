@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils/classnames";
-import { useDeleteStory } from "@/services/stories";
-import { EditIcon, MoreHorizontalIcon, TrashIcon } from "lucide-react";
+import { useDeleteStory, useGetSingleStory } from "@/services/stories";
+import { EditIcon, MoreHorizontalIcon, Share2Icon, TrashIcon } from "lucide-react";
 import EditStoryDialog from "@/app/(story)/components/EditStoryDialog";
 import {
   Sheet,
@@ -14,6 +14,7 @@ import {
   SheetTrigger,
   SheetDescription,
 } from "@/components/ui/sheet";
+import ShareStorySheet from "@/app/(story)/components/ShareStorySheet";
 
 type MenuSheetProps = {
   storyId: number;
@@ -23,6 +24,8 @@ type MenuSheetProps = {
 export default function MenuSheet({ storyId, className }: MenuSheetProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const { data: story } = useGetSingleStory({ id: storyId });
+  const [isShareStorySheetOpen, setIsShareStorySheetOpen] = useState(false);
   const [isEditStoryDialogOpen, setIsEditStoryDialogOpen] = useState(false);
   const { mutate: deleteStory, isPending: isDeletePending } = useDeleteStory({
     onSuccess: () => {
@@ -30,6 +33,11 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
       router.push("/");
     },
   });
+
+  const onShare = () => {
+    setIsShareStorySheetOpen(true);
+    setIsOpen(false);
+  };
 
   const onEdit = () => {
     setIsEditStoryDialogOpen(true);
@@ -53,25 +61,34 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
             <SheetDescription></SheetDescription>
           </SheetHeader>
           <ul className="divide-y divide-[#505050] px-5">
-            <li
-              className={cn("flex gap-x-2 items-center py-4 cursor-pointer", {
-                "opacity-50": isDeletePending,
-              })}
-              onClick={onEdit}
-            >
-              <EditIcon width={20} height={20} />
-              <span className="mt-[2px]">ویرایش داستان</span>
+            <li className="flex gap-x-2 items-center py-4 cursor-pointer" onClick={onShare}>
+              <Share2Icon width={20} height={20} />
+              <span className="mt-[2px]">اشتراک‌گذاری</span>
             </li>
 
-            <li
-              className={cn("flex gap-x-2 items-center py-4 cursor-pointer", {
-                "opacity-50": isDeletePending,
-              })}
-              onClick={onDelete}
-            >
-              <TrashIcon width={20} height={20} className="text-[#C46B5A]" />
-              <span className="text-[#C46B5A] mt-[6px]">حذف داستان</span>
-            </li>
+            {!!story?.isEditableByUser && (
+              <li
+                className={cn("flex gap-x-2 items-center py-4 cursor-pointer", {
+                  "opacity-50": isDeletePending,
+                })}
+                onClick={onEdit}
+              >
+                <EditIcon width={20} height={20} />
+                <span className="mt-[2px]">ویرایش داستان</span>
+              </li>
+            )}
+
+            {!!story?.isDeletableByUser && (
+              <li
+                className={cn("flex gap-x-2 items-center py-4 cursor-pointer", {
+                  "opacity-50": isDeletePending,
+                })}
+                onClick={onDelete}
+              >
+                <TrashIcon width={20} height={20} className="text-[#C46B5A]" />
+                <span className="text-[#C46B5A] mt-[6px]">حذف داستان</span>
+              </li>
+            )}
           </ul>
         </SheetContent>
       </Sheet>
@@ -81,6 +98,12 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
         open={isEditStoryDialogOpen}
         onOpenChange={setIsEditStoryDialogOpen}
         onEdit={() => setIsOpen(false)}
+      />
+
+      <ShareStorySheet
+        storyId={storyId}
+        isOpen={isShareStorySheetOpen}
+        onOpenChange={setIsShareStorySheetOpen}
       />
     </>
   );

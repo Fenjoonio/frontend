@@ -9,6 +9,8 @@ export type Story = {
   sharesCount: number;
   commentsCount: number;
   isLikedByUser: boolean;
+  isEditableByUser: boolean;
+  isDeletableByUser: boolean;
 };
 
 export type Comment = {
