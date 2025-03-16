@@ -49,7 +49,7 @@ export default function VerifyForm({ phone, redirect, className }: VerifyFormPro
       });
 
       setIsLoggedIn(!!response.tokens.accessToken);
-      router.replace(redirect ? redirect : "/profile/edit");
+      router.replace(redirect ? redirect : response.isNewUser ? "/profile/edit" : "/");
     },
   });
 

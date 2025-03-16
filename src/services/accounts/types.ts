@@ -4,6 +4,7 @@ export type OtpRequest = {
 };
 
 export type VerifyOtp = {
+  isNewUser: boolean;
   tokens: {
     accessToken: string;
     refreshToken: string;
