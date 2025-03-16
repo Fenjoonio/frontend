@@ -65,7 +65,7 @@ export default function HomePage() {
             className="w-full h-48 flex flex-col justify-center items-center bg-[#466F4F] rounded-sm"
           >
             <span className="text-xl font-black">فنجون جدید رسید!</span>
-            <span className="text-xl font-black mt-1">از اینجا می‌تونی آخرین نسخه رو نصب کنی</span>
+            <span className="text-xl font-black mt-1">آخرین نسخه رو از اینجا نصب کن</span>
             <span className="bg-white text-[#466F4F] rounded-sm py-1 px-6 mt-4">لینک دانلود</span>
           </Link>
         </SwiperSlide>
