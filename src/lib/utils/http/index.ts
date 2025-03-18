@@ -37,8 +37,8 @@ const http = {
     handleRequest<T>("patch", input, options, json),
   put: <T = unknown>(input: Input, json?: unknown, options?: Options) =>
     handleRequest<T>("put", input, options, json),
-  delete: <T = unknown>(input: Input, options?: Options) =>
-    handleRequest<T>("delete", input, options),
+  delete: <T = unknown>(input: Input, json?: unknown, options?: Options) =>
+    handleRequest<T>("delete", input, options, json),
 };
 
 export default http;
