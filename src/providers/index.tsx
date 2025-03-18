@@ -1,3 +1,4 @@
+import AppProvider from "./AppProvider";
 import GTMProvider from "./GTMProvider";
 import AuthProvider from "./AuthProvider";
 import QueryProvider from "./QueryProvider";
@@ -13,13 +14,15 @@ export default async function Providers({ children }: PropsWithChildren) {
   return (
     <Suspense>
       <LoadingProvider initialValue={!(isDev() || isApp())}>
-        <QueryProvider>
-          <AuthProvider initialAccessToken={accessToken}>
-            <GTMProvider>{children}</GTMProvider>
-          </AuthProvider>
+        <AppProvider>
+          <QueryProvider>
+            <AuthProvider initialAccessToken={accessToken}>
+              <GTMProvider>{children}</GTMProvider>
+            </AuthProvider>
 
-          <ToastContainer rtl draggable limit={2} draggablePercent={10} />
-        </QueryProvider>
+            <ToastContainer rtl draggable limit={2} draggablePercent={10} />
+          </QueryProvider>
+        </AppProvider>
       </LoadingProvider>
     </Suspense>
   );
