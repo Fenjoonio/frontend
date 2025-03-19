@@ -5,12 +5,18 @@ import { registerPushToken } from "@/services/push";
 import { PropsWithChildren, useEffect, useRef } from "react";
 
 export default function AppProvider({ children }: PropsWithChildren) {
+  const retryCounter = useRef(3);
   const timer = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
     if (!isApp()) return;
 
     const getPushToken = () => {
+      if (retryCounter.current < 1) {
+        clearTimeout(timer.current);
+        return;
+      }
+
       const pushToken = window.expoPushToken;
 
       alert("I'm called " + pushToken);
@@ -23,10 +29,15 @@ export default function AppProvider({ children }: PropsWithChildren) {
         return;
       }
 
+      retryCounter.current = retryCounter.current - 1;
       timer.current = setTimeout(getPushToken, 3000);
     };
 
     getPushToken();
+
+    return () => {
+      clearTimeout(timer.current);
+    };
   }, []);
 
   return children;
