@@ -2,14 +2,9 @@ import http from "@/lib/utils/http";
 import type { RegisterPushTokenBody, UnregisterPushTokenBody } from "./types";
 
 export async function registerPushToken(body: RegisterPushTokenBody) {
-  try {
-    const response = await http.post("v1/push/register", body);
-    alert(response.data);
+  const response = await http.post("v1/push/register", body);
 
-    return response.data;
-  } catch (error) {
-    alert(error);
-  }
+  return response.data;
 }
 
 export async function unregisterPushToken(body: UnregisterPushTokenBody) {
