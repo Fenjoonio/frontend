@@ -1,11 +1,13 @@
 "use client";
 
 import { isApp } from "@/lib/utils/environment";
+import { useAuthContext } from "./AuthProvider";
 import { registerPushToken } from "@/services/push";
 import { PropsWithChildren, useEffect, useRef } from "react";
 
 export default function AppProvider({ children }: PropsWithChildren) {
   const retryCounter = useRef(3);
+  const { isLoggedIn } = useAuthContext();
   const timer = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
@@ -19,11 +21,8 @@ export default function AppProvider({ children }: PropsWithChildren) {
 
       const pushToken = window.expoPushToken;
 
-      alert("I'm called " + pushToken);
       if (pushToken) {
-        registerPushToken({ token: pushToken }).catch((err) => {
-          alert("I'm error " + JSON.stringify(err));
-        });
+        registerPushToken({ token: pushToken }).catch(() => {});
         clearTimeout(timer.current);
 
         return;
@@ -38,7 +37,7 @@ export default function AppProvider({ children }: PropsWithChildren) {
     return () => {
       clearTimeout(timer.current);
     };
-  }, []);
+  }, [isLoggedIn]);
 
   return children;
 }
