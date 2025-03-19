@@ -30,7 +30,7 @@ export default function AppProvider({ children }: PropsWithChildren) {
       }
 
       retryCounter.current = retryCounter.current - 1;
-      timer.current = setTimeout(getPushToken, 3000);
+      timer.current = setTimeout(getPushToken, 5000);
     };
 
     getPushToken();
