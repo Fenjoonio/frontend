@@ -116,10 +116,10 @@ export default function HomePage() {
                     <span className="text-sm text-[#B0B0B0]">{story.likesCount}</span>
                   </div>
 
-                  <div className="flex items-center gap-x-2">
+                  <Link href={`/story/${story.id}#comments`} className="flex items-center gap-x-2">
                     <MessageSquareTextIcon className="w-5 h-5 text-[#B0B0B0]" />
                     <span className="text-sm text-[#B0B0B0]">{story.commentsCount}</span>
-                  </div>
+                  </Link>
 
                   <Share2Icon
                     className="w-5 h-5 text-[#B0B0B0] ms-auto"

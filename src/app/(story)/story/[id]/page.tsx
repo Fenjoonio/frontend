@@ -28,7 +28,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
         <Story id={id} />
       </div>
 
-      <div className="py-8 mx-5 border-t border-[#505050] mt-8">
+      <div id="comments" className="py-8 mx-5 border-t border-[#505050] mt-8">
         <InfiniteCommentsList id={id} />
       </div>
     </section>
