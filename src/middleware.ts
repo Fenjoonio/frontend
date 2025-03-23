@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const NEEDS_LOGIN_PAGE = ["/profile/edit"];
+const NEEDS_LOGIN_PAGE = ["/profile"];
 
 function handleOnboarding(request: NextRequest): NextResponse | undefined {
   if (request.cookies.has("isFirstTime")) return;
