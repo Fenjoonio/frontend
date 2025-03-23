@@ -17,10 +17,10 @@ export default function ProfilePage() {
           <li>
             <Link href="/profile/edit" className="flex gap-x-2 items-center py-3 px-2">
               <div className="bg-[#2e2e2e] rounded-[8px] p-2">
-                <UserPenIcon className="w-6 h-6" />
+                <UserPenIcon className="w-5 h-5" />
               </div>
 
-              <span className="mt-[2px]">ویرایش اطلاعات شخصی</span>
+              <span className="text-sm mt-[2px]">ویرایش اطلاعات شخصی</span>
 
               <ArrowLeftIcon className="w-5 h-5 ms-auto me-1" />
             </Link>
@@ -32,10 +32,10 @@ export default function ProfilePage() {
               className="flex gap-x-2 items-center py-3 px-2"
             >
               <div className="bg-[#2e2e2e] rounded-[8px] p-2">
-                <StarIcon className="w-6 h-6" />
+                <StarIcon className="w-5 h-5" />
               </div>
 
-              <span className="mt-[2px]">پیشنهادات و انتقادات</span>
+              <span className="text-sm mt-[2px]">پیشنهادات و انتقادات</span>
 
               <ArrowLeftIcon className="w-5 h-5 ms-auto me-1" />
             </Link>
@@ -53,10 +53,10 @@ export default function ProfilePage() {
               className="flex gap-x-2 items-center py-3 px-2"
             >
               <div className="bg-[#2e2e2e] rounded-[8px] p-2">
-                <DownloadIcon className="w-6 h-6" />
+                <DownloadIcon className="w-5 h-5" />
               </div>
 
-              <span className="mt-[2px]">بروزرسانی (نسخه ۰.۱.۲)</span>
+              <span className="text-sm mt-[2px]">بروزرسانی (نسخه ۰.۱.۲)</span>
 
               <ArrowLeftIcon className="w-5 h-5 ms-auto me-1" />
             </Link>
