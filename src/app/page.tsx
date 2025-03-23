@@ -154,7 +154,8 @@ export default function HomePage() {
       <CreateNewStoryDialog open={isModalOpen} onOpenChange={setIsModalOpen} />
 
       <button
-        className="fixed bottom-20 left-4 p-4 bg-[#9C6B4A] rounded-lg cursor-pointer"
+        style={{ bottom: "calc(env(safe-area-inset-bottom) + 80px)" }}
+        className="fixed left-4 p-4 bg-[#9C6B4A] rounded-lg cursor-pointer"
         onClick={openAddStoryModalIfLoggedIn}
       >
         <PenIcon className="w-5 h-5" />
