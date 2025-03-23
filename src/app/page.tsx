@@ -61,7 +61,7 @@ export default function HomePage() {
       <Swiper loop className="mt-4">
         <SwiperSlide className="px-5">
           <Link
-            href="https://github.com/freakingeek/fenjoon-app/releases/download/0.1.0/Fenjoon-v0.1.0.apk"
+            href="https://github.com/freakingeek/fenjoon-app/releases/download/0.1.2/Fenjoon-v0.1.2.apk"
             className="w-full h-48 flex flex-col justify-center items-center bg-[#466F4F] rounded-sm"
           >
             <span className="text-xl font-black">فنجون جدید رسید!</span>

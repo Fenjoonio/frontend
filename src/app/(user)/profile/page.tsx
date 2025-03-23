@@ -49,14 +49,14 @@ export default function ProfilePage() {
         <ul className="bg-[#3a3a3a] rounded-[12px] divide-y divide-[#505050] p-2 mt-4">
           <li>
             <Link
-              href="https://github.com/freakingeek/fenjoon-app/releases/download/0.1.0/Fenjoon-v0.1.0.apk"
+              href="https://github.com/freakingeek/fenjoon-app/releases/download/0.1.2/Fenjoon-v0.1.2.apk"
               className="flex gap-x-2 items-center py-3 px-2"
             >
               <div className="bg-[#2e2e2e] rounded-[8px] p-2">
                 <DownloadIcon className="w-6 h-6" />
               </div>
 
-              <span className="mt-[2px]">بروزرسانی (نسخه ۰.۱.۰)</span>
+              <span className="mt-[2px]">بروزرسانی (نسخه ۰.۱.۲)</span>
 
               <ArrowLeftIcon className="w-5 h-5 ms-auto me-1" />
             </Link>
