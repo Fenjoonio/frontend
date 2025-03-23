@@ -49,7 +49,11 @@ export default function VerifyForm({ phone, redirect, className }: VerifyFormPro
       });
 
       setIsLoggedIn(!!response.tokens.accessToken);
-      router.replace(redirect ? redirect : response.isNewUser ? "/profile/edit" : "/");
+
+      // NOTE: We need this to make sure cookie is present!
+      setTimeout(() => {
+        router.replace(redirect ? redirect : response.isNewUser ? "/profile/edit" : "/");
+      }, 0);
     },
   });
 
