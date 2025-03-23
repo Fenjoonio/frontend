@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/classnames";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 type Inputs = {
   firstName: string;
@@ -19,10 +20,12 @@ type EditProfileFormProps = {
 };
 
 export default function EditProfileForm({ className }: EditProfileFormProps) {
+  const router = useRouter();
   const { data: currentUser, isPending: isCurrentUserApiPending } = useGetCurrentUser();
   const { mutate: updateCurrentUser } = useUpdateCurrentUser({
     onSuccess: () => {
       toast.success("ویرایش پروفایل با موفقیت انجام شد");
+      router.push("/profile");
     },
     onError: () => {
       toast.error("خطا در ویرایش پروفایل");
