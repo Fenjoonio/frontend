@@ -9,6 +9,7 @@ import { formatStoryCreateAt } from "@/lib/utils/story";
 import StoryLikeButton from "@/app/(story)/components/StoryLikeButton";
 import ShareStorySheet from "@/app/(story)/components/ShareStorySheet";
 import { Share2Icon } from "lucide-react";
+import Link from "next/link";
 
 type StoryProps = {
   id: string;
@@ -38,7 +39,9 @@ export default function Story({ id }: StoryProps) {
   return (
     <div key={story.id} className="w-full p-5">
       <div className="flex gap-x-2 items-center">
-        <span className="font-bold">{getUserName(story.user)}</span>
+        <Link href={`/author/${story.user.id}`}>
+          <span className="font-bold">{getUserName(story.user)}</span>
+        </Link>
         <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
         <span className="text-[10px] text-[#B0B0B0]">{formatStoryCreateAt(story.createdAt)}</span>
       </div>

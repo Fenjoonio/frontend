@@ -1,6 +1,7 @@
 import Link from "next/link";
 import UserInfo from "./components/UserInfo";
 import LogoutButton from "./components/LogoutButton";
+import ViewProfileButton from "./components/ViewProfileButton";
 import { ArrowLeftIcon, DownloadIcon, StarIcon, UserPenIcon } from "lucide-react";
 
 export default function ProfilePage() {
@@ -24,6 +25,10 @@ export default function ProfilePage() {
 
               <ArrowLeftIcon className="w-5 h-5 ms-auto me-1" />
             </Link>
+          </li>
+
+          <li>
+            <ViewProfileButton />
           </li>
 
           <li>

@@ -89,18 +89,22 @@ export default function HomePage() {
         <section className="divide-y divide-[#505050]">
           {stories.map((story) => (
             <div key={story.id} className="flex gap-x-2 pb-6 not-first:pt-6">
-              <UserAvatar user={story.user} />
+              <Link href={`/author/${story.user.id}`}>
+                <UserAvatar user={story.user} />
+              </Link>
 
               <div className="flex-1 mt-1">
-                <Link href={`/story/${story.id}`}>
-                  <div className="flex gap-x-2 items-center">
+                <div className="flex gap-x-2 items-center">
+                  <Link href={`/author/${story.user.id}`}>
                     <span className="font-bold">{getUserName(story.user)}</span>
-                    <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
-                    <span className="text-[10px] text-[#B0B0B0]">
-                      {formatStoryCreateAt(story.createdAt)}
-                    </span>
-                  </div>
+                  </Link>
+                  <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
+                  <span className="text-[10px] text-[#B0B0B0]">
+                    {formatStoryCreateAt(story.createdAt)}
+                  </span>
+                </div>
 
+                <Link href={`/story/${story.id}`}>
                   <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-6 mt-1">
                     {story.text}
                   </p>

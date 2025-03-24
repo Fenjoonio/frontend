@@ -10,6 +10,7 @@ import type { Comment } from "@/services/stories";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import { useGetInfiniteStoryComments } from "@/services/stories";
 import CommentSheet from "@/app/(story)/components/CommentSheet";
+import Link from "next/link";
 
 type CommentProps = {
   comment: Comment;
@@ -18,11 +19,15 @@ type CommentProps = {
 function Comment({ comment }: CommentProps) {
   return (
     <div className="flex gap-x-2 pb-6 not-first:pt-6 not-first:border-t border-[#505050]">
-      <UserAvatar user={comment.user} />
+      <Link href={`/author/${comment.user.id}`}>
+        <UserAvatar user={comment.user} />
+      </Link>
 
       <div>
         <div className="flex gap-x-2 items-center">
-          <span className="font-bold">{getUserName(comment.user)}</span>
+          <Link href={`/author/${comment.user.id}`}>
+            <span className="font-bold">{getUserName(comment.user)}</span>
+          </Link>
           <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
           <span className="text-[10px] text-[#B0B0B0]">
             {formatStoryCreateAt(comment.createdAt)}
