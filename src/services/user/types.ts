@@ -4,5 +4,10 @@ export type User = {
   firstName: string;
   lastName: string;
   nickname: string;
+  bio: string;
   isVerified: boolean;
+};
+
+export type GetUserByIdParams = {
+  id: number;
 };

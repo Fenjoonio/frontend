@@ -1,6 +1,6 @@
-import type { User } from "./types";
 import { USER_QUERY_KEYS } from "./constants";
-import { getCurrentUser, updateCurrentUser } from "./functions";
+import type { GetUserByIdParams, User } from "./types";
+import { getCurrentUser, getUserById, updateCurrentUser } from "./functions";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useGetCurrentUser() {
@@ -24,5 +24,12 @@ export function useUpdateCurrentUser(options?: {
       options?.onSuccess?.(response);
       queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER] });
     },
+  });
+}
+
+export function useGetUserById(params: GetUserByIdParams) {
+  return useQuery({
+    queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER, params],
+    queryFn: () => getUserById(params),
   });
 }
