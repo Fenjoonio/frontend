@@ -67,7 +67,7 @@ export default function VerifyForm({ phone, redirect, className }: VerifyFormPro
 
   useEffect(() => {
     const getOTPFromSMS = async () => {
-      if (!("OTPCredential" in window)) return;
+      if (!("OTPCredential" in window) || !window.navigator?.credentials) return;
 
       try {
         const otp: any = await window.navigator.credentials.get({
@@ -79,9 +79,7 @@ export default function VerifyForm({ phone, redirect, className }: VerifyFormPro
         }
 
         setValue("code", otp?.code || "");
-      } catch (error) {
-        console.error(error);
-      }
+      } catch {}
     };
 
     getOTPFromSMS();
