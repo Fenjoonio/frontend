@@ -1,3 +1,5 @@
+import type { Comment, Story } from "@/services/stories";
+
 export type User = {
   id: number;
   phone: string;
@@ -10,4 +12,36 @@ export type User = {
 
 export type GetUserByIdParams = {
   id: number;
+};
+
+export type GetUserStoriesByIdParams = {
+  id: number;
+  page?: number;
+  limit?: number;
+};
+
+export type GetUserStoriesByIdResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  stories: Story[];
+};
+
+export type GetUserCommentsByIdParams = {
+  id: number;
+  page?: number;
+  limit?: number;
+};
+
+export type GetUserCommentsByIdResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  comments: Comment[];
 };
