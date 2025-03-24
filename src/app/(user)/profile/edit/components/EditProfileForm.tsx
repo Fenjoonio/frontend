@@ -13,6 +13,7 @@ type Inputs = {
   lastName: string;
   nickname: string;
   phone: string;
+  bio: string;
 };
 
 type EditProfileFormProps = {
@@ -43,6 +44,7 @@ export default function EditProfileForm({ className }: EditProfileFormProps) {
           lastName: currentUser.lastName,
           nickname: currentUser.nickname,
           phone: currentUser.phone,
+          bio: currentUser.bio,
         }
       : undefined,
   });
@@ -74,6 +76,15 @@ export default function EditProfileForm({ className }: EditProfileFormProps) {
         className="mt-2"
       />
       {errors.nickname && <span className="text-red-500">{errors.nickname.message}</span>}
+
+      <Input
+        type="text"
+        autoComplete="off"
+        placeholder="معرفی کوتاه (حداکثر ۱۰۰ حرف)"
+        {...register("bio")}
+        className="mt-2"
+      />
+      {errors.bio && <span className="text-red-500">{errors.bio.message}</span>}
 
       <Input
         type="text"
