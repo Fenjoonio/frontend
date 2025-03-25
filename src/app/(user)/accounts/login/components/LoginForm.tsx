@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const schema = z.object({
   phone: z
@@ -75,9 +76,18 @@ export default function LoginForm({ phone, redirect, className }: LoginFormProps
         <span className="block text-red-500 mt-2">{errors.phone?.message || ""}</span>
       </div>
 
-      <Button disabled={isPending} className="mt-8">
-        بررسی شماره همراه
-      </Button>
+      <div>
+        <Button disabled={isPending} className="w-full mt-8">
+          بررسی شماره همراه
+        </Button>
+        <span className="block text-xs text-center px-5 mt-4">
+          وارد کردن شماره همراه در این مرحله به معنای پذیرش{" "}
+          <Link href="/legal/terms" className="text-[#B07B56]">
+            قوانین و شرایط استفاده
+          </Link>{" "}
+          از فنجون است.
+        </span>
+      </div>
     </form>
   );
 }

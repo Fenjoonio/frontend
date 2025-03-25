@@ -2,7 +2,7 @@ import Link from "next/link";
 import UserInfo from "./components/UserInfo";
 import LogoutButton from "./components/LogoutButton";
 import ViewProfileButton from "./components/ViewProfileButton";
-import { ArrowLeftIcon, DownloadIcon, StarIcon, UserPenIcon } from "lucide-react";
+import { ArrowLeftIcon, DownloadIcon, ScaleIcon, StarIcon, UserPenIcon } from "lucide-react";
 
 export default function ProfilePage() {
   return (
@@ -41,6 +41,18 @@ export default function ProfilePage() {
               </div>
 
               <span className="text-sm mt-[2px]">پیشنهادات و انتقادات</span>
+
+              <ArrowLeftIcon className="w-5 h-5 ms-auto me-1" />
+            </Link>
+          </li>
+
+          <li>
+            <Link href="/legal/terms" className="flex gap-x-2 items-center py-3 px-2">
+              <div className="bg-[#2e2e2e] rounded-[8px] p-2">
+                <ScaleIcon className="w-5 h-5" />
+              </div>
+
+              <span className="text-sm mt-[2px]">قوانین استفاده</span>
 
               <ArrowLeftIcon className="w-5 h-5 ms-auto me-1" />
             </Link>
