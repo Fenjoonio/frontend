@@ -133,7 +133,7 @@ export default function ThreadPage() {
 
       <PullToRefresh onRefresh={onRefresh} className="mx-5">
         <section className="divide-y divide-[#505050]">
-          {comments.map((story) => (
+          {comments.toReversed().map((story) => (
             <div key={story.id} className="flex gap-x-2 pb-6 pt-6">
               <Link href={`/author/${story.user.id}`}>
                 <UserAvatar user={story.user} />
