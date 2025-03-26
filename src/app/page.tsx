@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import SwiperCore from "swiper";
+import { Autoplay } from "swiper/modules";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -17,6 +19,7 @@ import { MessageSquareTextIcon, PenIcon, Share2Icon } from "lucide-react";
 import CreateNewStoryDialog from "./(story)/components/CreateNewStoryDialog";
 
 export default function HomePage() {
+  SwiperCore.use([Autoplay]);
   const router = useRouter();
   const { isLoggedIn } = useAuthContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,27 +61,28 @@ export default function HomePage() {
         <h1 className="text-xl font-extrabold">فنجون</h1>
       </header>
 
-      <Swiper loop className="mt-4">
+      <Swiper autoplay={{ delay: 10000 }} loop className="mt-4">
         <SwiperSlide className="px-5">
           <Link
-            href="https://github.com/freakingeek/fenjoon-app/releases/download/0.1.2/Fenjoon-v0.1.2.apk"
+            href="/thread"
             className="w-full h-48 flex flex-col justify-center items-center bg-[#466F4F] rounded-sm"
           >
-            <span className="text-xl font-black">فنجون جدید رسید!</span>
-            <span className="text-xl font-black mt-1">آخرین نسخه رو از اینجا نصب کن</span>
-            <span className="bg-white text-[#466F4F] rounded-sm py-1 px-6 mt-4">لینک دانلود</span>
+            <span className="text-xl font-black">نیما با دیدن اون خشکش زد ...</span>
+            <span className="text-sm mt-1">دوست داری بعدش چی بشه؟ بقیه‌ش رو تو بنویس!</span>
+            <span className="bg-white text-[#466F4F] rounded-sm py-1 px-6 mt-4">بزن بریم!</span>
           </Link>
         </SwiperSlide>
 
         <SwiperSlide className="px-5">
           <Link
             href="https://survey.porsline.ir/s/NjmYt7vS"
-            className="w-full h-48 flex flex-col justify-center items-center bg-[#B07B56] rounded-sm"
+            className="w-full h-48 flex flex-col justify-center items-center bg-[#9C6B4A] rounded-sm"
           >
-            <span className="text-xl text-center font-black">
-              لایک و کامنت اومد به فنجون <br /> بعدی رو تو بگو!
+            <span className="text-xl font-black">نقدم رو لایک کردی؟</span>
+            <span className="text-xl font-black mt-1">نه مگه میشه؟! بله که میشه!</span>
+            <span className="bg-white text-[#B07B56] rounded-sm py-1 px-6 mt-4">
+              بعدی رو تو بگو!
             </span>
-            <span className="bg-white text-[#B07B56] rounded-sm py-1 px-6 mt-4">بزن بریم!</span>
           </Link>
         </SwiperSlide>
       </Swiper>
