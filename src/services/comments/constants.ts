@@ -1,0 +1,3 @@
+export const enum COMMENTS_QUERY_KEYS {
+  EDIT_COMMENT = "EDIT_COMMENT",
+}
