@@ -7,6 +7,7 @@ import BackArrow from "@/components/BackArrow";
 import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
 import UserAvatar from "@/components/UserAvatar";
+import { type Comment } from "@/services/comments";
 import ReplyDialog from "./components/ReplyDialog";
 import PullToRefresh from "@/components/PullToRefresh";
 import { formatStoryCreateAt } from "@/lib/utils/story";
@@ -14,7 +15,7 @@ import { useAuthContext } from "@/providers/AuthProvider";
 import StoryLikeButton from "@/app/(story)/components/StoryLikeButton";
 import ShareStorySheet from "@/app/(story)/components/ShareStorySheet";
 import { MessageSquareTextIcon, PenIcon, Share2Icon } from "lucide-react";
-import { Comment, useGetSingleStory, useGetInfiniteStoryComments } from "@/services/stories";
+import { useGetSingleStory, useGetInfiniteStoryComments } from "@/services/stories";
 
 const STORY_ID = 64;
 

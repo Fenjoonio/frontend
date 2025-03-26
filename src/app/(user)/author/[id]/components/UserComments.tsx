@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
-import { Comment } from "@/services/stories";
 import { getUserName } from "@/lib/utils/users";
 import UserAvatar from "@/components/UserAvatar";
+import { type Comment } from "@/services/comments";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import { useGetUserCommentsById } from "@/services/user";
 

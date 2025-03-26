@@ -1,4 +1,5 @@
-import type { Comment, Story } from "@/services/stories";
+import type { Story } from "@/services/stories";
+import type { Comment } from "@/services/comments";
 
 export type User = {
   id: number;
