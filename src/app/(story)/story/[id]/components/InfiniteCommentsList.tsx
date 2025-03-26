@@ -3,59 +3,10 @@
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils/classnames";
 import { Button } from "@/components/ui/button";
-import { getUserName } from "@/lib/utils/users";
-import UserAvatar from "@/components/UserAvatar";
 import { MessagesSquareIcon } from "lucide-react";
-import type { Comment } from "@/services/stories";
-import { formatStoryCreateAt } from "@/lib/utils/story";
+import { Comment, CommentSkeleton } from "@/components/Comment";
 import { useGetInfiniteStoryComments } from "@/services/stories";
 import CommentSheet from "@/app/(story)/components/CommentSheet";
-import Link from "next/link";
-
-type CommentProps = {
-  comment: Comment;
-};
-
-function Comment({ comment }: CommentProps) {
-  return (
-    <div className="flex gap-x-2 pb-6 not-first:pt-6 not-first:border-t border-[#505050]">
-      <Link href={`/author/${comment.user.id}`}>
-        <UserAvatar user={comment.user} />
-      </Link>
-
-      <div>
-        <div className="flex gap-x-2 items-center">
-          <Link href={`/author/${comment.user.id}`}>
-            <span className="font-bold">{getUserName(comment.user)}</span>
-          </Link>
-          <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
-          <span className="text-[10px] text-[#B0B0B0]">
-            {formatStoryCreateAt(comment.createdAt)}
-          </span>
-        </div>
-
-        <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-6 mt-1">
-          {comment.text}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function CommentSkeleton() {
-  return (
-    <div className="flex gap-x-2 pb-6 not-first:pt-6 not-first:border-t border-[#505050]">
-      <div>
-        <div className="w-7 h-7 bg-[#505050] opacity-40 rounded-lg animate-pulse"></div>
-      </div>
-
-      <div className="flex-1 mt-1">
-        <div className="w-20 h-4 bg-[#505050] opacity-40 rounded-full animate-pulse"></div>
-        <div className="w-[50%] h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-4"></div>
-      </div>
-    </div>
-  );
-}
 
 function CommentsEmptyState({ className }: { className?: string }) {
   return (
@@ -77,19 +28,23 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
   const [isCommentSheetOpen, setIsCommentSheetOpen] = useState(false);
   const { data, isPending, isFetching, isError } = useGetInfiniteStoryComments({ id });
 
-  const comments = useMemo<Comment[]>(() => {
+  const comments = useMemo(() => {
     return data?.pages ? data.pages.flatMap((page) => page.comments ?? []) : [];
   }, [data?.pages]);
 
   return (
-    <section className="">
+    <section>
       <h3 className="text-sm text-[#B0B0B0]">آخرین نقدها</h3>
 
       {!isFetching && !isError && comments.length === 0 && <CommentsEmptyState className="py-14" />}
 
       <div className="flex flex-col gap-y-2 mt-4">
         {comments.map((comment) => (
-          <Comment key={comment.id} comment={comment} />
+          <Comment
+            key={comment.id}
+            comment={comment}
+            className="pb-6 not-first:pt-6 not-first:border-t border-[#505050]"
+          />
         ))}
 
         {(isPending || isError) && (
@@ -97,7 +52,10 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
             {Array(5)
               .fill(0)
               .map((_, index) => (
-                <CommentSkeleton key={index} />
+                <CommentSkeleton
+                  key={index}
+                  className="pb-6 not-first:pt-6 not-first:border-t border-[#505050]"
+                />
               ))}
           </>
         )}

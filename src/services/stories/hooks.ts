@@ -1,4 +1,5 @@
 import { STORIES_QUERY_KEYS } from "./constants";
+import { type Comment } from "@/services/comments";
 import {
   addNewStory,
   addStoryComment,
@@ -14,7 +15,6 @@ import {
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
   Story,
-  Comment,
   AddNewStoryResponse,
   DeleteStoryResponse,
   DislikeStoryParams,

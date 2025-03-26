@@ -1,7 +1,7 @@
 import http from "@/lib/utils/http";
+import type { Comment } from "@/services/comments/types";
 import type {
   Story,
-  Comment,
   AddNewStoryBody,
   DeleteStoryParams,
   AddNewStoryResponse,

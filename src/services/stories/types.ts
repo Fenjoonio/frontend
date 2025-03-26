@@ -1,4 +1,5 @@
 import type { User } from "@/services/user";
+import { Comment } from "@/services/comments/types";
 
 export type Story = {
   id: number;
@@ -11,13 +12,6 @@ export type Story = {
   isLikedByUser: boolean;
   isEditableByUser: boolean;
   isDeletableByUser: boolean;
-};
-
-export type Comment = {
-  id: number;
-  user: User;
-  text: string;
-  createdAt: string;
 };
 
 export type GetStoriesParams = {

@@ -40,6 +40,7 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
   };
 
   const onEdit = () => {
+    if (isDeletePending) return;
     setIsEditStoryDialogOpen(true);
   };
 
