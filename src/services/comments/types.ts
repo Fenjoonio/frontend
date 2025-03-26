@@ -5,6 +5,10 @@ export type Comment = {
   user: User;
   text: string;
   createdAt: string;
+  likesCount: number;
+  isLikedByUser: boolean;
+  isEditableByUser: boolean;
+  isDeletableByUser: boolean;
 };
 
 export type EditCommentBody = {
@@ -13,5 +17,13 @@ export type EditCommentBody = {
 };
 
 export type DeleteCommentParams = {
+  id: number;
+};
+
+export type LikeCommentParams = {
+  id: number;
+};
+
+export type DislikeCommentParams = {
   id: number;
 };

@@ -3,14 +3,14 @@
 import Link from "next/link";
 import { useState } from "react";
 import UserAvatar from "./UserAvatar";
+import { toast } from "react-toastify";
 import { cn } from "@/lib/utils/classnames";
 import { getUserName } from "@/lib/utils/users";
-import { useQueryClient } from "@tanstack/react-query";
-import { STORIES_QUERY_KEYS } from "@/services/stories";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import { useDeleteComment, type Comment } from "@/services/comments";
-import { EditIcon, MoreHorizontalIcon, TrashIcon } from "lucide-react";
+import { EditIcon, InfoIcon, MoreHorizontalIcon, TrashIcon } from "lucide-react";
 import EditCommentDialog from "@/app/(comment)/components/EditCommentDialog";
+import CommentLikeButton from "@/app/(comment)/components/CommentLikeButton";
 import {
   Sheet,
   SheetTitle,
@@ -22,9 +22,18 @@ import {
 type CommentProps = {
   comment: Comment;
   className?: string;
+  onCommentEdit?: VoidFunction;
+  onCommentDelete?: VoidFunction;
+  onLikeOrDislike?: (isLiked: boolean) => void;
 };
 
-export function Comment({ comment, className }: CommentProps) {
+export function Comment({
+  comment,
+  className,
+  onCommentEdit,
+  onLikeOrDislike,
+  onCommentDelete,
+}: CommentProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -53,10 +62,28 @@ export function Comment({ comment, className }: CommentProps) {
           <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-6 mt-1">
             {comment.text.trim()}
           </p>
+
+          <div className="flex items-center gap-x-4 mt-4">
+            <div className="flex items-center gap-x-2">
+              <CommentLikeButton
+                commentId={comment.id}
+                isLikedByUser={comment.isLikedByUser}
+                className="w-5 h-5 text-[#B0B0B0]"
+                onChange={onLikeOrDislike}
+              />
+              <span className="text-sm text-[#B0B0B0]">{comment.likesCount || "0"}</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <CommentMenuSheet comment={comment} isOpen={isMenuOpen} onOpenChange={setIsMenuOpen} />
+      <CommentMenuSheet
+        comment={comment}
+        isOpen={isMenuOpen}
+        onOpenChange={setIsMenuOpen}
+        onCommentEdit={onCommentEdit}
+        onCommentDelete={onCommentDelete}
+      />
     </>
   );
 }
@@ -83,19 +110,21 @@ export function CommentSkeleton({ className }: CommentSkeletonProps) {
 type CommentMenuSheetProps = {
   isOpen: boolean;
   comment: Comment;
+  onCommentEdit?: VoidFunction;
+  onCommentDelete?: VoidFunction;
   onOpenChange: (open: boolean) => void;
 };
 
-function CommentMenuSheet({ comment, isOpen, onOpenChange }: CommentMenuSheetProps) {
-  const queryClient = useQueryClient();
+function CommentMenuSheet({
+  comment,
+  isOpen,
+  onOpenChange,
+  onCommentEdit,
+  onCommentDelete,
+}: CommentMenuSheetProps) {
   const [isEditCommentDialogOpen, setIsEditCommentDialogOpen] = useState(false);
   const { mutate: deleteComment, isPending: isDeletePending } = useDeleteComment({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [STORIES_QUERY_KEYS.GET_STORY_COMMENTS],
-        exact: false,
-      });
-    },
+    onSuccess: onCommentDelete,
   });
 
   const onEdit = () => {
@@ -104,17 +133,17 @@ function CommentMenuSheet({ comment, isOpen, onOpenChange }: CommentMenuSheetPro
   };
 
   const onEditSuccess = () => {
-    queryClient.invalidateQueries({
-      queryKey: [STORIES_QUERY_KEYS.GET_STORY_COMMENTS],
-      exact: false,
-    });
-
+    onCommentEdit?.();
     setIsEditCommentDialogOpen(false);
   };
 
   const onDelete = () => {
     if (isDeletePending) return;
     deleteComment({ id: comment.id });
+  };
+
+  const onReport = () => {
+    toast.info("این قابلیت بزودی اضافه می‌شود.");
   };
 
   return (
@@ -127,7 +156,7 @@ function CommentMenuSheet({ comment, isOpen, onOpenChange }: CommentMenuSheetPro
           </SheetHeader>
 
           <ul className="divide-y divide-[#505050] px-5">
-            {true && (
+            {comment.isEditableByUser && (
               <li
                 className={cn("flex gap-x-2 items-center py-4 cursor-pointer", {
                   "opacity-50": isDeletePending,
@@ -139,7 +168,7 @@ function CommentMenuSheet({ comment, isOpen, onOpenChange }: CommentMenuSheetPro
               </li>
             )}
 
-            {true && (
+            {comment.isDeletableByUser && (
               <li
                 className={cn("flex gap-x-2 items-center py-4 cursor-pointer", {
                   "opacity-50": isDeletePending,
@@ -150,6 +179,11 @@ function CommentMenuSheet({ comment, isOpen, onOpenChange }: CommentMenuSheetPro
                 <span className="text-[#C46B5A] mt-[6px]">حذف نقد</span>
               </li>
             )}
+
+            <li className="flex gap-x-2 items-center py-4 cursor-pointer" onClick={onReport}>
+              <InfoIcon className="size-5" />
+              <span className="mt-1">گزارش نقد</span>
+            </li>
           </ul>
         </SheetContent>
       </Sheet>

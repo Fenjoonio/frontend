@@ -4,9 +4,10 @@ import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils/classnames";
 import { Button } from "@/components/ui/button";
 import { MessagesSquareIcon } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Comment, CommentSkeleton } from "@/components/Comment";
-import { useGetInfiniteStoryComments } from "@/services/stories";
 import CommentSheet from "@/app/(story)/components/CommentSheet";
+import { STORIES_QUERY_KEYS, useGetInfiniteStoryComments } from "@/services/stories";
 
 function CommentsEmptyState({ className }: { className?: string }) {
   return (
@@ -25,12 +26,17 @@ type InfiniteCommentsListProps = {
 };
 
 export default function Comments({ id }: InfiniteCommentsListProps) {
+  const queryClient = useQueryClient();
   const [isCommentSheetOpen, setIsCommentSheetOpen] = useState(false);
   const { data, isPending, isFetching, isError } = useGetInfiniteStoryComments({ id });
 
   const comments = useMemo(() => {
     return data?.pages ? data.pages.flatMap((page) => page.comments ?? []) : [];
   }, [data?.pages]);
+
+  const refetchCommentsList = () => {
+    queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORY_COMMENTS, { id }] });
+  };
 
   return (
     <section>
@@ -44,6 +50,9 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
             key={comment.id}
             comment={comment}
             className="pb-6 not-first:pt-6 not-first:border-t border-[#505050]"
+            onCommentEdit={refetchCommentsList}
+            onLikeOrDislike={refetchCommentsList}
+            onCommentDelete={refetchCommentsList}
           />
         ))}
 
