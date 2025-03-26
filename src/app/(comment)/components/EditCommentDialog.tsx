@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { type Comment } from "@/services/comments";
-import { useEditComment } from "@/services/comments/hooks";
+import { useEditComment } from "@/services/comments";
 import {
   Dialog,
   DialogClose,
