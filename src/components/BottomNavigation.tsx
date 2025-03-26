@@ -8,18 +8,21 @@ const ITEMS = [
     href: "/",
     title: "خانه",
     Icon: HomeIcon,
+    showBadge: false,
   },
   {
     id: 1,
     href: "/thread",
     title: "بافته",
     Icon: ChartNoAxesGanttIcon,
+    showBadge: true,
   },
   {
     id: 2,
     href: "/profile",
     title: "پروفایل",
     Icon: UserIcon,
+    showBadge: false,
   },
 ];
 
@@ -39,7 +42,14 @@ export default function BottomNavigation({ pathname, className }: BottomNavigati
       <ul className="flex justify-around">
         {ITEMS.map((item) => (
           <li key={item.id}>
-            <Link href={item.href} className="w-12 h-10 flex flex-col justify-center items-center">
+            <Link
+              href={item.href}
+              className="w-12 h-10 flex flex-col justify-center items-center relative"
+            >
+              {item.showBadge && (
+                <span className="size-1 absolute top-1 right-2 bg-[#C46B5A] rounded-sm duration-1000 animate-pulse"></span>
+              )}
+
               <item.Icon
                 className={cn(
                   "shrink-0",
