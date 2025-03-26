@@ -74,10 +74,6 @@ export default function ThreadPage() {
       <div className="border-b border-[#505050] mt-16 mx-5">
         {story && !isStoryFetching ? (
           <div key={story.id} className="flex gap-x-2 pb-6 not-first:pt-6">
-            {/* <Link href={`/author/${story.user.id}`}>
-              <UserAvatar user={story.user} />
-            </Link> */}
-
             <div className="flex-1 mt-1">
               <div className="flex gap-x-2 items-center">
                 <Link href={`/author/${story.user.id}`}>
@@ -134,7 +130,7 @@ export default function ThreadPage() {
       <PullToRefresh onRefresh={onRefresh} className="mx-5">
         <section className="divide-y divide-[#505050]">
           {comments.toReversed().map((story) => (
-            <div key={story.id} className="flex gap-x-2 pb-6 pt-6">
+            <div key={story.id} className="flex gap-x-2 py-6">
               <Link href={`/author/${story.user.id}`}>
                 <UserAvatar user={story.user} />
               </Link>
@@ -159,10 +155,10 @@ export default function ThreadPage() {
 
           {isFetching && (
             <>
-              {Array(5)
+              {Array(3)
                 .fill(0)
                 .map((_, index) => (
-                  <div key={index} className="flex gap-x-2 pb-6 not-first:pt-6">
+                  <div key={index} className="flex gap-x-2 py-6">
                     <div>
                       <div className="w-7 h-7 bg-[#505050] opacity-40 rounded-lg animate-pulse"></div>
                     </div>
