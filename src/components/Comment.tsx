@@ -1,12 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import UserAvatar from "./UserAvatar";
 import { cn } from "@/lib/utils/classnames";
 import { getUserName } from "@/lib/utils/users";
-import { type Comment } from "@/services/comments";
+import { useQueryClient } from "@tanstack/react-query";
+import { STORIES_QUERY_KEYS } from "@/services/stories";
 import { formatStoryCreateAt } from "@/lib/utils/story";
+import { useDeleteComment, type Comment } from "@/services/comments";
 import { EditIcon, MoreHorizontalIcon, TrashIcon } from "lucide-react";
+import EditCommentDialog from "@/app/(comment)/components/EditCommentDialog";
 import {
   Sheet,
   SheetTitle,
@@ -14,10 +18,6 @@ import {
   SheetContent,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { useState } from "react";
-import EditCommentDialog from "@/app/(comment)/components/EditCommentDialog";
-import { useQueryClient } from "@tanstack/react-query";
-import { STORIES_QUERY_KEYS } from "@/services/stories/constants";
 
 type CommentProps = {
   comment: Comment;
@@ -88,10 +88,18 @@ type CommentMenuSheetProps = {
 
 function CommentMenuSheet({ comment, isOpen, onOpenChange }: CommentMenuSheetProps) {
   const queryClient = useQueryClient();
-  const isDeletePending = false;
   const [isEditCommentDialogOpen, setIsEditCommentDialogOpen] = useState(false);
+  const { mutate: deleteComment, isPending: isDeletePending } = useDeleteComment({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [STORIES_QUERY_KEYS.GET_STORY_COMMENTS],
+        exact: false,
+      });
+    },
+  });
 
   const onEdit = () => {
+    if (isDeletePending) return;
     setIsEditCommentDialogOpen(true);
   };
 
@@ -104,7 +112,10 @@ function CommentMenuSheet({ comment, isOpen, onOpenChange }: CommentMenuSheetPro
     setIsEditCommentDialogOpen(false);
   };
 
-  const onDelete = () => {};
+  const onDelete = () => {
+    if (isDeletePending) return;
+    deleteComment({ id: comment.id });
+  };
 
   return (
     <>
