@@ -11,3 +11,7 @@ export type EditCommentBody = {
   id: number;
   text: string;
 };
+
+export type DeleteCommentParams = {
+  id: number;
+};
