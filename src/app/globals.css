@@ -100,6 +100,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  html,
+  body {
+    zoom: 1;
+    transform: none;
+  }
+
   body {
     @apply bg-[#2e2e2e] text-[#e0e0e0] overscroll-y-contain;
   }
