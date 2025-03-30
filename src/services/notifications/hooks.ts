@@ -6,7 +6,7 @@ import {
   markNotificationAsRead,
 } from "./functions";
 
-export function useGetUserNotifications(options?: { enable?: boolean; refetchInterval?: number }) {
+export function useGetUserNotifications(options?: { enabled?: boolean; refetchInterval?: number }) {
   return useQuery({
     ...options,
     queryKey: [NOTIFICATIONS_QUERY_KEYS.GET_USER_NOTIFICATIONS],
@@ -15,7 +15,7 @@ export function useGetUserNotifications(options?: { enable?: boolean; refetchInt
 }
 
 export function useGetUserNotificationsUnreadCount(options?: {
-  enable?: boolean;
+  enabled?: boolean;
   refetchInterval?: number;
 }) {
   return useQuery({

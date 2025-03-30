@@ -34,7 +34,7 @@ export default function HomePage() {
   });
 
   const { data: notificationsUnreadCount } = useGetUserNotificationsUnreadCount({
-    enable: isLoggedIn,
+    enabled: isLoggedIn,
     refetchInterval: 5000,
   });
 
