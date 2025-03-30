@@ -15,8 +15,10 @@ import { useAuthContext } from "@/providers/AuthProvider";
 import { Story, useGetInfiniteStories } from "@/services/stories";
 import StoryLikeButton from "./(story)/components/StoryLikeButton";
 import ShareStorySheet from "./(story)/components/ShareStorySheet";
-import { MessageSquareTextIcon, PenIcon, Share2Icon } from "lucide-react";
 import CreateNewStoryDialog from "./(story)/components/CreateNewStoryDialog";
+import { useGetUserNotificationsUnreadCount } from "@/services/notifications";
+import { BellIcon, MessageSquareTextIcon, PenIcon, Share2Icon } from "lucide-react";
+import NotificationsSheet from "@/app/(user)/notifications/components/NotificationsSheet";
 
 export default function HomePage() {
   SwiperCore.use([Autoplay]);
@@ -25,9 +27,15 @@ export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sharedStoryId, setSharedStoryId] = useState(0);
   const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
+  const [isNotificationSheetOpen, setIsNotificationSheetOpen] = useState(false);
   const { data, refetch, fetchNextPage, hasNextPage, isFetching } = useGetInfiniteStories({
     page: 1,
     limit: 10,
+  });
+
+  const { data: notificationsUnreadCount } = useGetUserNotificationsUnreadCount({
+    enable: isLoggedIn,
+    refetchInterval: 5000,
   });
 
   const stories = useMemo<Story[]>(() => {
@@ -43,6 +51,15 @@ export default function HomePage() {
     setIsModalOpen(true);
   };
 
+  const openNotificationsSheetIfLoggedIn = () => {
+    if (!isLoggedIn) {
+      router.push("/accounts/login?redirect=/");
+      return;
+    }
+
+    setIsNotificationSheetOpen(true);
+  };
+
   const onRefresh = async () => {
     await refetch();
   };
@@ -56,9 +73,17 @@ export default function HomePage() {
     <div className="pb-4">
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 20px)" }}
-        className="flex items-end sticky top-0 z-10 bg-[#3a3a3a] pb-4 px-5"
+        className="flex items-center justify-between sticky top-0 z-10 bg-[#3a3a3a] pb-4 px-5"
       >
         <h1 className="text-xl font-extrabold">فنجون</h1>
+
+        <div className="relative" onClick={openNotificationsSheetIfLoggedIn}>
+          {Number(notificationsUnreadCount) > 0 && (
+            <span className="size-[6px] absolute bottom-1 right-0 bg-[#C46B5A] rounded-sm"></span>
+          )}
+
+          <BellIcon className="w-5 h-5 cursor-pointer" />
+        </div>
       </header>
 
       <Swiper autoplay={{ delay: 10000 }} loop className="mt-4">
@@ -184,6 +209,13 @@ export default function HomePage() {
           storyId={sharedStoryId}
           isOpen={isShareSheetOpen}
           onOpenChange={setIsShareSheetOpen}
+        />
+      )}
+
+      {isNotificationSheetOpen && (
+        <NotificationsSheet
+          isOpen={isNotificationSheetOpen}
+          onOpenChange={setIsNotificationSheetOpen}
         />
       )}
     </div>
