@@ -98,13 +98,9 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
-  }
-
-  html,
-  body {
     zoom: 1;
     transform: none;
+    @apply border-border outline-ring/50;
   }
 
   body {
