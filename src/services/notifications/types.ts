@@ -1,10 +1,21 @@
 export type Notification = {
   id: number;
   title: string;
-  text: string;
+  message: string;
   url: string;
   image: string;
-  created_at: string;
+  isRead: boolean;
+  createdAt: string;
+};
+
+export type GetUserNotificationsResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  notifications: Notification[];
 };
 
 export type MarkNotificationAsReadBody = {
