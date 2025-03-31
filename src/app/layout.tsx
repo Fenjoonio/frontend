@@ -10,6 +10,7 @@ export { metadata } from "@/lib/configs/metadata";
 export const viewport: Viewport = {
   minimumScale: 1,
   initialScale: 1,
+  maximumScale: 1,
   viewportFit: "cover",
   userScalable: false,
   themeColor: "#2e2e2e",
