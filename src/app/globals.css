@@ -98,8 +98,6 @@
 
 @layer base {
   * {
-    zoom: 1;
-    transform: none;
     @apply border-border outline-ring/50;
   }
 
