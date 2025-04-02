@@ -73,13 +73,13 @@ export default function HomePage() {
     <div className="pb-4">
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 20px)" }}
-        className="flex items-center justify-between sticky top-0 z-10 bg-[#3a3a3a] pb-4 px-5"
+        className="flex items-center justify-between sticky top-0 z-10 bg-soft-background pb-4 px-5"
       >
         <h1 className="text-xl font-extrabold">فنجون</h1>
 
         <div className="relative" onClick={openNotificationsSheetIfLoggedIn}>
           {Number(notificationsUnreadCount) > 0 && (
-            <span className="size-[6px] absolute bottom-1 right-0 bg-[#C46B5A] rounded-sm"></span>
+            <span className="size-[6px] absolute bottom-1 right-0 bg-danger rounded-sm"></span>
           )}
 
           <BellIcon className="w-5 h-5 cursor-pointer" />
@@ -90,32 +90,36 @@ export default function HomePage() {
         <SwiperSlide className="px-5">
           <Link
             href="/thread"
-            className="w-full h-48 flex flex-col justify-center items-center bg-[#466F4F] rounded-sm"
+            className="w-full h-48 flex flex-col justify-center items-center bg-success rounded-sm"
           >
-            <span className="text-xl font-black">نیما با دیدن اون خشکش زد ...</span>
-            <span className="text-sm mt-1">دوست داری بعدش چی بشه؟ بقیه‌ش رو تو بنویس!</span>
-            <span className="bg-white text-[#466F4F] rounded-sm py-1 px-6 mt-4">بزن بریم!</span>
+            <span className="text-xl text-light-gray-100 font-black">
+              نیما با دیدن اون خشکش زد ...
+            </span>
+            <span className="text-sm text-light-gray-100 mt-1">
+              دوست داری بعدش چی بشه؟ بقیه‌ش رو تو بنویس!
+            </span>
+            <span className="bg-white text-success rounded-sm py-1 px-6 mt-4">بزن بریم!</span>
           </Link>
         </SwiperSlide>
 
         <SwiperSlide className="px-5">
           <Link
             href="https://survey.porsline.ir/s/NjmYt7vS"
-            className="w-full h-48 flex flex-col justify-center items-center bg-[#9C6B4A] rounded-sm"
+            className="w-full h-48 flex flex-col justify-center items-center bg-primary rounded-sm"
           >
-            <span className="text-xl font-black">نقدم رو لایک کردی؟</span>
-            <span className="text-xl font-black mt-1">نه مگه میشه؟! بله که میشه!</span>
-            <span className="bg-white text-[#B07B56] rounded-sm py-1 px-6 mt-4">
-              بعدی رو تو بگو!
+            <span className="text-xl text-light-gray-100 font-black">نقدم رو لایک کردی؟</span>
+            <span className="text-xl text-light-gray-100 font-black mt-1">
+              نه مگه میشه؟! بله که میشه!
             </span>
+            <span className="bg-white text-primary rounded-sm py-1 px-6 mt-4">بعدی رو تو بگو!</span>
           </Link>
         </SwiperSlide>
       </Swiper>
 
-      <h3 className="text-sm text-[#B0B0B0] mt-6 px-5">آخرین داستان‌ها</h3>
+      <h3 className="text-sm text-soft-foreground mt-6 px-5">آخرین داستان‌ها</h3>
 
       <PullToRefresh onRefresh={onRefresh} className="mx-5 mt-4">
-        <section className="divide-y divide-[#505050]">
+        <section className="divide-y divide-border">
           {stories.map((story) => (
             <div key={story.id} className="flex gap-x-2 pb-6 not-first:pt-6">
               <Link href={`/author/${story.user.id}`}>
@@ -127,14 +131,14 @@ export default function HomePage() {
                   <Link href={`/author/${story.user.id}`}>
                     <span className="font-bold">{getUserName(story.user)}</span>
                   </Link>
-                  <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
-                  <span className="text-[10px] text-[#B0B0B0]">
+                  <span className="size-1 bg-gray-300 dark:bg-border rounded-sm"></span>
+                  <span className="text-[10px] text-light-gray-900 dark:text-soft-foreground">
                     {formatStoryCreateAt(story.createdAt)}
                   </span>
                 </div>
 
                 <Link href={`/story/${story.id}`}>
-                  <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-6 mt-1">
+                  <p className="w-full text-sm text-soft-foreground whitespace-pre-line line-clamp-6 leading-6 mt-1">
                     {story.text}
                   </p>
                 </Link>
@@ -144,18 +148,18 @@ export default function HomePage() {
                     <StoryLikeButton
                       storyId={story.id}
                       isLikedByUser={story.isLikedByUser}
-                      className="w-5 h-5 text-[#B0B0B0]"
+                      className="w-5 h-5 text-soft-foreground"
                     />
-                    <span className="text-sm text-[#B0B0B0]">{story.likesCount}</span>
+                    <span className="text-sm text-soft-foreground">{story.likesCount}</span>
                   </div>
 
                   <Link href={`/story/${story.id}#comments`} className="flex items-center gap-x-2">
-                    <MessageSquareTextIcon className="w-5 h-5 text-[#B0B0B0]" />
-                    <span className="text-sm text-[#B0B0B0]">{story.commentsCount}</span>
+                    <MessageSquareTextIcon className="w-5 h-5 text-soft-foreground" />
+                    <span className="text-sm text-soft-foreground">{story.commentsCount}</span>
                   </Link>
 
                   <Share2Icon
-                    className="w-5 h-5 text-[#B0B0B0] ms-auto"
+                    className="w-5 h-5 text-soft-foreground ms-auto"
                     onClick={() => share(story.id)}
                   />
                 </div>
@@ -170,12 +174,12 @@ export default function HomePage() {
                 .map((_, index) => (
                   <div key={index} className="flex gap-x-2 pb-6 not-first:pt-6">
                     <div>
-                      <div className="w-7 h-7 bg-[#505050] opacity-40 rounded-lg animate-pulse"></div>
+                      <div className="w-7 h-7 bg-gray-300 dark:bg-border opacity-40 rounded-lg animate-pulse"></div>
                     </div>
                     <div className="flex-1 mt-1">
-                      <div className="w-20 h-4 bg-[#505050] opacity-40 rounded-full animate-pulse"></div>
-                      <div className="w-full h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-4"></div>
-                      <div className="w-[80%] h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-2"></div>
+                      <div className="w-20 h-4 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse"></div>
+                      <div className="w-full h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-4"></div>
+                      <div className="w-[80%] h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-2"></div>
                     </div>
                   </div>
                 ))}
@@ -188,10 +192,10 @@ export default function HomePage() {
 
       <button
         style={{ bottom: "calc(env(safe-area-inset-bottom) + 80px)" }}
-        className="fixed left-4 p-4 bg-[#9C6B4A] rounded-lg cursor-pointer"
+        className="fixed left-4 p-4 bg-primary text-light-gray-100 rounded-lg cursor-pointer"
         onClick={openAddStoryModalIfLoggedIn}
       >
-        <PenIcon className="w-5 h-5" />
+        <PenIcon className="size-5" />
       </button>
 
       {hasNextPage && !isFetching && (

@@ -46,7 +46,7 @@ export default function StoryLikeButton({
       className={cn(
         "cursor-pointer",
         { "opacity-50": isLikePending || isDislikePending },
-        { "fill-[#C46B5A] stroke-[#C46B5A]": localIsLiked },
+        { "fill-danger stroke-danger": localIsLiked },
         className
       )}
       onClick={onHeartClick}

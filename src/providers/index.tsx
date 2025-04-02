@@ -4,6 +4,7 @@ import AppProvider from "./AppProvider";
 import GTMProvider from "./GTMProvider";
 import AuthProvider from "./AuthProvider";
 import QueryProvider from "./QueryProvider";
+import { ThemeProvider } from "next-themes";
 import LoadingProvider from "./LoadingProvider";
 import { ToastContainer } from "react-toastify";
 import { PropsWithChildren, Suspense } from "react";
@@ -15,17 +16,19 @@ export default async function Providers({ children }: PropsWithChildren) {
 
   return (
     <Suspense>
-      <LoadingProvider initialValue={ua !== "Fenjoon-WebView"}>
-        <QueryProvider>
-          <AuthProvider initialAccessToken={accessToken}>
-            <GTMProvider>
-              <AppProvider>{children}</AppProvider>
-            </GTMProvider>
-          </AuthProvider>
+      <ThemeProvider attribute="class">
+        <LoadingProvider initialValue={ua !== "Fenjoon-WebView"}>
+          <QueryProvider>
+            <AuthProvider initialAccessToken={accessToken}>
+              <GTMProvider>
+                <AppProvider>{children}</AppProvider>
+              </GTMProvider>
+            </AuthProvider>
 
-          <ToastContainer rtl draggable limit={2} draggablePercent={10} />
-        </QueryProvider>
-      </LoadingProvider>
+            <ToastContainer rtl draggable limit={2} draggablePercent={10} />
+          </QueryProvider>
+        </LoadingProvider>
+      </ThemeProvider>
     </Suspense>
   );
 }

@@ -38,7 +38,7 @@ export default function NotificationsSheet({ isOpen, onOpenChange }: Notificatio
       </SheetHeader>
 
       <SheetContent className="min-h-40">
-        <section className="divide-y divide-[#505050] ">
+        <section className="divide-y divide-border ">
           {data?.notifications?.map((notification) => (
             <Link
               key={notification.id}
@@ -49,11 +49,11 @@ export default function NotificationsSheet({ isOpen, onOpenChange }: Notificatio
                 <div className="w-fit relative">
                   <span className="font-bold">{notification.title}</span>
                   {!notification.isRead && (
-                    <span className="size-1 absolute top-0 -left-2 bg-[#C46B5A] rounded-sm duration-1000 animate-pulse"></span>
+                    <span className="size-1 absolute top-0 -left-2 bg-danger rounded-sm duration-1000 animate-pulse"></span>
                   )}
                 </div>
 
-                <span className="text-[#B0B0B0]">{notification.message}</span>
+                <span className="text-soft-foreground">{notification.message}</span>
               </div>
 
               <ArrowLeftIcon className="size-5" />

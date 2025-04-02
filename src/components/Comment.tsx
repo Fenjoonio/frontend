@@ -8,9 +8,9 @@ import { cn } from "@/lib/utils/classnames";
 import { getUserName } from "@/lib/utils/users";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import { useDeleteComment, type Comment } from "@/services/comments";
-import { EditIcon, InfoIcon, MoreHorizontalIcon, TrashIcon } from "lucide-react";
 import EditCommentDialog from "@/app/(comment)/components/EditCommentDialog";
 import CommentLikeButton from "@/app/(comment)/components/CommentLikeButton";
+import { EditIcon, FlagIcon, MoreHorizontalIcon, TrashIcon } from "lucide-react";
 import {
   Sheet,
   SheetTitle,
@@ -48,8 +48,8 @@ export function Comment({
             <Link href={`/author/${comment.user.id}`}>
               <span className="font-bold">{getUserName(comment.user)}</span>
             </Link>
-            <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
-            <span className="text-[10px] text-[#B0B0B0]">
+            <span className="size-1 bg-gray-300 dark:bg-border rounded-sm"></span>
+            <span className="text-[10px] text-light-gray-900 dark:text-soft-foreground">
               {formatStoryCreateAt(comment.createdAt)}
             </span>
 
@@ -59,7 +59,7 @@ export function Comment({
             />
           </div>
 
-          <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-6 mt-1">
+          <p className="w-full text-sm text-soft-foreground whitespace-pre-line line-clamp-6 leading-6 mt-1">
             {comment.text.trim()}
           </p>
 
@@ -68,10 +68,10 @@ export function Comment({
               <CommentLikeButton
                 commentId={comment.id}
                 isLikedByUser={comment.isLikedByUser}
-                className="w-5 h-5 text-[#B0B0B0]"
+                className="w-5 h-5 text-soft-foreground"
                 onChange={onLikeOrDislike}
               />
-              <span className="text-sm text-[#B0B0B0]">{comment.likesCount || "0"}</span>
+              <span className="text-sm text-soft-foreground">{comment.likesCount || "0"}</span>
             </div>
           </div>
         </div>
@@ -96,12 +96,12 @@ export function CommentSkeleton({ className }: CommentSkeletonProps) {
   return (
     <div className={cn("flex gap-x-2", className)}>
       <div>
-        <div className="size-7 bg-[#505050] opacity-40 rounded-lg animate-pulse"></div>
+        <div className="size-7 bg-border opacity-40 rounded-lg animate-pulse"></div>
       </div>
 
       <div className="flex-1 mt-1">
-        <div className="w-20 h-4 bg-[#505050] opacity-40 rounded-full animate-pulse"></div>
-        <div className="w-[50%] h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-4"></div>
+        <div className="w-20 h-4 bg-border opacity-40 rounded-full animate-pulse"></div>
+        <div className="w-[50%] h-4 bg-border opacity-20 rounded-full animate-pulse mt-4"></div>
       </div>
     </div>
   );
@@ -155,7 +155,12 @@ function CommentMenuSheet({
             <SheetDescription>دسترسی‌های مربوط به نقد</SheetDescription>
           </SheetHeader>
 
-          <ul className="divide-y divide-[#505050] px-5">
+          <ul className="divide-y divide-border px-5">
+            <li className="flex gap-x-2 items-center py-4 cursor-pointer" onClick={onReport}>
+              <FlagIcon className="size-5" />
+              <span className="mt-1">گزارش نقد</span>
+            </li>
+
             {comment.isEditableByUser && (
               <li
                 className={cn("flex gap-x-2 items-center py-4 cursor-pointer", {
@@ -175,15 +180,10 @@ function CommentMenuSheet({
                 })}
                 onClick={onDelete}
               >
-                <TrashIcon className="size-5 text-[#C46B5A]" />
-                <span className="text-[#C46B5A] mt-[6px]">حذف نقد</span>
+                <TrashIcon className="size-5 text-danger" />
+                <span className="text-danger mt-[6px]">حذف نقد</span>
               </li>
             )}
-
-            <li className="flex gap-x-2 items-center py-4 cursor-pointer" onClick={onReport}>
-              <InfoIcon className="size-5" />
-              <span className="mt-1">گزارش نقد</span>
-            </li>
           </ul>
         </SheetContent>
       </Sheet>

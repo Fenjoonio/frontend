@@ -3,7 +3,6 @@ import "./globals.css";
 import Providers from "@/providers";
 import type { Viewport } from "next";
 import { aria } from "@/lib/configs/fonts";
-import { cn } from "@/lib/utils/classnames";
 import BottomNavigationSafeZone from "@/components/BottomNavigationSafeZone";
 export { metadata } from "@/lib/configs/metadata";
 
@@ -22,10 +21,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html dir="rtl" lang="fa-IR">
-      <body className={cn(aria.className, "antialiased")}>
+    <html dir="rtl" lang="fa-IR" suppressHydrationWarning>
+      <body className={aria.className}>
         <Providers>
-          <div className="max-w-[480px] relative lg:border-x lg:border-[#505050] mx-auto">
+          <div className="max-w-[480px] relative lg:border-x lg:border-border mx-auto">
             <BottomNavigationSafeZone>{children}</BottomNavigationSafeZone>
           </div>
         </Providers>

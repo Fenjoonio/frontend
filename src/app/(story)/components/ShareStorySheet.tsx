@@ -66,7 +66,7 @@ export default function ShareStorySheet({ storyId, isOpen, onOpenChange }: Share
 
         <StorySharePreview
           storyId={storyId}
-          className="border border-[#505050] rounded-sm overflow-hidden select-none"
+          className="border border-border rounded-sm overflow-hidden select-none"
           onImageCreate={setImageBlob}
         />
 

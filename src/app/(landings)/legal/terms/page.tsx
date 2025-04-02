@@ -5,14 +5,14 @@ export default function TermsPage() {
     <section className="pb-4">
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
-        className="flex items-end justify-between bg-[#2e2e2e]/40 backdrop-blur-xs sticky top-0 z-10 pb-3 px-2"
+        className="flex items-end justify-between bg-background/40 backdrop-blur-xs sticky top-0 z-10 pb-3 px-2"
       >
         <BackArrow />
       </header>
 
       <div className="px-5 mt-4">
         <h1 className="text-lg font-bold">شرایط و قوانین استفاده از فنجون</h1>
-        <p className="text-sm text-[#B0B0B0] mt-2">
+        <p className="text-sm text-soft-foreground mt-2">
           فنجون یک بستر برای انتشار داستان‌های کوتاه است که با هدف ایجاد فضایی برای خلاقیت و تعامل
           کاربران ایجاد شده است. استفاده از خدمات فنجون به معنای پذیرش شرایط و قوانین زیر است. این
           قوانین ممکن است در آینده تغییر کنند و استفاده مستمر از خدمات فنجون به معنای پذیرش تغییرات
@@ -23,7 +23,7 @@ export default function TermsPage() {
       <article className="mt-6">
         <section className="px-5">
           <h2 className="text-base font-bold">۱. قوانین عمومی</h2>
-          <p className="text-sm text-[#B0B0B0] mt-2">
+          <p className="text-sm text-soft-foreground mt-2">
             فنجون به عنوان یک پلتفرم برای انتشار داستان‌های کوتاه، متعهد به رعایت قوانین جمهوری
             اسلامی ایران است. همه کاربران نیز موظف هستند هنگام استفاده از این سرویس، قوانین و مقررات
             جاری کشور را رعایت کنند. هرگونه فعالیتی که مغایر با قوانین، اخلاقیات اجتماعی یا
@@ -36,7 +36,7 @@ export default function TermsPage() {
 
         <section className="px-5">
           <h2 className="text-base font-bold mt-4">۲. حساب کاربری</h2>
-          <p className="text-sm text-[#B0B0B0] mt-2">
+          <p className="text-sm text-soft-foreground mt-2">
             برای استفاده از خدمات فنجون، کاربران باید یک حساب کاربری ایجاد کنند. ثبت‌نام در این
             پلتفرم به معنای پذیرش قوانین و مقررات فنجون است. کاربران مسئول حفظ اطلاعات حساب خود از
             جمله نام کاربری و رمز عبور هستند و نباید آن را در اختیار دیگران قرار دهند. در صورتی که
@@ -48,7 +48,7 @@ export default function TermsPage() {
 
         <section className="px-5">
           <h2 className="text-base font-bold mt-4">۳. محتوا و انتشار داستان</h2>
-          <p className="text-sm text-[#B0B0B0] mt-2">
+          <p className="text-sm text-soft-foreground mt-2">
             کاربران فنجون می‌توانند داستان‌های خود را در این بستر منتشر کنند، اما مسئولیت محتوای
             منتشرشده کاملاً بر عهده خودشان است. انتشار داستان‌هایی که حاوی محتوای توهین‌آمیز،
             خشونت‌آمیز، غیرقانونی یا برخلاف موازین اخلاقی باشند، مجاز نیست و ممکن است بدون اطلاع
@@ -60,7 +60,7 @@ export default function TermsPage() {
 
         <section className="px-5">
           <h2 className="text-base font-bold mt-4">۴. حفظ حریم خصوصی</h2>
-          <p className="text-sm text-[#B0B0B0] mt-2">
+          <p className="text-sm text-soft-foreground mt-2">
             حفظ حریم خصوصی کاربران یکی از اولویت‌های اصلی فنجون است. اطلاعات شخصی کاربران در این
             پلتفرم به‌صورت محرمانه نگهداری می‌شود و تحت هیچ شرایطی بدون اجازه در اختیار شخص ثالث
             قرار نخواهد گرفت. فنجون ممکن است از داده‌های کاربران به‌صورت کلی و بدون شناسایی فردی
@@ -71,7 +71,7 @@ export default function TermsPage() {
 
         <section className="px-5">
           <h2 className="text-base font-bold mt-4">۵. حقوق و مسئولیت‌ها</h2>
-          <p className="text-sm text-[#B0B0B0] mt-2">
+          <p className="text-sm text-soft-foreground mt-2">
             فنجون هیچ‌گونه مسئولیتی در قبال محتوای منتشرشده توسط کاربران ندارد و تمامی مطالب
             منتشرشده بر عهده خود کاربران است. همچنین، هرگونه تلاش برای اختلال در سرویس، تلاش برای
             نفوذ غیرمجاز به سیستم یا سوءاستفاده از داده‌های کاربران دیگر، تخلف محسوب شده و با خاطیان
@@ -83,7 +83,7 @@ export default function TermsPage() {
 
         <section className="px-5">
           <h2 className="text-base font-bold mt-4">۶. تغییرات در قوانین</h2>
-          <p className="text-sm text-[#B0B0B0] mt-2">
+          <p className="text-sm text-soft-foreground mt-2">
             فنجون این حق را دارد که در هر زمان، قوانین و مقررات خود را به‌روزرسانی کند. کاربران موظف
             هستند به‌صورت دوره‌ای این قوانین را بررسی کنند. استفاده مستمر از فنجون به معنای پذیرش
             تغییرات جدید خواهد بود و در صورت عدم پذیرش، کاربران می‌توانند از ادامه استفاده از خدمات

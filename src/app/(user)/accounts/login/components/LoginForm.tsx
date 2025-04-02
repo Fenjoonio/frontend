@@ -82,7 +82,7 @@ export default function LoginForm({ phone, redirect, className }: LoginFormProps
         </Button>
         <span className="block text-xs text-center px-5 mt-4">
           وارد کردن شماره همراه در این مرحله به معنای پذیرش{" "}
-          <Link href="/legal/terms" className="text-[#B07B56]">
+          <Link href="/legal/terms" className="text-primary">
             قوانین و شرایط استفاده
           </Link>{" "}
           از فنجون است.

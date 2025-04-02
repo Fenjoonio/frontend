@@ -12,7 +12,7 @@ export default function GlobalNotFoundPage() {
       <div className="h-[calc(100svh-57px)] flex flex-col items-center justify-center px-4">
         <span className="text-6xl font-bold">404</span>
         <h1 className="text-lg font-bold mt-4">این برگ از داستان گمشده است!</h1>
-        <span className="text-[#B0B0B0] text-center mt-2">
+        <span className="text-soft-foreground text-center mt-2">
           صفحه‌ای که دنبالش می‌گردی وجود نداره؛ یا شایدم یه لینک موقت بوده که الان دیگه به جایی وصل
           نیست ..
         </span>

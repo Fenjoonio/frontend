@@ -14,7 +14,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
     <section>
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
-        className="flex items-end justify-between bg-[#2e2e2e]/40 backdrop-blur-xs sticky top-0 z-10 pb-3 px-2"
+        className="flex items-end justify-between bg-background/40 backdrop-blur-xs pb-3 px-2"
       >
         <BackArrow />
       </header>
@@ -38,6 +38,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           <TabsContent value="stories">
             <UserStories id={Number(id)} />
           </TabsContent>
+
           <TabsContent value="comments">
             <UserComments id={Number(id)} />
           </TabsContent>

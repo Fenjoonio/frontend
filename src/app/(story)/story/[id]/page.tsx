@@ -14,7 +14,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
     <section className="min-h-svh pb-20">
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
-        className="flex items-end justify-between bg-[#2e2e2e]/40 backdrop-blur-xs sticky top-0 z-10 pb-3 px-2"
+        className="flex items-end justify-between bg-background/40 backdrop-blur-xs sticky top-0 z-10 pb-3 px-2"
       >
         <BackArrow />
 
@@ -28,7 +28,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
         <Story id={id} />
       </div>
 
-      <div id="comments" className="py-8 mx-5 border-t border-[#505050] mt-8">
+      <div id="comments" className="py-8 mx-5 border-t border-border mt-8">
         <InfiniteCommentsList id={id} />
       </div>
     </section>

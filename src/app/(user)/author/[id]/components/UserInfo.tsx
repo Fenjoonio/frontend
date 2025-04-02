@@ -16,8 +16,8 @@ export default function UserInfo({ id }: UserInfoProps) {
   if (!user) {
     return (
       <>
-        <div className="w-20 h-20 shrink-0 flex items-center justify-center rounded-3xl bg-[#505050] opacity-40 animate-pulse"></div>
-        <div className="w-28 h-6 bg-[#505050] opacity-40 rounded-full animate-pulse mt-6"></div>
+        <div className="w-20 h-20 shrink-0 flex items-center justify-center rounded-3xl bg-border opacity-40 animate-pulse"></div>
+        <div className="w-28 h-6 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse mt-6"></div>
       </>
     );
   }
@@ -34,14 +34,14 @@ export default function UserInfo({ id }: UserInfoProps) {
 
   return (
     <>
-      <div className="w-20 h-20 shrink-0 flex items-center justify-center rounded-3xl bg-[#9C6B4A]">
-        <div className="w-12 h-12 flex justify-center items-center overflow-hidden text-4xl font-bold">
+      <div className="w-20 h-20 shrink-0 flex items-center justify-center rounded-3xl bg-primary">
+        <div className="w-12 h-12 flex justify-center items-center overflow-hidden text-4xl text-light-gray-100 font-bold">
           {userName[0]}
         </div>
       </div>
 
-      <h1 className="text-2xl mt-4">{userName}</h1>
-      <span className="block text-sm text-[#B0B0B0] mt-2">{user.bio}</span>
+      <h1 className="text-2xl font-bold mt-4">{userName}</h1>
+      <span className="block text-sm text-soft-foreground mt-2">{user.bio}</span>
 
       <div className="w-full flex gap-x-2 px-5 mt-6">
         <Button className="flex-1" onClick={toggleFollow}>

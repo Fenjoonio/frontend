@@ -37,7 +37,7 @@ export default function BottomNavigation({ pathname, className }: BottomNavigati
   return (
     <nav
       style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 8px)" }}
-      className={cn("bg-[#2e2e2e] border-t border-[#505050] pt-2 px-4", className)}
+      className={cn("bg-background border-t border-border pt-2 px-4", className)}
     >
       <ul className="flex justify-around">
         {ITEMS.map((item) => (
@@ -47,14 +47,11 @@ export default function BottomNavigation({ pathname, className }: BottomNavigati
               className="w-12 h-10 flex flex-col justify-center items-center relative"
             >
               {item.showBadge && (
-                <span className="size-1 absolute top-1 right-2 bg-[#C46B5A] rounded-sm duration-1000 animate-pulse"></span>
+                <span className="size-1 absolute top-1 right-2 bg-danger rounded-sm duration-1000 animate-pulse"></span>
               )}
 
               <item.Icon
-                className={cn(
-                  "shrink-0",
-                  isActive(item.href) ? "text-[#e0e0e0]" : "text-[#B0B0B0]"
-                )}
+                className={cn("shrink-0", isActive(item.href) ? "" : "text-soft-foreground")}
               />
               {/* <span className="text-xs mt-2">{item.title}</span> */}
             </Link>

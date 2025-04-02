@@ -61,7 +61,7 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
             <SheetTitle></SheetTitle>
             <SheetDescription></SheetDescription>
           </SheetHeader>
-          <ul className="divide-y divide-[#505050] px-5">
+          <ul className="divide-y divide-border px-5">
             <li className="flex gap-x-2 items-center py-4 cursor-pointer" onClick={onShare}>
               <Share2Icon width={20} height={20} />
               <span className="mt-[2px]">اشتراک‌گذاری</span>
@@ -86,8 +86,8 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
                 })}
                 onClick={onDelete}
               >
-                <TrashIcon width={20} height={20} className="text-[#C46B5A]" />
-                <span className="text-[#C46B5A] mt-[6px]">حذف داستان</span>
+                <TrashIcon width={20} height={20} className="text-danger" />
+                <span className="text-danger mt-[6px]">حذف داستان</span>
               </li>
             )}
           </ul>

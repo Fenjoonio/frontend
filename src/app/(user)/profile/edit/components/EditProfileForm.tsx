@@ -57,7 +57,7 @@ export default function EditProfileForm({ className }: EditProfileFormProps) {
     <form className={cn("flex flex-col", className)} onSubmit={onSubmit}>
       <div className="flex gap-x-2">
         <Input type="text" autoComplete="off" placeholder="نام" {...register("firstName")} />
-        {errors.firstName && <span className="text-red-500">{errors.firstName.message}</span>}
+        {errors.firstName && <span className="text-danger">{errors.firstName.message}</span>}
 
         <Input
           type="text"
@@ -65,7 +65,7 @@ export default function EditProfileForm({ className }: EditProfileFormProps) {
           placeholder="نام خانوادگی"
           {...register("lastName")}
         />
-        {errors.lastName && <span className="text-red-500">{errors.lastName.message}</span>}
+        {errors.lastName && <span className="text-danger">{errors.lastName.message}</span>}
       </div>
 
       <Input
@@ -75,7 +75,7 @@ export default function EditProfileForm({ className }: EditProfileFormProps) {
         {...register("nickname")}
         className="mt-2"
       />
-      {errors.nickname && <span className="text-red-500">{errors.nickname.message}</span>}
+      {errors.nickname && <span className="text-danger">{errors.nickname.message}</span>}
 
       <Input
         type="text"
@@ -84,7 +84,7 @@ export default function EditProfileForm({ className }: EditProfileFormProps) {
         {...register("bio")}
         className="mt-2"
       />
-      {errors.bio && <span className="text-red-500">{errors.bio.message}</span>}
+      {errors.bio && <span className="text-danger">{errors.bio.message}</span>}
 
       <Input
         type="text"
@@ -94,14 +94,14 @@ export default function EditProfileForm({ className }: EditProfileFormProps) {
         className="ltr placeholder:text-right mt-2"
         disabled
       />
-      {errors.phone && <span className="text-red-500">{errors.phone.message}</span>}
+      {errors.phone && <span className="text-danger">{errors.phone.message}</span>}
 
       <Button
         type="submit"
         disabled={isSubmitting || isCurrentUserApiPending}
         className="w-full mt-auto"
       >
-        {isSubmitting ? "در حال ویرایش..." : "ویرایش اطلاعات"}
+        {isSubmitting ? "در حال ویرایش ..." : "ویرایش اطلاعات"}
       </Button>
     </form>
   );

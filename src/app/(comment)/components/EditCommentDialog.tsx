@@ -37,7 +37,7 @@ export default function EditCommentDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="h-svh bg-[#2e2e2e] text-[#e0e0e0]">
+      <DialogContent className="h-svh bg-background">
         <DialogHeader>
           <DialogTitle>ویرایش نقد</DialogTitle>
           <DialogDescription>
@@ -48,7 +48,7 @@ export default function EditCommentDialog({
           <textarea
             value={text}
             placeholder="خیلی قشنگه و به‌نظرم می‌تونه ..."
-            className="h-80 p-4 resize-none border border-[#505050] rounded-lg"
+            className="h-80 p-4 resize-none border border-border rounded-lg"
             onChange={(e) => setText(e.target.value)}
           />
         </div>

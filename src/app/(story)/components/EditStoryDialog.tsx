@@ -52,7 +52,7 @@ export default function EditStoryDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="h-svh bg-[#2e2e2e] text-[#e0e0e0]">
+      <DialogContent className="h-svh bg-background">
         <DialogHeader>
           <DialogTitle>ویرایش داستان</DialogTitle>
           <DialogDescription>
@@ -63,7 +63,7 @@ export default function EditStoryDialog({
           <textarea
             value={text}
             placeholder="داستان از این قراره که ..."
-            className="h-80 p-4 resize-none border border-[#505050] rounded-lg"
+            className="h-80 p-4 resize-none border border-border rounded-lg"
             onChange={(e) => setText(e.target.value)}
           />
         </div>

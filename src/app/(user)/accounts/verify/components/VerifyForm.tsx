@@ -104,7 +104,7 @@ export default function VerifyForm({ phone, redirect, className }: VerifyFormPro
               setValue("code", toEnglishDigits(e.target.value)),
           })}
         />
-        <span className="block text-red-500 mt-2">{errors.code?.message || ""}</span>
+        <span className="block text-danger mt-2">{errors.code?.message || ""}</span>
       </div>
 
       <div className="flex gap-y-2 flex-col">

@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import BackArrow from "@/components/BackArrow";
 import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
-import UserAvatar from "@/components/UserAvatar";
-import { type Comment } from "@/services/comments";
+import { Comment } from "@/components/Comment";
 import ReplyDialog from "./components/ReplyDialog";
 import PullToRefresh from "@/components/PullToRefresh";
 import { formatStoryCreateAt } from "@/lib/utils/story";
@@ -33,7 +32,7 @@ export default function ThreadPage() {
     limit: 10,
   });
 
-  const comments = useMemo<Comment[]>(() => {
+  const comments = useMemo(() => {
     return data?.pages ? data.pages.flatMap((page) => page.comments ?? []) : [];
   }, [data?.pages]);
 
@@ -59,20 +58,20 @@ export default function ThreadPage() {
     <section className="pb-4">
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
-        className="flex items-end justify-between bg-[#2e2e2e]/40 backdrop-blur-xs sticky top-0 z-10 pb-3 px-2"
+        className="flex items-end justify-between bg-background/40 backdrop-blur-xs sticky top-0 z-10 pb-3 px-2"
       >
         <BackArrow />
       </header>
 
       <div className="px-5 mt-4">
         <h1 className="text-lg font-bold">به {"'بافته'"} خوش اومدی!</h1>
-        <span className="block text-sm text-[#B0B0B0] mt-1">
+        <span className="block text-sm text-soft-foreground mt-1">
           اینجا داستان‌ها در هم تنیده میشن! هر هفته داستان جدیدی اینجا قرار میگیره که ادامه اون رو
           تو می‌بافی ...
         </span>
       </div>
 
-      <div className="border-b border-[#505050] mt-16 mx-5">
+      <div className="border-b border-border mt-16 mx-5">
         {story && !isStoryFetching ? (
           <div key={story.id} className="flex gap-x-2 pb-6 not-first:pt-6">
             <div className="flex-1 mt-1">
@@ -80,14 +79,14 @@ export default function ThreadPage() {
                 <Link href={`/author/${story.user.id}`}>
                   <span className="font-bold">{getUserName(story.user)}</span>
                 </Link>
-                <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
-                <span className="text-[10px] text-[#B0B0B0]">
+                <span className="size-1 bg-gray-300 dark:bg-border rounded-sm"></span>
+                <span className="text-[10px] text-light-gray-900 dark:text-soft-foreground">
                   {formatStoryCreateAt(story.createdAt)}
                 </span>
               </div>
 
               <Link href={`/story/${story.id}`}>
-                <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-6 mt-1">
+                <p className="w-full text-sm text-soft-foreground whitespace-pre-line line-clamp-6 leading-6 mt-1">
                   {story.text}
                 </p>
               </Link>
@@ -97,18 +96,18 @@ export default function ThreadPage() {
                   <StoryLikeButton
                     storyId={story.id}
                     isLikedByUser={story.isLikedByUser}
-                    className="w-5 h-5 text-[#B0B0B0]"
+                    className="size-5 text-soft-foreground"
                   />
-                  <span className="text-sm text-[#B0B0B0]">{story.likesCount}</span>
+                  <span className="text-sm text-soft-foreground">{story.likesCount}</span>
                 </div>
 
                 <Link href={`/story/${story.id}#comments`} className="flex items-center gap-x-2">
-                  <MessageSquareTextIcon className="w-5 h-5 text-[#B0B0B0]" />
-                  <span className="text-sm text-[#B0B0B0]">{story.commentsCount}</span>
+                  <MessageSquareTextIcon className="w-5 h-5 text-soft-foreground" />
+                  <span className="text-sm text-soft-foreground">{story.commentsCount}</span>
                 </Link>
 
                 <Share2Icon
-                  className="w-5 h-5 text-[#B0B0B0] ms-auto"
+                  className="w-5 h-5 text-soft-foreground ms-auto"
                   onClick={() => share(story.id)}
                 />
               </div>
@@ -117,41 +116,21 @@ export default function ThreadPage() {
         ) : (
           <div className="flex gap-x-2 pb-6 not-first:pt-6">
             <div>
-              <div className="w-7 h-7 bg-[#505050] opacity-40 rounded-lg animate-pulse"></div>
+              <div className="size-7 bg-gray-300 dark:bg-border opacity-40 rounded-lg animate-pulse"></div>
             </div>
             <div className="flex-1 mt-1">
-              <div className="w-20 h-4 bg-[#505050] opacity-40 rounded-full animate-pulse"></div>
-              <div className="w-full h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-4"></div>
-              <div className="w-[80%] h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-2"></div>
+              <div className="w-20 h-4 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse"></div>
+              <div className="w-full h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-4"></div>
+              <div className="w-[80%] h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-2"></div>
             </div>
           </div>
         )}
       </div>
 
       <PullToRefresh onRefresh={onRefresh} className="mx-5">
-        <section className="divide-y divide-[#505050]">
+        <section className="divide-y divide-border">
           {comments.toReversed().map((story) => (
-            <div key={story.id} className="flex gap-x-2 py-6">
-              <Link href={`/author/${story.user.id}`}>
-                <UserAvatar user={story.user} />
-              </Link>
-
-              <div className="flex-1 mt-1">
-                <div className="flex gap-x-2 items-center">
-                  <Link href={`/author/${story.user.id}`}>
-                    <span className="font-bold">{getUserName(story.user)}</span>
-                  </Link>
-                  <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
-                  <span className="text-[10px] text-[#B0B0B0]">
-                    {formatStoryCreateAt(story.createdAt)}
-                  </span>
-                </div>
-
-                <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-6 mt-1">
-                  {story.text}
-                </p>
-              </div>
-            </div>
+            <Comment key={story.id} comment={story} className="py-6" />
           ))}
 
           {isFetching && (
@@ -161,12 +140,12 @@ export default function ThreadPage() {
                 .map((_, index) => (
                   <div key={index} className="flex gap-x-2 py-6">
                     <div>
-                      <div className="w-7 h-7 bg-[#505050] opacity-40 rounded-lg animate-pulse"></div>
+                      <div className="size-7 bg-gray-300 dark:bg-border opacity-40 rounded-lg animate-pulse"></div>
                     </div>
                     <div className="flex-1 mt-1">
-                      <div className="w-20 h-4 bg-[#505050] opacity-40 rounded-full animate-pulse"></div>
-                      <div className="w-full h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-4"></div>
-                      <div className="w-[80%] h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-2"></div>
+                      <div className="w-20 h-4 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse"></div>
+                      <div className="w-full h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-4"></div>
+                      <div className="w-[80%] h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-2"></div>
                     </div>
                   </div>
                 ))}
@@ -179,7 +158,7 @@ export default function ThreadPage() {
 
       <button
         style={{ bottom: "calc(env(safe-area-inset-bottom) + 80px)" }}
-        className="fixed left-4 p-4 bg-[#9C6B4A] rounded-lg cursor-pointer"
+        className="fixed left-4 p-4 bg-primary text-light-gray-100 rounded-lg cursor-pointer"
         onClick={openReplyDialog}
       >
         <PenIcon className="w-5 h-5" />

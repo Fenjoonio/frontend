@@ -12,9 +12,9 @@ import { STORIES_QUERY_KEYS, useGetInfiniteStoryComments } from "@/services/stor
 function CommentsEmptyState({ className }: { className?: string }) {
   return (
     <div className={cn("flex flex-col justify-center items-center", className)}>
-      <MessagesSquareIcon width={56} height={56} className="text-[#B0B0B0]" />
+      <MessagesSquareIcon width={56} height={56} className="text-soft-foreground" />
       <h4 className="font-bold mt-4">خبری از نقد نیست!</h4>
-      <span className="text-sm text-[#B0B0B0] mt-1">
+      <span className="text-sm text-soft-foreground mt-1">
         کسی این داستان رو نقد نکرده؛ تو اولین نفر باش
       </span>
     </div>
@@ -40,7 +40,7 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
 
   return (
     <section>
-      <h3 className="text-sm text-[#B0B0B0]">آخرین نقدها</h3>
+      <h3 className="text-sm text-soft-foreground">آخرین نقدها</h3>
 
       {!isFetching && !isError && comments.length === 0 && <CommentsEmptyState className="py-14" />}
 
@@ -49,7 +49,7 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
           <Comment
             key={comment.id}
             comment={comment}
-            className="pb-6 not-first:pt-6 not-first:border-t border-[#505050]"
+            className="pb-6 not-first:pt-6 not-first:border-t border-border"
             onCommentEdit={refetchCommentsList}
             onLikeOrDislike={refetchCommentsList}
             onCommentDelete={refetchCommentsList}
@@ -63,7 +63,7 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
               .map((_, index) => (
                 <CommentSkeleton
                   key={index}
-                  className="pb-6 not-first:pt-6 not-first:border-t border-[#505050]"
+                  className="pb-6 not-first:pt-6 not-first:border-t border-border"
                 />
               ))}
           </>

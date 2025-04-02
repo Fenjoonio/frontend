@@ -20,11 +20,11 @@ export default function LogoutButton() {
 
   return (
     <button className="w-full flex gap-x-2 items-center py-3 px-2" onClick={logout}>
-      <div className="bg-[#2e2e2e] rounded-[8px] p-2">
-        <LogOutIcon className="w-5 h-5" />
+      <div className="bg-background rounded-[8px] p-2">
+        <LogOutIcon className="w-5 h-5 " />
       </div>
 
-      <span className="text-sm mt-[2px]">خروج</span>
+      <span className="text-sm  mt-[2px]">خروج</span>
 
       <ArrowLeftIcon className="w-5 h-5 ms-auto me-1" />
     </button>

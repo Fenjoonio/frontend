@@ -31,7 +31,7 @@ export default function UserStories({ id }: UserStoriesProps) {
 
   return (
     <>
-      <section className="divide-y divide-[#505050]">
+      <section className="divide-y divide-border">
         {stories.map((story) => (
           <div key={story.id} className="flex gap-x-2 pb-6 not-first:pt-6">
             <UserAvatar user={story.user} />
@@ -40,13 +40,13 @@ export default function UserStories({ id }: UserStoriesProps) {
               <Link href={`/story/${story.id}`}>
                 <div className="flex gap-x-2 items-center">
                   <span className="font-bold">{getUserName(story.user)}</span>
-                  <span className="w-1 h-1 bg-[#505050] rounded-sm"></span>
-                  <span className="text-[10px] text-[#B0B0B0]">
+                  <span className="size-1 bg-gray-300 dark:bg-border rounded-sm"></span>
+                  <span className="text-[10px] text-light-gray-900 dark:text-soft-foreground">
                     {formatStoryCreateAt(story.createdAt)}
                   </span>
                 </div>
 
-                <p className="w-full text-sm text-[#B0B0B0] whitespace-pre-line line-clamp-6 leading-6 mt-1">
+                <p className="w-full text-sm text-soft-foreground whitespace-pre-line line-clamp-6 leading-6 mt-1">
                   {story.text}
                 </p>
               </Link>
@@ -56,18 +56,18 @@ export default function UserStories({ id }: UserStoriesProps) {
                   <StoryLikeButton
                     storyId={story.id}
                     isLikedByUser={story.isLikedByUser}
-                    className="w-5 h-5 text-[#B0B0B0]"
+                    className="w-5 h-5 text-soft-foreground"
                   />
-                  <span className="text-sm text-[#B0B0B0]">{story.likesCount}</span>
+                  <span className="text-sm text-soft-foreground">{story.likesCount}</span>
                 </div>
 
                 <Link href={`/story/${story.id}#comments`} className="flex items-center gap-x-2">
-                  <MessageSquareTextIcon className="w-5 h-5 text-[#B0B0B0]" />
-                  <span className="text-sm text-[#B0B0B0]">{story.commentsCount}</span>
+                  <MessageSquareTextIcon className="w-5 h-5 text-soft-foreground" />
+                  <span className="text-sm text-soft-foreground">{story.commentsCount}</span>
                 </Link>
 
                 <Share2Icon
-                  className="w-5 h-5 text-[#B0B0B0] ms-auto"
+                  className="w-5 h-5 text-soft-foreground ms-auto"
                   onClick={() => share(story.id)}
                 />
               </div>
@@ -82,12 +82,12 @@ export default function UserStories({ id }: UserStoriesProps) {
               .map((_, index) => (
                 <div key={index} className="flex gap-x-2 pb-6 not-first:pt-6">
                   <div>
-                    <div className="w-7 h-7 bg-[#505050] opacity-40 rounded-lg animate-pulse"></div>
+                    <div className="w-7 h-7 bg-gray-300 dark:bg-border opacity-40 rounded-lg animate-pulse"></div>
                   </div>
                   <div className="flex-1 mt-1">
-                    <div className="w-20 h-4 bg-[#505050] opacity-40 rounded-full animate-pulse"></div>
-                    <div className="w-full h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-4"></div>
-                    <div className="w-[80%] h-4 bg-[#505050] opacity-20 rounded-full animate-pulse mt-2"></div>
+                    <div className="w-20 h-4 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse"></div>
+                    <div className="w-full h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-4"></div>
+                    <div className="w-[80%] h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-2"></div>
                   </div>
                 </div>
               ))}

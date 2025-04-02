@@ -41,7 +41,7 @@ export default function CommentSheet({ id, isOpen, onOpenChange }: CommentSheetP
         <textarea
           value={text}
           placeholder="خیلی قشنگه و به‌نظرم می‌تونه ..."
-          className="h-40 p-4 resize-none border border-[#505050] outline-none rounded-lg"
+          className="h-40 p-4 resize-none border border-border outline-none rounded-lg"
           onChange={(e) => setText(e.target.value)}
         />
 

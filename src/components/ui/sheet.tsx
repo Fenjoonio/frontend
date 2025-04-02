@@ -1,30 +1,24 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as SheetPrimitive from "@radix-ui/react-dialog"
+import * as React from "react";
+import * as SheetPrimitive from "@radix-ui/react-dialog";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
-  return <SheetPrimitive.Root data-slot="sheet" {...props} />
+  return <SheetPrimitive.Root data-slot="sheet" {...props} />;
 }
 
-function SheetTrigger({
-  ...props
-}: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
-  return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />
+function SheetTrigger({ ...props }: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
+  return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />;
 }
 
-function SheetClose({
-  ...props
-}: React.ComponentProps<typeof SheetPrimitive.Close>) {
-  return <SheetPrimitive.Close data-slot="sheet-close" {...props} />
+function SheetClose({ ...props }: React.ComponentProps<typeof SheetPrimitive.Close>) {
+  return <SheetPrimitive.Close data-slot="sheet-close" {...props} />;
 }
 
-function SheetPortal({
-  ...props
-}: React.ComponentProps<typeof SheetPrimitive.Portal>) {
-  return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />
+function SheetPortal({ ...props }: React.ComponentProps<typeof SheetPrimitive.Portal>) {
+  return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />;
 }
 
 function SheetOverlay({
@@ -40,7 +34,7 @@ function SheetOverlay({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function SheetContent({
@@ -57,7 +51,7 @@ function SheetContent({
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(
-          "max-w-[480px] mx-auto bg-[#2e2e2e] px-5 outline-none data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col gap-4 shadow-lg rounded-t-md transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
+          "max-w-[480px] mx-auto bg-background px-5 outline-none data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col gap-4 shadow-lg rounded-t-md transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
           side === "right" &&
             "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
           side === "left" &&
@@ -70,7 +64,7 @@ function SheetContent({
         )}
         {...props}
       >
-        <div className="w-[16%] h-1 rounded-full mx-auto my-3 bg-[#505050]"></div>
+        <div className="w-[16%] h-1 rounded-full mx-auto my-3 bg-border"></div>
         {children}
       </SheetPrimitive.Content>
     </SheetPortal>
@@ -102,7 +96,7 @@ function SheetDescription({
   return (
     <SheetPrimitive.Description
       data-slot="sheet-description"
-      className={cn("text-sm text-[#B0B0B0] mt-1", className)}
+      className={cn("text-sm text-soft-foreground mt-1", className)}
       {...props}
     />
   );
@@ -117,4 +111,4 @@ export {
   SheetFooter,
   SheetTitle,
   SheetDescription,
-}
+};
