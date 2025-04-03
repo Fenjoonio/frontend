@@ -16,8 +16,8 @@ export default async function Providers({ children }: PropsWithChildren) {
 
   return (
     <Suspense>
-      <ThemeProvider attribute="class">
-        <LoadingProvider initialValue={ua !== "Fenjoon-WebView"}>
+      <ThemeProvider attribute="class" defaultTheme={ua.includes("light") ? "light" : "dark"}>
+        <LoadingProvider initialValue={!ua.includes("Fenjoon-WebView")}>
           <QueryProvider>
             <AuthProvider initialAccessToken={accessToken}>
               <GTMProvider>
