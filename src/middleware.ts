@@ -3,17 +3,37 @@ import type { NextRequest } from "next/server";
 
 const NEEDS_LOGIN_PAGE = ["/profile"];
 
+function handleUtmSources(request: NextRequest, response: NextResponse): NextResponse {
+  if (!request.nextUrl.searchParams.has("utm_source") || request.cookies.has("utmSource")) {
+    return response;
+  }
+
+  const expireDate = new Date();
+  expireDate.setFullYear(expireDate.getFullYear() + 1);
+
+  const utmSource = request.nextUrl.searchParams.get("utm_source");
+
+  response.headers.set(
+    "Set-Cookie",
+    `utmSource=${utmSource}; expires=${expireDate.toUTCString()}; path=/`
+  );
+
+  return response;
+}
+
 function handleOnboarding(request: NextRequest): NextResponse | undefined {
   if (request.cookies.has("isFirstTime")) return;
 
   const expireDate = new Date();
   expireDate.setFullYear(expireDate.getFullYear() + 1);
 
-  return NextResponse.redirect(new URL("/onboarding", request.url), {
+  const response = NextResponse.redirect(new URL("/onboarding", request.url), {
     headers: {
-      "Set-Cookie": `${"isFirstTime"}=false; expires=${expireDate.toUTCString()}; path=/`,
+      "Set-Cookie": `isFirstTime=false; expires=${expireDate.toUTCString()}; path=/`,
     },
   });
+
+  return handleUtmSources(request, response);
 }
 
 function handleAuthentication(request: NextRequest): NextResponse | undefined {
@@ -24,20 +44,32 @@ function handleAuthentication(request: NextRequest): NextResponse | undefined {
   if (
     !isLoggedIn &&
     !isFirstRun &&
-    !pathname.includes("/accounts") &&
-    NEEDS_LOGIN_PAGE.includes(pathname)
+    !pathname.startsWith("/accounts") &&
+    NEEDS_LOGIN_PAGE.some((page) => pathname === page || pathname.startsWith(`${page}/`))
   ) {
     const params = new URLSearchParams();
     params.set("redirect", pathname);
 
-    return NextResponse.redirect(new URL(`/accounts/login?${params.toString()}`, request.url));
+    const response = NextResponse.redirect(
+      new URL(`/accounts/login?${params.toString()}`, request.url)
+    );
+
+    return handleUtmSources(request, response);
   }
 
-  return NextResponse.next();
+  return undefined;
 }
 
 export function middleware(request: NextRequest) {
-  return handleOnboarding(request) || handleAuthentication(request) || NextResponse.next();
+  const authResponse = handleAuthentication(request);
+  if (authResponse) return authResponse;
+
+  const onboardingResponse = handleOnboarding(request);
+  if (onboardingResponse) return onboardingResponse;
+
+  const response = NextResponse.next();
+
+  return handleUtmSources(request, response);
 }
 
 export const config = { matcher: "/((?!api|static|.*\\..*|_next).*)" };
