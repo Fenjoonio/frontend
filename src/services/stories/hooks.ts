@@ -10,6 +10,7 @@ import {
   getStories,
   getStoryComments,
   likeStory,
+  reportStory,
   shareStory,
 } from "./functions";
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -157,5 +158,13 @@ export function useShareStory(options?: { onSuccess?: () => void }) {
     ...options,
     mutationKey: [STORIES_QUERY_KEYS.SHARE_STORY],
     mutationFn: shareStory,
+  });
+}
+
+export function useReportStory(options?: { onSuccess?: () => void }) {
+  return useMutation({
+    ...options,
+    mutationKey: [STORIES_QUERY_KEYS.REPORT_STORY],
+    mutationFn: reportStory,
   });
 }
