@@ -86,3 +86,8 @@ export type DislikeStoryParams = {
 export type ShareStoryParams = {
   id: number;
 };
+
+export type ReportStoryBody = {
+  id: number;
+  reason: string;
+};

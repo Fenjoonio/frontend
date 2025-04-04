@@ -16,6 +16,7 @@ import type {
   DislikeStoryParams,
   EditStoryBody,
   ShareStoryParams,
+  ReportStoryBody,
 } from "./types";
 
 export async function getStories(params: GetStoriesParams) {
@@ -74,6 +75,12 @@ export async function dislikeStory({ id }: DislikeStoryParams) {
 
 export async function shareStory({ id }: ShareStoryParams) {
   const response = await http.post(`v1/stories/${id}/shares`);
+
+  return response.data;
+}
+
+export async function reportStory({ id, ...body }: ReportStoryBody) {
+  const response = await http.post<boolean>(`v1/stories/${id}/reports`, body);
 
   return response.data;
 }
