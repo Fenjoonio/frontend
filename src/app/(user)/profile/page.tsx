@@ -1,11 +1,14 @@
 import Link from "next/link";
+import { getUtmSource } from "./actions";
 import UserInfo from "./components/UserInfo";
 import LogoutButton from "./components/LogoutButton";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import ViewProfileButton from "./components/ViewProfileButton";
 import { ArrowLeftIcon, DownloadIcon, ScaleIcon, StarIcon, UserPenIcon } from "lucide-react";
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+  const utmSource = await getUtmSource();
+
   return (
     <section className="pt-16 pb-4">
       <header className="flex flex-col items-center">
@@ -67,14 +70,20 @@ export default function ProfilePage() {
         <ul className="bg-soft-background rounded-[12px] divide-y divide-border p-2 mt-4">
           <li>
             <Link
-              href="https://github.com/freakingeek/fenjoon-app/releases/download/0.1.2/Fenjoon-v0.1.2.apk"
+              href={
+                utmSource === "bazzar"
+                  ? "https://cafebazaar.ir/app/io.fenjoon.app"
+                  : "https://github.com/freakingeek/fenjoon-app/releases/download/0.1.2/Fenjoon-v0.1.2.apk"
+              }
               className="flex gap-x-2 items-center py-3 px-2"
             >
               <div className="bg-background rounded-lg p-2">
-                <DownloadIcon className="size-5 " />
+                <DownloadIcon className="size-5" />
               </div>
 
-              <span className="text-sm  mt-[2px]">بروزرسانی (نسخه ۰.۱.۲)</span>
+              <span className="text-sm mt-[2px]">
+                {utmSource === "bazzar" ? "بروزرسانی از طریق بازار" : "بروزرسانی (نسخه ۰.۱.۲)"}
+              </span>
 
               <ArrowLeftIcon className="size-5 ms-auto me-1" />
             </Link>
