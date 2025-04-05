@@ -73,7 +73,7 @@ export default function HomePage() {
     <div className="pb-4">
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 20px)" }}
-        className="flex items-center justify-between sticky top-0 z-10 bg-soft-background pb-4 px-5"
+        className="flex items-center justify-between sticky top-0 z-10 bg-background border-b border-border pb-4 px-5"
       >
         <h1 className="text-xl font-extrabold">فنجون</h1>
 
