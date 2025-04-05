@@ -16,7 +16,7 @@ import ShareStorySheet from "@/app/(story)/components/ShareStorySheet";
 import { MessageSquareTextIcon, PenIcon, Share2Icon } from "lucide-react";
 import { useGetSingleStory, useGetInfiniteStoryComments } from "@/services/stories";
 
-const STORY_ID = 64;
+const STORY_ID = 99;
 
 // TODO: SSR this page (get first story server side)
 export default function ThreadPage() {
