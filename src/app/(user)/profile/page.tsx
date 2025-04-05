@@ -73,7 +73,7 @@ export default async function ProfilePage() {
               href={
                 utmSource === "bazzar"
                   ? "https://cafebazaar.ir/app/io.fenjoon.app"
-                  : "https://github.com/freakingeek/fenjoon-app/releases/download/0.1.2/Fenjoon-v0.1.2.apk"
+                  : "https://github.com/freakingeek/fenjoon-app/releases/download/0.1.4/Fenjoon-v0.1.4.apk"
               }
               className="flex gap-x-2 items-center py-3 px-2"
             >
@@ -82,7 +82,7 @@ export default async function ProfilePage() {
               </div>
 
               <span className="text-sm mt-[2px]">
-                {utmSource === "bazzar" ? "بروزرسانی از طریق بازار" : "بروزرسانی (نسخه ۰.۱.۲)"}
+                {utmSource === "bazzar" ? "بروزرسانی از طریق بازار" : "بروزرسانی (نسخه ۰.۱.۴)"}
               </span>
 
               <ArrowLeftIcon className="size-5 ms-auto me-1" />
