@@ -7,5 +7,5 @@ export function isClientSide() {
 }
 
 export function isApp() {
-  return isClientSide() && navigator.userAgent === "Fenjoon-WebView";
+  return isClientSide() && navigator.userAgent.includes("Fenjoon-WebView");
 }
