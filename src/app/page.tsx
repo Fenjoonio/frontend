@@ -93,7 +93,7 @@ export default function HomePage() {
             className="w-full h-48 flex flex-col justify-center items-center bg-success rounded-sm"
           >
             <span className="text-xl text-light-gray-100 font-black">
-              نیما با دیدن اون خشکش زد ...
+              خیلی وقت بود منتظرت بودم ...
             </span>
             <span className="text-sm text-light-gray-100 mt-1">
               دوست داری بعدش چی بشه؟ بقیه‌ش رو تو بنویس!
@@ -107,9 +107,9 @@ export default function HomePage() {
             href="https://survey.porsline.ir/s/NjmYt7vS"
             className="w-full h-48 flex flex-col justify-center items-center bg-primary rounded-sm"
           >
-            <span className="text-xl text-light-gray-100 font-black">نقدم رو لایک کردی؟</span>
+            <span className="text-xl text-light-gray-100 font-black">حالت نمایش روشن؟</span>
             <span className="text-xl text-light-gray-100 font-black mt-1">
-              نه مگه میشه؟! بله که میشه!
+              سرعت بیشتر؟ هرچی تو بخوای!
             </span>
             <span className="bg-white text-primary rounded-sm py-1 px-6 mt-4">بعدی رو تو بگو!</span>
           </Link>
