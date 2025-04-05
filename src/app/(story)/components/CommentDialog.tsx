@@ -1,23 +1,23 @@
 import { Button } from "@/components/ui/button";
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useAddStoryComment } from "@/services/stories";
 import { useState } from "react";
 
-type CommentSheetProps = {
+type CommentDialogProps = {
   id: string;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-export default function CommentSheet({ id, isOpen, onOpenChange }: CommentSheetProps) {
+export default function CommentDialog({ id, isOpen, onOpenChange }: CommentDialogProps) {
   const [text, setText] = useState("");
   const { mutate, isPending } = useAddStoryComment({
     onSuccess: () => {
@@ -31,12 +31,12 @@ export default function CommentSheet({ id, isOpen, onOpenChange }: CommentSheetP
   };
 
   return (
-    <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>نقد شما</SheetTitle>
-          <SheetDescription>از این داستان چه حسی گرفتی؟</SheetDescription>
-        </SheetHeader>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className="h-svh">
+        <DialogHeader>
+          <DialogTitle>نقد شما</DialogTitle>
+          <DialogDescription>از این داستان چه حسی گرفتی؟</DialogDescription>
+        </DialogHeader>
 
         <textarea
           value={text}
@@ -45,18 +45,18 @@ export default function CommentSheet({ id, isOpen, onOpenChange }: CommentSheetP
           onChange={(e) => setText(e.target.value)}
         />
 
-        <SheetFooter className="flex gap-x-2 items-end pb-5">
-          <SheetClose asChild>
+        <DialogFooter className="flex gap-x-2 items-end pb-5">
+          <DialogClose asChild>
             <Button variant="outline" className="basis-24">
               بستن
             </Button>
-          </SheetClose>
+          </DialogClose>
 
           <Button type="submit" disabled={isPending} className="flex-1" onClick={comment}>
             ثبت نقد
           </Button>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

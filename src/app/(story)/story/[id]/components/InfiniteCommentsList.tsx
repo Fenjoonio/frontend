@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { MessagesSquareIcon } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Comment, CommentSkeleton } from "@/components/Comment";
-import CommentSheet from "@/app/(story)/components/CommentSheet";
+import CommentDialog from "@/app/(story)/components/CommentDialog";
 import { STORIES_QUERY_KEYS, useGetInfiniteStoryComments } from "@/services/stories";
 
 function CommentsEmptyState({ className }: { className?: string }) {
@@ -27,7 +27,7 @@ type InfiniteCommentsListProps = {
 
 export default function Comments({ id }: InfiniteCommentsListProps) {
   const queryClient = useQueryClient();
-  const [isCommentSheetOpen, setIsCommentSheetOpen] = useState(false);
+  const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false);
   const { data, isPending, isFetching, isError } = useGetInfiniteStoryComments({ id });
 
   const comments = useMemo(() => {
@@ -70,11 +70,11 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
         )}
       </div>
 
-      <Button variant="ghost" className="w-full mt-8" onClick={() => setIsCommentSheetOpen(true)}>
+      <Button variant="ghost" className="w-full mt-8" onClick={() => setIsCommentDialogOpen(true)}>
         اضافه کردن نقد جدید
       </Button>
 
-      <CommentSheet id={id} isOpen={isCommentSheetOpen} onOpenChange={setIsCommentSheetOpen} />
+      <CommentDialog id={id} isOpen={isCommentDialogOpen} onOpenChange={setIsCommentDialogOpen} />
     </section>
   );
 }
