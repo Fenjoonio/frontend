@@ -41,10 +41,10 @@ export default async function ProfilePage() {
               className="flex gap-x-2 items-center py-3 px-2"
             >
               <div className="bg-background rounded-lg p-2">
-                <StarIcon className="size-5 " />
+                <StarIcon className="size-5" />
               </div>
 
-              <span className="text-sm  mt-[2px]">پیشنهادات و انتقادات</span>
+              <span className="text-sm mt-[2px]">پیشنهادات و انتقادات</span>
 
               <ArrowLeftIcon className="size-5 ms-auto me-1" />
             </Link>
@@ -53,10 +53,10 @@ export default async function ProfilePage() {
           <li>
             <Link href="/legal/terms" className="flex gap-x-2 items-center py-3 px-2">
               <div className="bg-background rounded-lg p-2">
-                <ScaleIcon className="size-5 " />
+                <ScaleIcon className="size-5" />
               </div>
 
-              <span className="text-sm  mt-[2px]">قوانین استفاده</span>
+              <span className="text-sm mt-0.5">قوانین استفاده</span>
 
               <ArrowLeftIcon className="size-5 ms-auto me-1" />
             </Link>
@@ -67,7 +67,7 @@ export default async function ProfilePage() {
       <div className="px-5 mt-6">
         <h2 className="text-xs text-soft-foreground">برنامه</h2>
 
-        <ul className="bg-soft-background rounded-[12px] divide-y divide-border p-2 mt-4">
+        <ul className="bg-soft-background rounded-xl divide-y divide-border p-2 mt-4">
           <li>
             <Link
               href={
@@ -81,7 +81,7 @@ export default async function ProfilePage() {
                 <DownloadIcon className="size-5" />
               </div>
 
-              <span className="text-sm mt-[2px]">
+              <span className="text-sm mt-0.5">
                 {utmSource === "bazzar" ? "بروزرسانی از طریق بازار" : "بروزرسانی (نسخه ۰.۱.۴)"}
               </span>
 
