@@ -295,3 +295,16 @@
 .ltr {
   direction: ltr;
 }
+
+.slide-out {
+  animation: slide-out 150ms ease-in-out 2s 1 normal forwards;
+}
+
+@keyframes slide-out {
+  from {
+    width: 180px;
+  }
+  to {
+    width: 40px;
+  }
+}
