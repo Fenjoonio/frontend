@@ -47,6 +47,9 @@ export default function CreateNewStoryDialog({ open, onOpenChange }: CreateNewSt
     onSuccess: (story) => {
       setText(story);
     },
+    onError: () => {
+      toast.error("این قابلیت در حال حاضر در دسترس نیست");
+    },
   });
 
   const createNewStory = () => {

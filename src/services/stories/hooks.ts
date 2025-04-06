@@ -170,7 +170,10 @@ export function useReportStory(options?: { onSuccess?: () => void }) {
   });
 }
 
-export function useWriteStoryWithAi(options?: { onSuccess?: (res: string) => void }) {
+export function useWriteStoryWithAi(options?: {
+  onSuccess?: (res: string) => void;
+  onError?: (err: unknown) => void;
+}) {
   return useMutation({
     ...options,
     mutationKey: [STORIES_QUERY_KEYS.WRITE_STORY_WITH_AI],
