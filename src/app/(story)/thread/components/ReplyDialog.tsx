@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { useAddStoryComment } from "@/services/stories";
 import {
   Dialog,
@@ -41,11 +42,13 @@ export default function ReplySheet({ storyId, open, onOpenChange }: ReplySheetPr
             متن داستانک خودتون رو وارد کنید (دقت کن که متن داستان بین ۵۰ تا نهایتا ۲۵۰ حرف باشه)
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <textarea
+
+        <div className="mt-6">
+          <Textarea
             value={text}
+            maxLength={250}
             placeholder="داستان از این قراره که ..."
-            className="h-80 p-4 resize-none border border-border rounded-lg"
+            className="w-full min-h-40 p-4 resize-none border border-border rounded-lg"
             onChange={(e) => setText(e.target.value)}
           />
         </div>

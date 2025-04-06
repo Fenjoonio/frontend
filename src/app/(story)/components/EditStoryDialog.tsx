@@ -12,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 type EditStoryDialogProps = {
   open: boolean;
@@ -59,11 +60,12 @@ export default function EditStoryDialog({
             یادت نره که متن داستان باید از ۵۰ تا نهایتا ۲۵۰ حرف باشه
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <textarea
+        <div className="mt-6">
+          <Textarea
             value={text}
+            maxLength={250}
             placeholder="داستان از این قراره که ..."
-            className="h-80 p-4 resize-none border border-border rounded-lg"
+            className="w-full min-h-40 p-4 resize-none border border-border rounded-lg"
             onChange={(e) => setText(e.target.value)}
           />
         </div>

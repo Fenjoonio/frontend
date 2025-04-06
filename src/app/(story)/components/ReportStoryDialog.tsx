@@ -72,7 +72,10 @@ export default function ReportStoryDialog({ id, isOpen, onOpenChange }: ReportSt
           <DialogDescription>این داستان رو مناسب فضای فنجون نمی‌دونم چون:</DialogDescription>
         </DialogHeader>
 
-        <RadioGroup className="flex gap-y-6 flex-col" onValueChange={(e) => setReasonTitle(e)}>
+        <RadioGroup
+          className="flex gap-y-6 flex-col mt-20"
+          onValueChange={(e) => setReasonTitle(e)}
+        >
           {reasons.map((reason) => (
             <div key={reason.key} className="flex gap-x-2">
               <RadioGroupItem id={reason.key} value={reason.title} />

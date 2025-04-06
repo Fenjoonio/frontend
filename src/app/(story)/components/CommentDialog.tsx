@@ -1,4 +1,7 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { useAddStoryComment } from "@/services/stories";
 import {
   Dialog,
   DialogClose,
@@ -8,8 +11,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useAddStoryComment } from "@/services/stories";
-import { useState } from "react";
 
 type CommentDialogProps = {
   id: string;
@@ -38,10 +39,11 @@ export default function CommentDialog({ id, isOpen, onOpenChange }: CommentDialo
           <DialogDescription>از این داستان چه حسی گرفتی؟</DialogDescription>
         </DialogHeader>
 
-        <textarea
+        <Textarea
           value={text}
+          maxLength={250}
           placeholder="خیلی قشنگه و به‌نظرم می‌تونه ..."
-          className="h-40 p-4 resize-none border border-border outline-none rounded-lg"
+          className="w-full min-h-40 p-4 resize-none border border-border rounded-lg mt-6"
           onChange={(e) => setText(e.target.value)}
         />
 
