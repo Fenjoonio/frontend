@@ -17,7 +17,9 @@ import type {
   EditStoryBody,
   ShareStoryParams,
   ReportStoryBody,
+  WriteStoryWithAiBody,
 } from "./types";
+import { isClientSide } from "@/lib/utils/environment";
 
 export async function getStories(params: GetStoriesParams) {
   const response = await http.get<GetStoriesResponse>("v1/stories", { searchParams: params });
@@ -81,6 +83,14 @@ export async function shareStory({ id }: ShareStoryParams) {
 
 export async function reportStory({ id, ...body }: ReportStoryBody) {
   const response = await http.post<boolean>(`v1/stories/${id}/reports`, body);
+
+  return response.data;
+}
+
+export async function writeStoryWithAi(body: WriteStoryWithAiBody) {
+  const response = await http.post<string>("ai/story", body, {
+    prefixUrl: isClientSide() ? "/api" : "http://localhost:3000/api",
+  });
 
   return response.data;
 }

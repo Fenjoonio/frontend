@@ -12,6 +12,7 @@ import {
   likeStory,
   reportStory,
   shareStory,
+  writeStoryWithAi,
 } from "./functions";
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
@@ -166,5 +167,13 @@ export function useReportStory(options?: { onSuccess?: () => void }) {
     ...options,
     mutationKey: [STORIES_QUERY_KEYS.REPORT_STORY],
     mutationFn: reportStory,
+  });
+}
+
+export function useWriteStoryWithAi(options?: { onSuccess?: (res: string) => void }) {
+  return useMutation({
+    ...options,
+    mutationKey: [STORIES_QUERY_KEYS.WRITE_STORY_WITH_AI],
+    mutationFn: writeStoryWithAi,
   });
 }

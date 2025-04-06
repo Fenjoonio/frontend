@@ -91,3 +91,7 @@ export type ReportStoryBody = {
   id: number;
   reason: string;
 };
+
+export type WriteStoryWithAiBody = {
+  text: string;
+};
