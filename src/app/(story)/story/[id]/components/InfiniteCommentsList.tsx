@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Comment, CommentSkeleton } from "@/components/Comment";
 import CommentDialog from "@/app/(story)/components/CommentDialog";
 import { STORIES_QUERY_KEYS, useGetInfiniteStoryComments } from "@/services/stories";
+import { sendGAEvent } from "@next/third-parties/google";
 
 function CommentsEmptyState({ className }: { className?: string }) {
   return (
@@ -36,6 +37,11 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
 
   const refetchCommentsList = () => {
     queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORY_COMMENTS, { id }] });
+  };
+
+  const openCommentDialog = () => {
+    setIsCommentDialogOpen(true);
+    sendGAEvent("open_comment_dialog", "click", { storyId: +id });
   };
 
   return (
@@ -70,7 +76,7 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
         )}
       </div>
 
-      <Button variant="ghost" className="w-full mt-8" onClick={() => setIsCommentDialogOpen(true)}>
+      <Button variant="ghost" className="w-full mt-8" onClick={openCommentDialog}>
         اضافه کردن نقد جدید
       </Button>
 

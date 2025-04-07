@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { sendGAEvent } from "@next/third-parties/google";
 
 type CommentDialogProps = {
   id: string;
@@ -24,6 +25,7 @@ export default function CommentDialog({ id, isOpen, onOpenChange }: CommentDialo
     onSuccess: () => {
       onOpenChange(false);
       setText("");
+      sendGAEvent("comment", "add_comment", { storyId: +id });
     },
   });
 

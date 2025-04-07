@@ -17,6 +17,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "react-toastify";
+import { sendGAEvent } from "@next/third-parties/google";
 
 const placeholders = [
   `هر روز همون میز، همون صندلی، همون قهوه.
@@ -40,15 +41,18 @@ export default function CreateNewStoryDialog({ open, onOpenChange }: CreateNewSt
     onSuccess: () => {
       setText("");
       onOpenChange(false);
+      sendGAEvent("create_story", "create_story", {});
     },
   });
 
   const { mutate: writeStoryWithAi, isPending: isWriteWithAiPending } = useWriteStoryWithAi({
     onSuccess: (story) => {
       setText(story);
+      sendGAEvent("create_story", "write_story_with_ai", {});
     },
     onError: () => {
       toast.error("این قابلیت در حال حاضر در دسترس نیست");
+      sendGAEvent("create_story", "write_story_with_ai_error", {});
     },
   });
 

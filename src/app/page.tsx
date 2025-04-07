@@ -11,6 +11,7 @@ import UserAvatar from "@/components/UserAvatar";
 import { Swiper, SwiperSlide } from "swiper/react";
 import PullToRefresh from "@/components/PullToRefresh";
 import { formatStoryCreateAt } from "@/lib/utils/story";
+import { sendGAEvent } from "@next/third-parties/google";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { Story, useGetInfiniteStories } from "@/services/stories";
 import StoryLikeButton from "./(story)/components/StoryLikeButton";
@@ -49,6 +50,7 @@ export default function HomePage() {
     }
 
     setIsModalOpen(true);
+    sendGAEvent("add_story", "click", { location: "home" });
   };
 
   const openNotificationsSheetIfLoggedIn = () => {

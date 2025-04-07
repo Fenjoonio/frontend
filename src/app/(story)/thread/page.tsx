@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import BackArrow from "@/components/BackArrow";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { Comment } from "@/components/Comment";
 import ReplyDialog from "./components/ReplyDialog";
 import PullToRefresh from "@/components/PullToRefresh";
 import { formatStoryCreateAt } from "@/lib/utils/story";
+import { sendGAEvent } from "@next/third-parties/google";
 import { useAuthContext } from "@/providers/AuthProvider";
 import StoryLikeButton from "@/app/(story)/components/StoryLikeButton";
 import ShareStorySheet from "@/app/(story)/components/ShareStorySheet";
@@ -43,6 +44,7 @@ export default function ThreadPage() {
     }
 
     setIsModalOpen(true);
+    sendGAEvent("add_story", "click", { location: "thread" });
   };
 
   const onRefresh = async () => {
@@ -53,6 +55,10 @@ export default function ThreadPage() {
     setSharedStoryId(storyId);
     setIsShareSheetOpen(true);
   };
+
+  useEffect(() => {
+    sendGAEvent("view_thread", "view", { location: "thread" });
+  }, []);
 
   return (
     <section className="pb-4">

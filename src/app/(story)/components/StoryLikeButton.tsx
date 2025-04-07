@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { HeartIcon } from "lucide-react";
 import { cn } from "@/lib/utils/classnames";
+import { sendGAEvent } from "@next/third-parties/google";
 import { useDislikeStory, useLikeStory } from "@/services/stories";
 
 type StoryLikeButtonProps = {
@@ -39,6 +40,7 @@ export default function StoryLikeButton({
 
     const action = isLikedByUser ? dislike : like;
     action();
+    sendGAEvent(isLikedByUser ? "unlike_story" : "like_story", "click", { storyId });
   };
 
   return (
