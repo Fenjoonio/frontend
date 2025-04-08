@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getUserName } from "@/lib/utils/users";
+import HomeSlider from "./components/HomeSlider";
 import UserAvatar from "@/components/UserAvatar";
 import PullToRefresh from "@/components/PullToRefresh";
 import { formatStoryCreateAt } from "@/lib/utils/story";
@@ -18,7 +19,6 @@ import CreateNewStoryDialog from "./(story)/components/CreateNewStoryDialog";
 import { useGetUserNotificationsUnreadCount } from "@/services/notifications";
 import { BellIcon, MessageSquareTextIcon, PenIcon, Share2Icon } from "lucide-react";
 import NotificationsSheet from "@/app/(user)/notifications/components/NotificationsSheet";
-import HomeSlider from "./components/HomeSlider";
 
 export default function HomePage() {
   const router = useRouter();
