@@ -6,8 +6,24 @@ import ThemeSwitcher from "./components/ThemeSwitcher";
 import ViewProfileButton from "./components/ViewProfileButton";
 import { ArrowLeftIcon, DownloadIcon, ScaleIcon, StarIcon, UserPenIcon } from "lucide-react";
 
+const getDownloadLinkBaseOnUtmSource = (utmSource: string) => {
+  if (utmSource === "bazzar") {
+    return { text: "دانلود از بازار", link: "https://cafebazaar.ir/app/io.fenjoon.app" };
+  }
+
+  if (utmSource === "myket") {
+    return { text: "دانلود از مایکت", link: "https://myket.ir/app/io.fenjoon.app" };
+  }
+
+  return {
+    text: "بروزرسانی (نسخه ۰.۱.۴)",
+    link: "https://github.com/freakingeek/fenjoon-app/releases/download/0.1.4/Fenjoon-v0.1.4.apk",
+  };
+};
+
 export default async function ProfilePage() {
   const utmSource = await getUtmSource();
+  const downloadLink = getDownloadLinkBaseOnUtmSource(utmSource);
 
   return (
     <section className="pt-16 pb-4">
@@ -69,21 +85,12 @@ export default async function ProfilePage() {
 
         <ul className="bg-soft-background rounded-xl divide-y divide-border p-2 mt-4">
           <li>
-            <Link
-              href={
-                utmSource === "bazzar"
-                  ? "https://cafebazaar.ir/app/io.fenjoon.app"
-                  : "https://github.com/freakingeek/fenjoon-app/releases/download/0.1.4/Fenjoon-v0.1.4.apk"
-              }
-              className="flex gap-x-2 items-center py-3 px-2"
-            >
+            <Link href={downloadLink.link} className="flex gap-x-2 items-center py-3 px-2">
               <div className="bg-background rounded-lg p-2">
                 <DownloadIcon className="size-5" />
               </div>
 
-              <span className="text-sm mt-0.5">
-                {utmSource === "bazzar" ? "بروزرسانی از طریق بازار" : "بروزرسانی (نسخه ۰.۱.۴)"}
-              </span>
+              <span className="text-sm mt-0.5">{downloadLink.text}</span>
 
               <ArrowLeftIcon className="size-5 ms-auto me-1" />
             </Link>
