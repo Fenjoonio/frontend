@@ -4,13 +4,13 @@ import Link from "next/link";
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
 import UserAvatar from "@/components/UserAvatar";
 import PullToRefresh from "@/components/PullToRefresh";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useAuthContext } from "@/providers/AuthProvider";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { Story, useGetInfiniteStories } from "@/services/stories";
 import StoryLikeButton from "./(story)/components/StoryLikeButton";
 import ShareStorySheet from "./(story)/components/ShareStorySheet";
@@ -91,7 +91,35 @@ export default function HomePage() {
       <h3 className="text-sm text-soft-foreground mt-6 px-5">آخرین داستان‌ها</h3>
 
       <PullToRefresh onRefresh={onRefresh} className="mx-5 mt-4">
-        <section className="divide-y divide-border">
+        <InfiniteScroll
+          next={fetchNextPage}
+          dataLength={stories.length}
+          hasMore={isFetching || hasNextPage}
+          loader={
+            <>
+              {Array(5)
+                .fill(0)
+                .map((_, index) => (
+                  <div key={index} className="flex gap-x-2 pb-6 not-first:pt-6">
+                    <div>
+                      <div className="w-7 h-7 bg-gray-300 dark:bg-border opacity-40 rounded-lg animate-pulse"></div>
+                    </div>
+                    <div className="flex-1 mt-1">
+                      <div className="w-20 h-4 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse"></div>
+                      <div className="w-full h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-4"></div>
+                      <div className="w-[80%] h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-2"></div>
+                    </div>
+                  </div>
+                ))}
+            </>
+          }
+          endMessage={
+            <span className="block text-center text-sm text-soft-foreground mt-8 mb-4">
+              به انتهای لیست رسیدی
+            </span>
+          }
+          className="divide-y divide-border"
+        >
           {stories.map((story) => (
             <div key={story.id} className="flex gap-x-2 pb-6 not-first:pt-6">
               <Link href={`/author/${story.user.id}`}>
@@ -138,26 +166,7 @@ export default function HomePage() {
               </div>
             </div>
           ))}
-
-          {isFetching && (
-            <>
-              {Array(5)
-                .fill(0)
-                .map((_, index) => (
-                  <div key={index} className="flex gap-x-2 pb-6 not-first:pt-6">
-                    <div>
-                      <div className="w-7 h-7 bg-gray-300 dark:bg-border opacity-40 rounded-lg animate-pulse"></div>
-                    </div>
-                    <div className="flex-1 mt-1">
-                      <div className="w-20 h-4 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse"></div>
-                      <div className="w-full h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-4"></div>
-                      <div className="w-[80%] h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-2"></div>
-                    </div>
-                  </div>
-                ))}
-            </>
-          )}
-        </section>
+        </InfiniteScroll>
       </PullToRefresh>
 
       <CreateNewStoryDialog open={isModalOpen} onOpenChange={setIsModalOpen} />
@@ -169,16 +178,6 @@ export default function HomePage() {
       >
         <PenIcon className="size-5" />
       </button>
-
-      {hasNextPage && !isFetching && (
-        <Button
-          variant="ghost"
-          className="w-[calc(100%-40px)] mx-5"
-          onClick={() => fetchNextPage()}
-        >
-          صفحه بعد
-        </Button>
-      )}
 
       {isShareSheetOpen && (
         <ShareStorySheet

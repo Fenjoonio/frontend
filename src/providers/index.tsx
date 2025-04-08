@@ -7,6 +7,7 @@ import QueryProvider from "./QueryProvider";
 import { ThemeProvider } from "next-themes";
 import LoadingProvider from "./LoadingProvider";
 import { ToastContainer } from "react-toastify";
+import { isDev } from "@/lib/utils/environment";
 import { PropsWithChildren, Suspense } from "react";
 import { getUserCredentials } from "@/app/(user)/accounts/actions";
 
@@ -17,7 +18,7 @@ export default async function Providers({ children }: PropsWithChildren) {
   return (
     <Suspense>
       <ThemeProvider attribute="class">
-        <LoadingProvider initialValue={!ua.includes("Fenjoon-WebView")}>
+        <LoadingProvider initialValue={!(isDev() || ua.includes("Fenjoon-WebView"))}>
           <QueryProvider>
             <AuthProvider initialAccessToken={accessToken}>
               <GTMProvider>
