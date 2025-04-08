@@ -1,14 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import SwiperCore from "swiper";
-import { Autoplay } from "swiper/modules";
+
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
 import UserAvatar from "@/components/UserAvatar";
-import { Swiper, SwiperSlide } from "swiper/react";
 import PullToRefresh from "@/components/PullToRefresh";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import { sendGAEvent } from "@next/third-parties/google";
@@ -20,9 +18,9 @@ import CreateNewStoryDialog from "./(story)/components/CreateNewStoryDialog";
 import { useGetUserNotificationsUnreadCount } from "@/services/notifications";
 import { BellIcon, MessageSquareTextIcon, PenIcon, Share2Icon } from "lucide-react";
 import NotificationsSheet from "@/app/(user)/notifications/components/NotificationsSheet";
+import HomeSlider from "./components/HomeSlider";
 
 export default function HomePage() {
-  SwiperCore.use([Autoplay]);
   const router = useRouter();
   const { isLoggedIn } = useAuthContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,35 +86,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <Swiper autoplay={{ delay: 10000 }} loop className="mt-4">
-        <SwiperSlide className="px-5">
-          <Link
-            href="/thread"
-            className="w-full h-48 flex flex-col justify-center items-center bg-success rounded-sm"
-          >
-            <span className="text-xl text-light-gray-100 font-black">
-              خیلی وقت بود منتظرت بودم ...
-            </span>
-            <span className="text-sm text-light-gray-100 mt-1">
-              دوست داری بعدش چی بشه؟ بقیه‌ش رو تو بنویس!
-            </span>
-            <span className="bg-white text-success rounded-sm py-1 px-6 mt-4">بزن بریم!</span>
-          </Link>
-        </SwiperSlide>
-
-        <SwiperSlide className="px-5">
-          <Link
-            href="https://survey.porsline.ir/s/NjmYt7vS"
-            className="w-full h-48 flex flex-col justify-center items-center bg-primary rounded-sm"
-          >
-            <span className="text-xl text-light-gray-100 font-black">حالت نمایش روشن؟</span>
-            <span className="text-xl text-light-gray-100 font-black mt-1">
-              سرعت بیشتر؟ هرچی تو بخوای!
-            </span>
-            <span className="bg-white text-primary rounded-sm py-1 px-6 mt-4">بعدی رو تو بگو!</span>
-          </Link>
-        </SwiperSlide>
-      </Swiper>
+      <HomeSlider className="mt-4" />
 
       <h3 className="text-sm text-soft-foreground mt-6 px-5">آخرین داستان‌ها</h3>
 
