@@ -8,6 +8,11 @@ export type Notification = {
   createdAt: string;
 };
 
+export type GetUserNotificationsParams = {
+  page?: number;
+  limit?: number;
+};
+
 export type GetUserNotificationsResponse = {
   pagination: {
     limit: number;

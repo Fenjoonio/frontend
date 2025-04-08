@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const NEEDS_LOGIN_PAGE = ["/profile"];
+const NEEDS_LOGIN_PAGE = ["/profile", "/notifications"];
 
 function handleUtmSources(request: NextRequest, response: NextResponse): NextResponse {
   if (!request.nextUrl.searchParams.has("utm_source") || request.cookies.has("utmSource")) {

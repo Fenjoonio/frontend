@@ -1,8 +1,14 @@
 import http from "@/lib/utils/http";
-import type { GetUserNotificationsResponse, MarkNotificationAsReadBody } from "./types";
+import type {
+  GetUserNotificationsParams,
+  GetUserNotificationsResponse,
+  MarkNotificationAsReadBody,
+} from "./types";
 
-export async function getUserNotifications() {
-  const response = await http.get<GetUserNotificationsResponse>("v1/notifications");
+export async function getUserNotifications(params: GetUserNotificationsParams) {
+  const response = await http.get<GetUserNotificationsResponse>("v1/notifications", {
+    searchParams: params,
+  });
 
   return response.data;
 }

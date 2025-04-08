@@ -1,5 +1,5 @@
 import { NOTIFICATIONS_QUERY_KEYS } from "./constants";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import {
   getUserNotifications,
   getUserNotificationsUnreadCount,
@@ -7,10 +7,18 @@ import {
 } from "./functions";
 
 export function useGetUserNotifications(options?: { enabled?: boolean; refetchInterval?: number }) {
-  return useQuery({
+  return useInfiniteQuery({
     ...options,
+    initialPageParam: { page: 1, limit: 10 },
     queryKey: [NOTIFICATIONS_QUERY_KEYS.GET_USER_NOTIFICATIONS],
-    queryFn: getUserNotifications,
+    queryFn: ({ pageParam }) => getUserNotifications(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
   });
 }
 
