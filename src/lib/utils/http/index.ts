@@ -1,14 +1,16 @@
 import hooks from "./hooks";
-import ky, { Input, Options } from "ky";
-import type { ApiResponse } from "./types";
+import ky, { type Input } from "ky";
+import { toast } from "react-toastify";
 import { ApiError } from "@/lib/exceptions";
+import { isClientSide } from "@/lib/utils/environment";
+import type { ApiResponse, RequestOptions } from "./types";
 
 const request = ky.create({ hooks, retry: 0, prefixUrl: process.env.NEXT_PUBLIC_API_BASE_URL });
 
 const handleRequest = async <T = unknown>(
   method: "get" | "post" | "patch" | "put" | "delete",
   input: Input,
-  options?: Options,
+  options?: RequestOptions,
   json?: unknown
 ): Promise<ApiResponse<T>> => {
   try {
@@ -20,6 +22,11 @@ const handleRequest = async <T = unknown>(
   } catch (error) {
     const err = error as ApiError;
 
+    if (options?.showToast !== false) {
+      const errorHandler = isClientSide() ? toast.error : console.log;
+      errorHandler("مشکلی پیش آمده");
+    }
+
     // We need this to make sure react-query works.
     if (options?.throwHttpErrors !== false) {
       throw error;
@@ -30,14 +37,15 @@ const handleRequest = async <T = unknown>(
 };
 
 const http = {
-  get: <T = unknown>(input: Input, options?: Options) => handleRequest<T>("get", input, options),
-  post: <T = unknown>(input: Input, json?: unknown, options?: Options) =>
+  get: <T = unknown>(input: Input, options?: RequestOptions) =>
+    handleRequest<T>("get", input, options),
+  post: <T = unknown>(input: Input, json?: unknown, options?: RequestOptions) =>
     handleRequest<T>("post", input, options, json),
-  patch: <T = unknown>(input: Input, json?: unknown, options?: Options) =>
+  patch: <T = unknown>(input: Input, json?: unknown, options?: RequestOptions) =>
     handleRequest<T>("patch", input, options, json),
-  put: <T = unknown>(input: Input, json?: unknown, options?: Options) =>
+  put: <T = unknown>(input: Input, json?: unknown, options?: RequestOptions) =>
     handleRequest<T>("put", input, options, json),
-  delete: <T = unknown>(input: Input, json?: unknown, options?: Options) =>
+  delete: <T = unknown>(input: Input, json?: unknown, options?: RequestOptions) =>
     handleRequest<T>("delete", input, options, json),
 };
 
