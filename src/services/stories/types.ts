@@ -83,6 +83,22 @@ export type DislikeStoryParams = {
   id: number;
 };
 
+export type GetStoryLikersParams = {
+  id: number;
+  page?: number;
+  limit?: number;
+};
+
+export type GetStoryLikersResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  users: User[];
+};
+
 export type ShareStoryParams = {
   id: number;
 };

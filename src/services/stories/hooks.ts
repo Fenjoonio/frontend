@@ -9,6 +9,7 @@ import {
   getSingleStory,
   getStories,
   getStoryComments,
+  getStoryLikers,
   likeStory,
   reportStory,
   shareStory,
@@ -25,6 +26,7 @@ import type {
   GetStoriesParams,
   GetStoryCommentsParams,
   LikeStoryParams,
+  GetStoryLikersParams,
 } from "./types";
 
 export function useGetInfiniteStories(params?: GetStoriesParams) {
@@ -150,6 +152,22 @@ export function useDislikeStory(params: DislikeStoryParams, options?: { onSucces
       // TODO: Invalid only the current page
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORIES], exact: false });
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, params] });
+    },
+  });
+}
+
+export function useGetStoryLikers(params: GetStoryLikersParams, options?: { enabled?: boolean }) {
+  return useInfiniteQuery({
+    ...options,
+    initialPageParam: { id: params.id, page: 1, limit: 5 },
+    queryKey: [STORIES_QUERY_KEYS.GET_STORY_LIKERS, params],
+    queryFn: ({ pageParam }) => getStoryLikers(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { id: params.id, page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
     },
   });
 }
