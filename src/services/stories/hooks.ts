@@ -15,7 +15,13 @@ import {
   shareStory,
   writeStoryWithAi,
 } from "./functions";
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useInfiniteQuery,
+  type InfiniteData,
+} from "@tanstack/react-query";
 import type {
   Story,
   AddNewStoryResponse,
@@ -27,6 +33,7 @@ import type {
   GetStoryCommentsParams,
   LikeStoryParams,
   GetStoryLikersParams,
+  GetStoriesResponse,
 } from "./types";
 
 export function useGetInfiniteStories(params?: GetStoriesParams) {
@@ -130,13 +137,40 @@ export function useLikeStory(params: LikeStoryParams, options?: { onSuccess?: ()
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: [STORIES_QUERY_KEYS.LIKE_STORY],
+    mutationKey: [STORIES_QUERY_KEYS.LIKE_STORY, params],
     mutationFn: () => likeStory(params),
     onSuccess: () => {
       options?.onSuccess?.();
-      // TODO: Invalid only the current page
-      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORIES], exact: false });
-      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, params] });
+
+      queryClient.setQueriesData(
+        { queryKey: [STORIES_QUERY_KEYS.GET_STORIES] },
+        (oldData: InfiniteData<GetStoriesResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              stories: page.stories.map((story) =>
+                story.id === params.id
+                  ? { ...story, likesCount: story.likesCount + 1, isLikedByUser: true }
+                  : story
+              ),
+            })),
+          };
+        }
+      );
+
+      queryClient.setQueriesData(
+        { queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, params] },
+        (oldData: Story | undefined) => {
+          if (!oldData) return oldData;
+
+          return { ...oldData, likesCount: oldData.likesCount + 1, isLikedByUser: true };
+        }
+      );
+
+      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORY_LIKERS, params] });
     },
   });
 }
@@ -145,13 +179,40 @@ export function useDislikeStory(params: DislikeStoryParams, options?: { onSucces
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: [STORIES_QUERY_KEYS.DISLIKE_STORY],
+    mutationKey: [STORIES_QUERY_KEYS.DISLIKE_STORY, params],
     mutationFn: () => dislikeStory(params),
     onSuccess: () => {
       options?.onSuccess?.();
-      // TODO: Invalid only the current page
-      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORIES], exact: false });
-      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, params] });
+
+      queryClient.setQueriesData(
+        { queryKey: [STORIES_QUERY_KEYS.GET_STORIES] },
+        (oldData: InfiniteData<GetStoriesResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              stories: page.stories.map((story) =>
+                story.id === params.id
+                  ? { ...story, likesCount: story.likesCount - 1, isLikedByUser: false }
+                  : story
+              ),
+            })),
+          };
+        }
+      );
+
+      queryClient.setQueriesData(
+        { queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, params] },
+        (oldData: Story | undefined) => {
+          if (!oldData) return oldData;
+
+          return { ...oldData, likesCount: oldData.likesCount - 1, isLikedByUser: false };
+        }
+      );
+
+      queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORY_LIKERS, params] });
     },
   });
 }
