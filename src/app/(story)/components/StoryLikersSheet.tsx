@@ -31,8 +31,6 @@ export default function StoryLikersSheet({ storyId, isOpen, onOpenChange }: Stor
     return data?.pages ? data.pages.flatMap((page) => page.users ?? []) : [];
   }, [data?.pages]);
 
-  console.log(users);
-
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
       <SheetContent className="pb-4">
