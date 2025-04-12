@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getUserName } from "@/lib/utils/users";
@@ -133,14 +132,12 @@ export default function HomePage() {
                 </Link>
 
                 <div className="flex items-center gap-x-4 mt-4">
-                  <div className="flex items-center gap-x-2">
-                    <StoryLikeButton
-                      storyId={story.id}
-                      isLikedByUser={story.isLikedByUser}
-                      className="w-5 h-5 text-soft-foreground"
-                    />
-                    <span className="text-sm text-soft-foreground">{story.likesCount}</span>
-                  </div>
+                  <StoryLikeButton
+                    storyId={story.id}
+                    likesCount={story.likesCount}
+                    isLikedByUser={story.isLikedByUser}
+                    className="w-5 h-5 text-soft-foreground"
+                  />
 
                   <Link href={`/story/${story.id}#comments`} className="flex items-center gap-x-2">
                     <MessageSquareTextIcon className="w-5 h-5 text-soft-foreground" />

@@ -10,7 +10,6 @@ import { useGetSingleStory } from "@/services/stories";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import StoryLikeButton from "@/app/(story)/components/StoryLikeButton";
 import ShareStorySheet from "@/app/(story)/components/ShareStorySheet";
-import StoryLikersSheet from "@/app/(story)/components/StoryLikersSheet";
 
 type StoryProps = {
   id: string;
@@ -19,7 +18,6 @@ type StoryProps = {
 export default function Story({ id }: StoryProps) {
   const [showFullText, setShowFullText] = useState(true);
   const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
-  const [isLikersSheetOpen, setIsLikersSheetOpen] = useState(false);
   const { data: story, isPending, isFetched } = useGetSingleStory({ id: +id });
   const hasStory = story && Object.keys(story).length;
 
@@ -69,16 +67,12 @@ export default function Story({ id }: StoryProps) {
       )}
 
       <div className="flex items-center gap-x-4 mt-8">
-        <div className="flex items-center gap-x-2">
-          <StoryLikeButton
-            storyId={story.id}
-            isLikedByUser={story.isLikedByUser}
-            className="w-5 h-5 text-soft-foreground"
-          />
-          <div role="button" onClick={() => setIsLikersSheetOpen(true)}>
-            <span className="text-sm text-soft-foreground">{story.likesCount}</span>
-          </div>
-        </div>
+        <StoryLikeButton
+          storyId={story.id}
+          likesCount={story.likesCount}
+          isLikedByUser={story.isLikedByUser}
+          className="w-5 h-5 text-soft-foreground"
+        />
 
         <div className="flex items-center gap-x-2">
           <Share2Icon
@@ -96,12 +90,6 @@ export default function Story({ id }: StoryProps) {
           onOpenChange={setIsShareSheetOpen}
         />
       )}
-
-      <StoryLikersSheet
-        storyId={story.id}
-        isOpen={isLikersSheetOpen}
-        onOpenChange={setIsLikersSheetOpen}
-      />
     </div>
   );
 }
