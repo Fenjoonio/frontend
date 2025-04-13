@@ -11,7 +11,7 @@ type AuthorPageProps = {
 export default async function AuthorPage({ params }: AuthorPageProps) {
   const { id } = await params;
   return (
-    <section>
+    <section className="pb-4">
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
         className="flex items-end justify-between bg-background/40 backdrop-blur-xs pb-3 px-2"
