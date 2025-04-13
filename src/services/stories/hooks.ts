@@ -35,6 +35,7 @@ import type {
   GetStoryLikersParams,
   GetStoriesResponse,
 } from "./types";
+import { USER_QUERY_KEYS } from "../user/constants";
 
 export function useGetInfiniteStories(params?: GetStoriesParams) {
   return useInfiniteQuery({
@@ -170,6 +171,25 @@ export function useLikeStory(params: LikeStoryParams, options?: { onSuccess?: ()
         }
       );
 
+      queryClient.setQueriesData(
+        { queryKey: [USER_QUERY_KEYS.GET_USER_STORIES_BY_ID] },
+        (oldData: InfiniteData<GetStoriesResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              stories: page.stories.map((story) =>
+                story.id === params.id
+                  ? { ...story, likesCount: story.likesCount + 1, isLikedByUser: true }
+                  : story
+              ),
+            })),
+          };
+        }
+      );
+
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORY_LIKERS, params] });
     },
   });
@@ -209,6 +229,25 @@ export function useDislikeStory(params: DislikeStoryParams, options?: { onSucces
           if (!oldData) return oldData;
 
           return { ...oldData, likesCount: oldData.likesCount - 1, isLikedByUser: false };
+        }
+      );
+
+      queryClient.setQueriesData(
+        { queryKey: [USER_QUERY_KEYS.GET_USER_STORIES_BY_ID] },
+        (oldData: InfiniteData<GetStoriesResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              stories: page.stories.map((story) =>
+                story.id === params.id
+                  ? { ...story, likesCount: story.likesCount - 1, isLikedByUser: false }
+                  : story
+              ),
+            })),
+          };
         }
       );
 

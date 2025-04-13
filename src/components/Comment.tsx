@@ -24,16 +24,9 @@ type CommentProps = {
   className?: string;
   onCommentEdit?: VoidFunction;
   onCommentDelete?: VoidFunction;
-  onLikeOrDislike?: (isLiked: boolean) => void;
 };
 
-export function Comment({
-  comment,
-  className,
-  onCommentEdit,
-  onLikeOrDislike,
-  onCommentDelete,
-}: CommentProps) {
+export function Comment({ comment, className, onCommentEdit, onCommentDelete }: CommentProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -64,15 +57,12 @@ export function Comment({
           </p>
 
           <div className="flex items-center gap-x-4 mt-4">
-            <div className="flex items-center gap-x-2">
-              <CommentLikeButton
-                commentId={comment.id}
-                isLikedByUser={comment.isLikedByUser}
-                className="w-5 h-5 text-soft-foreground"
-                onChange={onLikeOrDislike}
-              />
-              <span className="text-sm text-soft-foreground">{comment.likesCount || "0"}</span>
-            </div>
+            <CommentLikeButton
+              commentId={comment.id}
+              likesCount={comment.likesCount}
+              isLikedByUser={comment.isLikedByUser}
+              className="w-5 h-5 text-soft-foreground"
+            />
           </div>
         </div>
       </div>

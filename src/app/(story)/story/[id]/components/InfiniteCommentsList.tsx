@@ -5,10 +5,10 @@ import { cn } from "@/lib/utils/classnames";
 import { Button } from "@/components/ui/button";
 import { MessagesSquareIcon } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { sendGAEvent } from "@next/third-parties/google";
 import { Comment, CommentSkeleton } from "@/components/Comment";
 import CommentDialog from "@/app/(story)/components/CommentDialog";
 import { STORIES_QUERY_KEYS, useGetInfiniteStoryComments } from "@/services/stories";
-import { sendGAEvent } from "@next/third-parties/google";
 
 function CommentsEmptyState({ className }: { className?: string }) {
   return (
@@ -57,7 +57,6 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
             comment={comment}
             className="pb-6 not-first:pt-6 not-first:border-t border-border"
             onCommentEdit={refetchCommentsList}
-            onLikeOrDislike={refetchCommentsList}
             onCommentDelete={refetchCommentsList}
           />
         ))}

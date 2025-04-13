@@ -27,3 +27,19 @@ export type LikeCommentParams = {
 export type DislikeCommentParams = {
   id: number;
 };
+
+export type GetCommentLikersParams = {
+  id: number;
+  page?: number;
+  limit?: number;
+};
+
+export type GetCommentLikersResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  users: User[];
+};

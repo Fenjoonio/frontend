@@ -4,6 +4,8 @@ import type {
   DeleteCommentParams,
   DislikeCommentParams,
   EditCommentBody,
+  GetCommentLikersParams,
+  GetCommentLikersResponse,
   LikeCommentParams,
 } from "./types";
 
@@ -27,6 +29,14 @@ export async function likeComment({ id }: LikeCommentParams) {
 
 export async function dislikeComment({ id }: DislikeCommentParams) {
   const response = await http.delete(`v1/comments/${id}/likes`);
+
+  return response.data;
+}
+
+export async function getCommentLikers({ id, ...params }: GetCommentLikersParams) {
+  const response = await http.get<GetCommentLikersResponse>(`v1/comments/${id}/likes`, {
+    searchParams: params,
+  });
 
   return response.data;
 }
