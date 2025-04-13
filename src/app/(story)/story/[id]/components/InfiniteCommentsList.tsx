@@ -1,13 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils/classnames";
-import { Button } from "@/components/ui/button";
-import { MessagesSquareIcon } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { sendGAEvent } from "@next/third-parties/google";
+import { useAuthContext } from "@/providers/AuthProvider";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { Comment, CommentSkeleton } from "@/components/Comment";
 import CommentDialog from "@/app/(story)/components/CommentDialog";
+import { MessageSquareTextIcon, MessagesSquareIcon } from "lucide-react";
 import { STORIES_QUERY_KEYS, useGetInfiniteStoryComments } from "@/services/stories";
 
 function CommentsEmptyState({ className }: { className?: string }) {
@@ -27,9 +29,13 @@ type InfiniteCommentsListProps = {
 };
 
 export default function Comments({ id }: InfiniteCommentsListProps) {
+  const router = useRouter();
   const queryClient = useQueryClient();
+  const { isLoggedIn } = useAuthContext();
   const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false);
-  const { data, isPending, isFetching, isError } = useGetInfiniteStoryComments({ id });
+  const { data, isFetching, isError, fetchNextPage, hasNextPage } = useGetInfiniteStoryComments({
+    id,
+  });
 
   const comments = useMemo(() => {
     return data?.pages ? data.pages.flatMap((page) => page.comments ?? []) : [];
@@ -40,8 +46,13 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
   };
 
   const openCommentDialog = () => {
+    if (!isLoggedIn) {
+      router.push(`/accounts/login?redirect=/story/${id}`);
+      return;
+    }
+
     setIsCommentDialogOpen(true);
-    sendGAEvent("open_comment_dialog", "click", { storyId: +id });
+    sendGAEvent("event", "open_comment_dialog_click", { storyId: +id });
   };
 
   return (
@@ -50,34 +61,38 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
 
       {!isFetching && !isError && comments.length === 0 && <CommentsEmptyState className="py-14" />}
 
-      <div className="flex flex-col gap-y-2 mt-4">
-        {comments.map((comment) => (
-          <Comment
-            key={comment.id}
-            comment={comment}
-            className="pb-6 not-first:pt-6 not-first:border-t border-border"
-            onCommentEdit={refetchCommentsList}
-            onCommentDelete={refetchCommentsList}
-          />
-        ))}
-
-        {(isPending || isError) && (
+      <InfiniteScroll
+        next={fetchNextPage}
+        dataLength={comments.length}
+        hasMore={isFetching || hasNextPage}
+        loader={
           <>
             {Array(5)
               .fill(0)
               .map((_, index) => (
-                <CommentSkeleton
-                  key={index}
-                  className="pb-6 not-first:pt-6 not-first:border-t border-border"
-                />
+                <CommentSkeleton key={index} className="flex gap-x-2 pb-6 not-first:pt-6" />
               ))}
           </>
-        )}
-      </div>
+        }
+        className="divide-y divide-border mt-4"
+      >
+        {comments.map((comment) => (
+          <Comment
+            key={comment.id}
+            comment={comment}
+            className="pb-6 not-first:pt-6"
+            onCommentDelete={refetchCommentsList}
+          />
+        ))}
+      </InfiniteScroll>
 
-      <Button variant="ghost" className="w-full mt-8" onClick={openCommentDialog}>
-        اضافه کردن نقد جدید
-      </Button>
+      <button
+        style={{ bottom: "calc(env(safe-area-inset-bottom) + 80px)" }}
+        className="fixed left-4 p-4 bg-primary text-light-gray-100 rounded-lg cursor-pointer"
+        onClick={openCommentDialog}
+      >
+        <MessageSquareTextIcon className="size-5" />
+      </button>
 
       <CommentDialog id={id} isOpen={isCommentDialogOpen} onOpenChange={setIsCommentDialogOpen} />
     </section>
