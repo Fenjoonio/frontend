@@ -26,14 +26,18 @@ export async function getUserById(params: GetUserByIdParams) {
   return response.data;
 }
 
-export async function getUserStoriesById(params: GetUserStoriesByIdParams) {
-  const response = await http.get<GetUserStoriesByIdResponse>(`v1/users/${params.id}/stories`);
+export async function getUserStoriesById({ id, ...params }: GetUserStoriesByIdParams) {
+  const response = await http.get<GetUserStoriesByIdResponse>(`v1/users/${id}/stories`, {
+    searchParams: params,
+  });
 
   return response.data;
 }
 
-export async function getUserCommentsById(params: GetUserCommentsByIdParams) {
-  const response = await http.get<GetUserCommentsByIdResponse>(`v1/users/${params.id}/comments`);
+export async function getUserCommentsById({ id, ...params }: GetUserCommentsByIdParams) {
+  const response = await http.get<GetUserCommentsByIdResponse>(`v1/users/${id}/comments`, {
+    searchParams: params,
+  });
 
   return response.data;
 }
