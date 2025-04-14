@@ -17,7 +17,7 @@ type StoryProps = {
   className?: string;
 };
 
-export default function Story({ story, showProfile, className }: StoryProps) {
+export default function Story({ story, showProfile = true, className }: StoryProps) {
   const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
 
   const share = () => {
