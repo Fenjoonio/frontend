@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import withSerwistInit from "@serwist/next";
+import { isApp, isDev } from "@/lib/utils/environment";
 
 const nextConfig: NextConfig = {};
 
@@ -7,7 +8,7 @@ const withSerwist = withSerwistInit({
   swSrc: "src/app/sw.ts",
   swDest: "public/sw.js",
   cacheOnNavigation: true,
-  disable: process.env.NODE_ENV !== "production",
+  disable: isDev() || isApp(),
   additionalPrecacheEntries: [{ url: "/~offline", revision: crypto.randomUUID() }],
 });
 
