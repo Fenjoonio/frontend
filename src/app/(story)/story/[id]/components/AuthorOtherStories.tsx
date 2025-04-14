@@ -2,8 +2,8 @@
 
 import { cn } from "@/lib/utils/classnames";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Story from "@/app/(story)/components/Story";
 import { useGetAuthorOtherStories } from "@/services/stories";
+import Story, { StorySkeleton } from "@/app/(story)/components/Story";
 
 type AuthorOtherStoriesProps = {
   storyId: number;
@@ -11,7 +11,11 @@ type AuthorOtherStoriesProps = {
 };
 
 export default function AuthorOtherStories({ storyId, className }: AuthorOtherStoriesProps) {
-  const { data: authorOtherStories } = useGetAuthorOtherStories({ id: storyId });
+  const { data: stories, isFetching, isError } = useGetAuthorOtherStories({ id: storyId });
+
+  if (!stories?.length && !isFetching) {
+    return;
+  }
 
   return (
     <section className={cn("flex flex-col", className)}>
@@ -24,11 +28,23 @@ export default function AuthorOtherStories({ storyId, className }: AuthorOtherSt
         slidesOffsetAfter={20}
         className="w-full mt-4"
       >
-        {authorOtherStories?.map((story) => (
-          <SwiperSlide key={story.id} className="h-auto bg-soft-background py-5 px-4 rounded-md">
-            <Story story={story} className="[&_a_p]:h-36" />
-          </SwiperSlide>
-        ))}
+        {isFetching || isError ? (
+          <>
+            {Array(3)
+              .fill(0)
+              .map((_, index) => (
+                <SwiperSlide key={index} className="h-auto bg-soft-background py-5 px-4 rounded-md">
+                  <StorySkeleton className="h-36" />
+                </SwiperSlide>
+              ))}
+          </>
+        ) : (
+          stories?.map((story) => (
+            <SwiperSlide key={story.id} className="h-auto bg-soft-background py-5 px-4 rounded-md">
+              <Story story={story} className="[&_a_p]:h-36" />
+            </SwiperSlide>
+          ))
+        )}
       </Swiper>
     </section>
   );
