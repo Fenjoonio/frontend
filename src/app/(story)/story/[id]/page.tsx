@@ -1,6 +1,7 @@
 import Story from "./components/Story";
 import BackArrow from "@/components/BackArrow";
 import MenuSheet from "./components/MenuSheet";
+import AuthorOtherStories from "./components/AuthorOtherStories";
 import InfiniteCommentsList from "./components/InfiniteCommentsList";
 
 type StoryPageProps = {
@@ -11,7 +12,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
   const { id } = await params;
 
   return (
-    <section className="min-h-svh pb-20">
+    <section className="min-h-svh">
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
         className="flex items-end justify-between bg-background/40 backdrop-blur-xs sticky top-0 z-10 pb-3 px-2"
@@ -24,12 +25,14 @@ export default async function StoryPage({ params }: StoryPageProps) {
         />
       </header>
 
-      <div className="min-h-[256px]">
+      <div className="min-h-[224px]">
         <Story id={id} />
       </div>
 
-      <div id="comments" className="py-8 mx-5 border-t border-border mt-8">
-        <InfiniteCommentsList id={id} />
+      <AuthorOtherStories storyId={+id} className="mt-6" />
+
+      <div id="comments">
+        <InfiniteCommentsList id={id} className="mx-5 mt-8" />
       </div>
     </section>
   );

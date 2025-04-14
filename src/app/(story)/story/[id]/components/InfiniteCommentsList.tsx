@@ -26,9 +26,10 @@ function CommentsEmptyState({ className }: { className?: string }) {
 
 type InfiniteCommentsListProps = {
   id: string;
+  className?: string;
 };
 
-export default function Comments({ id }: InfiniteCommentsListProps) {
+export default function Comments({ id, className }: InfiniteCommentsListProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { isLoggedIn } = useAuthContext();
@@ -56,10 +57,10 @@ export default function Comments({ id }: InfiniteCommentsListProps) {
   };
 
   return (
-    <section>
-      <h3 className="text-sm text-soft-foreground">آخرین نقدها</h3>
+    <section className={className}>
+      <h2 className="text-sm">نقدها</h2>
 
-      {!isFetching && !isError && comments.length === 0 && <CommentsEmptyState className="py-14" />}
+      {!isFetching && !isError && comments.length === 0 && <CommentsEmptyState className="py-16" />}
 
       <InfiniteScroll
         next={fetchNextPage}
