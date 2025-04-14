@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { HeartIcon } from "lucide-react";
 import { cn } from "@/lib/utils/classnames";
+import StoryLikersSheet from "./StoryLikersSheet";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useDislikeStory, useLikeStory } from "@/services/stories";
-import StoryLikersSheet from "./StoryLikersSheet";
 
 type StoryLikeButtonProps = {
   storyId: number;
@@ -22,13 +22,11 @@ export default function StoryLikeButton({
   isLikedByUser,
   showLikesCount = true,
 }: StoryLikeButtonProps) {
-  const [localIsLiked, setLocalIsLiked] = useState(isLikedByUser);
   const [isLikersSheetOpen, setIsLikersSheetOpen] = useState(false);
   const { mutate: like, isPending: isLikePending } = useLikeStory(
     { id: storyId },
     {
       onSuccess: () => {
-        setLocalIsLiked(true);
         sendGAEvent("event", "like_story_click", { storyId });
       },
     }
@@ -37,7 +35,6 @@ export default function StoryLikeButton({
     { id: storyId },
     {
       onSuccess: () => {
-        setLocalIsLiked(false);
         sendGAEvent("event", "dislike_story_click", { storyId });
       },
     }
@@ -57,7 +54,7 @@ export default function StoryLikeButton({
           className={cn(
             "cursor-pointer",
             { "opacity-50": isLikePending || isDislikePending },
-            { "fill-danger stroke-danger": localIsLiked },
+            { "fill-danger stroke-danger": isLikedByUser },
             className
           )}
           onClick={onHeartClick}

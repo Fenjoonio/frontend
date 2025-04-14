@@ -22,13 +22,11 @@ export default function CommentLikeButton({
   isLikedByUser,
   showLikesCount = true,
 }: CommentLikeButtonProps) {
-  const [localIsLiked, setLocalIsLiked] = useState(isLikedByUser);
   const [isLikersSheetOpen, setIsLikersSheetOpen] = useState(false);
   const { mutate: like, isPending: isLikePending } = useLikeComment(
     { id: commentId },
     {
       onSuccess: () => {
-        setLocalIsLiked(true);
         sendGAEvent("event", "like_comment_click", { commentId });
       },
     }
@@ -37,7 +35,6 @@ export default function CommentLikeButton({
     { id: commentId },
     {
       onSuccess: () => {
-        setLocalIsLiked(false);
         sendGAEvent("event", "dislike_comment_click", { commentId });
       },
     }
@@ -57,7 +54,7 @@ export default function CommentLikeButton({
           className={cn(
             "cursor-pointer",
             { "opacity-50": isLikePending || isDislikePending },
-            { "fill-danger stroke-danger": localIsLiked },
+            { "fill-danger stroke-danger": isLikedByUser },
             className
           )}
           onClick={onHeartClick}
