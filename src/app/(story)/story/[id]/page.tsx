@@ -25,9 +25,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
         />
       </header>
 
-      <div className="min-h-[224px]">
-        <Story id={id} />
-      </div>
+      <Story id={id} />
 
       <AuthorOtherStories storyId={+id} className="mt-6" />
 

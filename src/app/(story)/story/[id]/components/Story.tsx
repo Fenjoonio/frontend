@@ -49,9 +49,12 @@ export default function Story({ id }: StoryProps) {
       </div>
 
       <p
-        className={cn("w-full text-sm text-soft-foreground whitespace-pre-line leading-6 mt-2", {
-          "line-clamp-6": !showFullText,
-        })}
+        className={cn(
+          "w-full min-h-20 text-sm text-soft-foreground whitespace-pre-line leading-6 mt-2",
+          {
+            "line-clamp-6": !showFullText,
+          }
+        )}
         onClick={() => setShowFullText(!showFullText)}
       >
         {story.text}
