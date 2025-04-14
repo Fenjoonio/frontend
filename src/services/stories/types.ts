@@ -111,3 +111,9 @@ export type ReportStoryBody = {
 export type WriteStoryWithAiBody = {
   text: string;
 };
+
+export type GetAuthorOtherStoriesParams = {
+  id: number;
+};
+
+export type GetAuthorOtherStoriesResponse = Story[];

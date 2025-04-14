@@ -6,6 +6,7 @@ import {
   deleteStory,
   dislikeStory,
   editStory,
+  getAuthorOtherStories,
   getSingleStory,
   getStories,
   getStoryComments,
@@ -34,6 +35,7 @@ import type {
   LikeStoryParams,
   GetStoryLikersParams,
   GetStoriesResponse,
+  GetAuthorOtherStoriesParams,
 } from "./types";
 import { USER_QUERY_KEYS } from "../user/constants";
 
@@ -285,6 +287,13 @@ export function useReportStory(options?: { onSuccess?: () => void }) {
     ...options,
     mutationKey: [STORIES_QUERY_KEYS.REPORT_STORY],
     mutationFn: reportStory,
+  });
+}
+
+export function useGetAuthorOtherStories(params: GetAuthorOtherStoriesParams) {
+  return useQuery({
+    queryFn: () => getAuthorOtherStories(params),
+    queryKey: [STORIES_QUERY_KEYS.GET_AUTHOR_OTHER_STORIES, params],
   });
 }
 

@@ -20,6 +20,8 @@ import type {
   WriteStoryWithAiBody,
   GetStoryLikersParams,
   GetStoryLikersResponse,
+  GetAuthorOtherStoriesParams,
+  GetAuthorOtherStoriesResponse,
 } from "./types";
 import { isClientSide } from "@/lib/utils/environment";
 
@@ -93,6 +95,14 @@ export async function shareStory({ id }: ShareStoryParams) {
 
 export async function reportStory({ id, ...body }: ReportStoryBody) {
   const response = await http.post<boolean>(`v1/stories/${id}/reports`, body);
+
+  return response.data;
+}
+
+export async function getAuthorOtherStories({ id }: GetAuthorOtherStoriesParams) {
+  const response = await http.get<GetAuthorOtherStoriesResponse>(
+    `v1/stories/${id}/related-by-author`
+  );
 
   return response.data;
 }
