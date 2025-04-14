@@ -3,27 +3,21 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getUserName } from "@/lib/utils/users";
 import HomeSlider from "./components/HomeSlider";
-import UserAvatar from "@/components/UserAvatar";
+import { BellIcon, PenIcon } from "lucide-react";
+import Story from "@/app/(story)/components/Story";
 import PullToRefresh from "@/components/PullToRefresh";
-import { formatStoryCreateAt } from "@/lib/utils/story";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { useGetInfiniteStories } from "@/services/stories";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Story, useGetInfiniteStories } from "@/services/stories";
-import StoryLikeButton from "./(story)/components/StoryLikeButton";
-import ShareStorySheet from "./(story)/components/ShareStorySheet";
 import CreateNewStoryDialog from "./(story)/components/CreateNewStoryDialog";
 import { useGetUserNotificationsUnreadCount } from "@/services/notifications";
-import { BellIcon, MessageSquareTextIcon, PenIcon, Share2Icon } from "lucide-react";
 
 export default function HomePage() {
   const router = useRouter();
   const { isLoggedIn } = useAuthContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sharedStoryId, setSharedStoryId] = useState(0);
-  const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
   const { data, refetch, fetchNextPage, hasNextPage, isFetching } = useGetInfiniteStories({
     page: 1,
     limit: 10,
@@ -34,7 +28,7 @@ export default function HomePage() {
     refetchInterval: 5000,
   });
 
-  const stories = useMemo<Story[]>(() => {
+  const stories = useMemo(() => {
     return data?.pages ? data.pages.flatMap((page) => page.stories ?? []) : [];
   }, [data?.pages]);
 
@@ -50,11 +44,6 @@ export default function HomePage() {
 
   const onRefresh = async () => {
     await refetch();
-  };
-
-  const share = (storyId: number) => {
-    setSharedStoryId(storyId);
-    setIsShareSheetOpen(true);
   };
 
   return (
@@ -109,48 +98,7 @@ export default function HomePage() {
           className="divide-y divide-border"
         >
           {stories.map((story) => (
-            <div key={story.id} className="flex gap-x-2 pb-6 not-first:pt-6">
-              <Link href={`/author/${story.user.id}`}>
-                <UserAvatar user={story.user} />
-              </Link>
-
-              <div className="flex-1 mt-1">
-                <div className="flex gap-x-2 items-center">
-                  <Link href={`/author/${story.user.id}`}>
-                    <span className="font-bold">{getUserName(story.user)}</span>
-                  </Link>
-                  <span className="size-1 bg-gray-300 dark:bg-border rounded-sm"></span>
-                  <span className="text-[10px] text-light-gray-900 dark:text-soft-foreground">
-                    {formatStoryCreateAt(story.createdAt)}
-                  </span>
-                </div>
-
-                <Link href={`/story/${story.id}`}>
-                  <p className="w-full text-sm text-soft-foreground whitespace-pre-line line-clamp-6 leading-6 mt-1">
-                    {story.text}
-                  </p>
-                </Link>
-
-                <div className="flex items-center gap-x-4 mt-4">
-                  <StoryLikeButton
-                    storyId={story.id}
-                    likesCount={story.likesCount}
-                    isLikedByUser={story.isLikedByUser}
-                    className="w-5 h-5 text-soft-foreground"
-                  />
-
-                  <Link href={`/story/${story.id}#comments`} className="flex items-center gap-x-2">
-                    <MessageSquareTextIcon className="w-5 h-5 text-soft-foreground" />
-                    <span className="text-sm text-soft-foreground">{story.commentsCount}</span>
-                  </Link>
-
-                  <Share2Icon
-                    className="w-5 h-5 text-soft-foreground ms-auto"
-                    onClick={() => share(story.id)}
-                  />
-                </div>
-              </div>
-            </div>
+            <Story key={story.id} story={story} className="flex gap-x-2 pb-6 not-first:pt-6" />
           ))}
         </InfiniteScroll>
       </PullToRefresh>
@@ -164,14 +112,6 @@ export default function HomePage() {
       >
         <PenIcon className="size-5" />
       </button>
-
-      {isShareSheetOpen && (
-        <ShareStorySheet
-          storyId={sharedStoryId}
-          isOpen={isShareSheetOpen}
-          onOpenChange={setIsShareSheetOpen}
-        />
-      )}
     </div>
   );
 }
