@@ -78,3 +78,23 @@ export default function Story({ story, showProfile = true, className }: StoryPro
     </>
   );
 }
+
+type StorySkeletonProps = {
+  className?: string;
+};
+
+export function StorySkeleton({ className }: StorySkeletonProps) {
+  return (
+    <div className={cn("flex gap-x-2", className)}>
+      <div>
+        <div className="size-7 bg-gray-300 dark:bg-border opacity-40 rounded-lg animate-pulse"></div>
+      </div>
+
+      <div className="flex-1 mt-1">
+        <div className="w-20 h-4 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse"></div>
+        <div className="w-full h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-4"></div>
+        <div className="w-[80%] h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-2"></div>
+      </div>
+    </div>
+  );
+}

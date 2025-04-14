@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import HomeSlider from "./components/HomeSlider";
 import { BellIcon, PenIcon } from "lucide-react";
-import Story from "@/app/(story)/components/Story";
+import Story, { StorySkeleton } from "@/app/(story)/components/Story";
 import PullToRefresh from "@/components/PullToRefresh";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useAuthContext } from "@/providers/AuthProvider";
@@ -77,16 +77,7 @@ export default function HomePage() {
               {Array(5)
                 .fill(0)
                 .map((_, index) => (
-                  <div key={index} className="flex gap-x-2 pb-6 not-first:pt-6">
-                    <div>
-                      <div className="w-7 h-7 bg-gray-300 dark:bg-border opacity-40 rounded-lg animate-pulse"></div>
-                    </div>
-                    <div className="flex-1 mt-1">
-                      <div className="w-20 h-4 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse"></div>
-                      <div className="w-full h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-4"></div>
-                      <div className="w-[80%] h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-2"></div>
-                    </div>
-                  </div>
+                  <StorySkeleton key={index} className="pb-6 not-first:pt-6" />
                 ))}
             </>
           }
