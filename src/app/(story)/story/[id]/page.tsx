@@ -15,7 +15,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
     <section className="min-h-svh">
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
-        className="flex items-end justify-between bg-background/40 backdrop-blur-xs sticky top-0 z-10 pb-3 px-2"
+        className="flex items-end justify-between bg-background sticky top-0 border-b border-border z-10 pb-3 px-2"
       >
         <BackArrow />
 

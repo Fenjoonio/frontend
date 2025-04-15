@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Share2Icon } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon, MessageSquareTextIcon, Share2Icon } from "lucide-react";
 import { notFound } from "next/navigation";
 import { cn } from "@/lib/utils/classnames";
 import { getUserName } from "@/lib/utils/users";
@@ -36,6 +36,8 @@ export default function Story({ id }: StoryProps) {
     );
   }
 
+  const ShowMoreIcon = showFullText ? ChevronUpIcon : ChevronDownIcon;
+
   return (
     <div key={story.id} className="w-full p-5">
       <div className="flex gap-x-2 items-center">
@@ -49,12 +51,9 @@ export default function Story({ id }: StoryProps) {
       </div>
 
       <p
-        className={cn(
-          "w-full min-h-20 text-sm text-soft-foreground whitespace-pre-line leading-6 mt-2",
-          {
-            "line-clamp-6": !showFullText,
-          }
-        )}
+        className={cn("w-full min-h-20 text-sm whitespace-pre-line leading-6 mt-2", {
+          "line-clamp-6": !showFullText,
+        })}
         onClick={() => setShowFullText(!showFullText)}
       >
         {story.text}
@@ -62,27 +61,34 @@ export default function Story({ id }: StoryProps) {
 
       {story.text.split("\n").length > 6 && (
         <span
-          className="block text-center cursor-pointer mt-10"
+          className="flex gap-x-1 justify-center items-center text-xs text-soft-foreground cursor-pointer mt-6"
           onClick={() => setShowFullText(!showFullText)}
         >
           {showFullText ? "نمایش بخشی از داستان" : "نمایش تمام داستان"}
+          <ShowMoreIcon className="size-4" />
         </span>
       )}
 
-      <div className="flex items-center gap-x-4 mt-8">
+      <div className="grid grid-cols-3 divide-x divide-border mt-10">
         <StoryLikeButton
           storyId={story.id}
           likesCount={story.likesCount}
           isLikedByUser={story.isLikedByUser}
-          className="w-5 h-5 text-soft-foreground"
+          className="size-6 text-soft-foreground"
+          containerClass="flex gap-y-3 flex-col justify-center items-center"
         />
 
-        <div className="flex items-center gap-x-2">
+        <div className="flex gap-y-3 flex-col justify-center items-center">
+          <MessageSquareTextIcon className="size-6 text-soft-foreground" />
+          <span className="text-sm text-soft-foreground">{story.commentsCount || "۰"}</span>
+        </div>
+
+        <div className="flex gap-y-3 flex-col justify-center items-center">
           <Share2Icon
-            className="w-5 h-5 text-soft-foreground ms-auto"
+            className="size-6 text-soft-foreground"
             onClick={() => setIsShareSheetOpen(true)}
           />
-          <span className="text-sm text-soft-foreground">{story.sharesCount}</span>
+          <span className="text-sm text-soft-foreground">{story.sharesCount || "۰"}</span>
         </div>
       </div>
 

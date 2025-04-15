@@ -89,7 +89,7 @@ export default function Comments({ id, className }: InfiniteCommentsListProps) {
 
       <button
         style={{ bottom: "calc(env(safe-area-inset-bottom) + 80px)" }}
-        className="fixed left-4 p-4 bg-primary text-light-gray-100 rounded-lg cursor-pointer"
+        className="fixed left-4 z-10 p-4 bg-primary text-light-gray-100 rounded-lg cursor-pointer"
         onClick={openCommentDialog}
       >
         <MessageSquareTextIcon className="size-5" />

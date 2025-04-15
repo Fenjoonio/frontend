@@ -41,7 +41,7 @@ export default function AuthorOtherStories({ storyId, className }: AuthorOtherSt
         ) : (
           stories?.map((story) => (
             <SwiperSlide key={story.id} className="h-auto bg-soft-background py-5 px-4 rounded-md">
-              <Story story={story} className="[&_a_p]:h-36" />
+              <Story story={story} className="[&_a_p]:line-clamp-3 [&_a_p]:h-[68px]" />
             </SwiperSlide>
           ))
         )}
