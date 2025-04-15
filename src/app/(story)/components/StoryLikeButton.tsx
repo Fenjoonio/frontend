@@ -12,6 +12,7 @@ type StoryLikeButtonProps = {
   likesCount: number;
   className?: string;
   isLikedByUser: boolean;
+  containerClass?: string;
   showLikesCount?: boolean;
 };
 
@@ -20,6 +21,7 @@ export default function StoryLikeButton({
   likesCount = 0,
   className,
   isLikedByUser,
+  containerClass,
   showLikesCount = true,
 }: StoryLikeButtonProps) {
   const [isLikersSheetOpen, setIsLikersSheetOpen] = useState(false);
@@ -49,7 +51,7 @@ export default function StoryLikeButton({
 
   return (
     <>
-      <div className="flex items-center gap-x-2">
+      <div className={cn("flex items-center gap-x-2", containerClass)}>
         <HeartIcon
           className={cn(
             "cursor-pointer",
