@@ -64,7 +64,7 @@ export default function ThreadPage() {
     <section className="pb-4">
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
-        className="flex items-end justify-between bg-background/40 backdrop-blur-xs sticky top-0 z-10 pb-3 px-2"
+        className="flex items-end justify-between bg-background sticky top-0 border-b border-border z-10 pb-3 px-2"
       >
         <BackArrow />
       </header>
