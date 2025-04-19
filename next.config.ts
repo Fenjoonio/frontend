@@ -2,7 +2,9 @@ import type { NextConfig } from "next";
 import withSerwistInit from "@serwist/next";
 import { isApp, isDev } from "@/lib/utils/environment";
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  output: "standalone",
+};
 
 const withSerwist = withSerwistInit({
   swSrc: "src/app/sw.ts",
