@@ -2,8 +2,6 @@ FROM node:22-alpine AS base
 
 FROM base AS deps
 
-ARG NEXT_PUBLIC_API_BASE_URL
-
 RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
@@ -14,6 +12,8 @@ RUN npm ci
 
 FROM base AS builder
 
+ARG NEXT_PUBLIC_API_BASE_URL
+
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
@@ -21,6 +21,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
 
 RUN npm run build
 
