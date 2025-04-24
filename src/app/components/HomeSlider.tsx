@@ -19,9 +19,7 @@ export default function HomeSlider({ className }: HomeSliderProps) {
           href="/thread"
           className="w-full h-48 flex flex-col justify-center items-center bg-success rounded-sm"
         >
-          <span className="text-xl text-light-gray-100 font-black">
-            سایه سیاه اون رو به گوشه‌ای پرت کرد!
-          </span>
+          <span className="text-xl text-light-gray-100 font-black">اومدم امانتی رو پس بدم ...</span>
           <span className="text-sm text-light-gray-100 mt-1">
             دوست داری بعدش چی بشه؟ بقیه‌ش رو تو بنویس!
           </span>
