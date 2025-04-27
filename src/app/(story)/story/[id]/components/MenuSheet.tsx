@@ -7,7 +7,16 @@ import EditStoryDialog from "@/app/(story)/components/EditStoryDialog";
 import { useDeleteStory, useGetSingleStory } from "@/services/stories";
 import ShareStorySheet from "@/app/(story)/components/ShareStorySheet";
 import ReportStoryDialog from "@/app/(story)/components/ReportStoryDialog";
-import { EditIcon, FlagIcon, MoreHorizontalIcon, Share2Icon, TrashIcon } from "lucide-react";
+import StoryVisibilityChangeSheet from "@/app/(story)/components/StoryVisibilityChangeSheet";
+import {
+  EditIcon,
+  EyeIcon,
+  EyeOffIcon,
+  FlagIcon,
+  MoreHorizontalIcon,
+  Share2Icon,
+  TrashIcon,
+} from "lucide-react";
 import {
   Sheet,
   SheetTitle,
@@ -29,6 +38,7 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
   const [isShareStorySheetOpen, setIsShareStorySheetOpen] = useState(false);
   const [isEditStoryDialogOpen, setIsEditStoryDialogOpen] = useState(false);
   const [isReportStoryDialogOpen, setIsReportStoryDialogOpen] = useState(false);
+  const [isVisibilityChangeSheetOpen, setIsVisibilityChangeSheetOpen] = useState(false);
   const { mutate: deleteStory, isPending: isDeletePending } = useDeleteStory({
     onSuccess: () => {
       setIsOpen(false);
@@ -38,6 +48,11 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
 
   const onReport = () => {
     setIsReportStoryDialogOpen(true);
+    setIsOpen(false);
+  };
+
+  const onVisibilityChange = () => {
+    setIsVisibilityChangeSheetOpen(true);
     setIsOpen(false);
   };
 
@@ -87,6 +102,25 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
               </li>
             )}
 
+            {!!story?.isPrivatableByUser && (
+              <li
+                className="flex gap-x-2 items-center py-4 cursor-pointer"
+                onClick={onVisibilityChange}
+              >
+                {story.isPrivate ? (
+                  <EyeIcon className="size-5" />
+                ) : (
+                  <EyeOffIcon className="size-5" />
+                )}
+
+                <span className="mt-[2px]">
+                  {story.isPrivate
+                    ? "تغییر وضعیت به حالت نمایش همگانی"
+                    : "تغییر وضعیت به حالت نمایش خصوصی"}
+                </span>
+              </li>
+            )}
+
             {!!story?.isDeletableByUser && (
               <li
                 className={cn("flex gap-x-2 items-center py-4 cursor-pointer", {
@@ -119,6 +153,12 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
         id={storyId}
         isOpen={isReportStoryDialogOpen}
         onOpenChange={setIsReportStoryDialogOpen}
+      />
+
+      <StoryVisibilityChangeSheet
+        storyId={storyId}
+        isOpen={isVisibilityChangeSheetOpen}
+        onOpenChange={setIsVisibilityChangeSheetOpen}
       />
     </>
   );

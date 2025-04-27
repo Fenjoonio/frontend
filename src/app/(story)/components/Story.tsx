@@ -9,15 +9,21 @@ import ShareStorySheet from "./ShareStorySheet";
 import StoryLikeButton from "./StoryLikeButton";
 import UserAvatar from "@/components/UserAvatar";
 import { formatStoryCreateAt } from "@/lib/utils/story";
-import { MessageSquareTextIcon, Share2Icon } from "lucide-react";
+import { EyeOffIcon, MessageSquareTextIcon, Share2Icon } from "lucide-react";
 
 type StoryProps = {
   story: Story;
   showProfile?: boolean;
+  showActions?: boolean;
   className?: string;
 };
 
-export default function Story({ story, showProfile = true, className }: StoryProps) {
+export default function Story({
+  story,
+  showProfile = true,
+  showActions = true,
+  className,
+}: StoryProps) {
   const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
 
   const share = () => {
@@ -42,6 +48,8 @@ export default function Story({ story, showProfile = true, className }: StoryPro
             <span className="text-[10px] text-light-gray-900 dark:text-soft-foreground">
               {formatStoryCreateAt(story.createdAt)}
             </span>
+
+            {!!story.isPrivate && <EyeOffIcon className="size-4 text-soft-foreground ms-2" />}
           </div>
 
           <Link href={`/story/${story.id}`}>
@@ -50,21 +58,23 @@ export default function Story({ story, showProfile = true, className }: StoryPro
             </p>
           </Link>
 
-          <div className="flex items-center gap-x-4 mt-4">
-            <StoryLikeButton
-              storyId={story.id}
-              likesCount={story.likesCount}
-              isLikedByUser={story.isLikedByUser}
-              className="w-5 h-5 text-soft-foreground"
-            />
+          {showActions && (
+            <div className="flex items-center gap-x-4 mt-4">
+              <StoryLikeButton
+                storyId={story.id}
+                likesCount={story.likesCount}
+                isLikedByUser={story.isLikedByUser}
+                className="w-5 h-5 text-soft-foreground"
+              />
 
-            <Link href={`/story/${story.id}#comments`} className="flex items-center gap-x-2">
-              <MessageSquareTextIcon className="w-5 h-5 text-soft-foreground" />
-              <span className="text-sm text-soft-foreground">{story.commentsCount}</span>
-            </Link>
+              <Link href={`/story/${story.id}#comments`} className="flex items-center gap-x-2">
+                <MessageSquareTextIcon className="w-5 h-5 text-soft-foreground" />
+                <span className="text-sm text-soft-foreground">{story.commentsCount}</span>
+              </Link>
 
-            <Share2Icon className="w-5 h-5 text-soft-foreground ms-auto" onClick={share} />
-          </div>
+              <Share2Icon className="w-5 h-5 text-soft-foreground ms-auto" onClick={share} />
+            </div>
+          )}
         </div>
       </div>
 

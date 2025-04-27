@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ChevronDownIcon, ChevronUpIcon, MessageSquareTextIcon, Share2Icon } from "lucide-react";
 import { notFound } from "next/navigation";
 import { cn } from "@/lib/utils/classnames";
 import { getUserName } from "@/lib/utils/users";
@@ -10,6 +9,13 @@ import { useGetSingleStory } from "@/services/stories";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import StoryLikeButton from "@/app/(story)/components/StoryLikeButton";
 import ShareStorySheet from "@/app/(story)/components/ShareStorySheet";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  EyeOffIcon,
+  MessageSquareTextIcon,
+  Share2Icon,
+} from "lucide-react";
 
 type StoryProps = {
   id: string;
@@ -48,6 +54,8 @@ export default function Story({ id }: StoryProps) {
         <span className="text-[10px] text-light-gray-900 dark:text-soft-foreground">
           {formatStoryCreateAt(story.createdAt)}
         </span>
+
+        {!!story.isPrivate && <EyeOffIcon className="size-4 text-soft-foreground ms-2" />}
       </div>
 
       <p
