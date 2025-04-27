@@ -3,6 +3,7 @@ import { type Comment } from "@/services/comments";
 import {
   addNewStory,
   addStoryComment,
+  changeStoryVisibility,
   deleteStory,
   dislikeStory,
   editStory,
@@ -36,6 +37,7 @@ import type {
   GetStoryLikersParams,
   GetStoriesResponse,
   GetAuthorOtherStoriesParams,
+  ChangeStoryVisibilityBody,
 } from "./types";
 import { USER_QUERY_KEYS } from "../user/constants";
 
@@ -287,6 +289,25 @@ export function useReportStory(options?: { onSuccess?: () => void }) {
     ...options,
     mutationKey: [STORIES_QUERY_KEYS.REPORT_STORY],
     mutationFn: reportStory,
+  });
+}
+
+export function useChangeStoryVisibility(
+  params: Pick<ChangeStoryVisibilityBody, "id">,
+  options?: { onSuccess?: () => void }
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    ...options,
+    mutationKey: [STORIES_QUERY_KEYS.CHANGE_STORY_VISIBILITY],
+    mutationFn: changeStoryVisibility,
+    onSuccess: () => {
+      options?.onSuccess?.();
+      queryClient.invalidateQueries({
+        queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, { id: params.id }],
+      });
+    },
   });
 }
 

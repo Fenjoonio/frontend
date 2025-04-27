@@ -7,11 +7,13 @@ export type Story = {
   text: string;
   createdAt: string;
   likesCount: number;
+  isPrivate: boolean;
   sharesCount: number;
   commentsCount: number;
   isLikedByUser: boolean;
   isEditableByUser: boolean;
   isDeletableByUser: boolean;
+  isPrivatableByUser: boolean;
 };
 
 export type GetStoriesParams = {
@@ -106,6 +108,11 @@ export type ShareStoryParams = {
 export type ReportStoryBody = {
   id: number;
   reason: string;
+};
+
+export type ChangeStoryVisibilityBody = {
+  id: number;
+  isPrivate: boolean;
 };
 
 export type WriteStoryWithAiBody = {
