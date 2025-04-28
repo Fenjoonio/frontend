@@ -6,8 +6,15 @@ import {
   getUserCommentsById,
   getUserStoriesById,
   updateCurrentUser,
+  getCurrentUserStories,
+  getUserPrivateStoryCount,
 } from "./functions";
-import type { GetUserByIdParams, GetUserStoriesByIdParams, User } from "./types";
+import type {
+  GetCurrentUserStoriesParams,
+  GetUserByIdParams,
+  GetUserStoriesByIdParams,
+  User,
+} from "./types";
 
 export function useGetCurrentUser() {
   return useQuery({
@@ -30,6 +37,30 @@ export function useUpdateCurrentUser(options?: {
       options?.onSuccess?.(response);
       queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER] });
     },
+  });
+}
+
+export function useGetCurrentUserStories(
+  params: GetCurrentUserStoriesParams = { page: 1, limit: 10 }
+) {
+  return useInfiniteQuery({
+    initialPageParam: params,
+    queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_STORIES, params],
+    queryFn: ({ pageParam }) => getCurrentUserStories(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
+  });
+}
+
+export function useGetUserPrivateStoryCount() {
+  return useQuery({
+    queryKey: [USER_QUERY_KEYS.GET_USER_PRIVATE_STORY_COUNT],
+    queryFn: getUserPrivateStoryCount,
   });
 }
 

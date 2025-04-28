@@ -4,7 +4,14 @@ import UserInfo from "./components/UserInfo";
 import LogoutButton from "./components/LogoutButton";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import ViewProfileButton from "./components/ViewProfileButton";
-import { ArrowLeftIcon, DownloadIcon, ScaleIcon, StarIcon, UserPenIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  DownloadIcon,
+  NotebookPenIcon,
+  ScaleIcon,
+  StarIcon,
+  UserPenIcon,
+} from "lucide-react";
 
 const getDownloadLinkBaseOnUtmSource = (utmSource: string) => {
   if (utmSource === "bazzar") {
@@ -49,6 +56,18 @@ export default async function ProfilePage() {
 
           <li>
             <ViewProfileButton />
+          </li>
+
+          <li>
+            <Link href="/profile/stories" className="flex gap-x-2 items-center py-3 px-2">
+              <div className="bg-background rounded-lg p-2">
+                <NotebookPenIcon className="size-5 " />
+              </div>
+
+              <span className="text-sm  mt-[2px]">داستان‌های من</span>
+
+              <ArrowLeftIcon className="size-5 ms-auto me-1" />
+            </Link>
           </li>
 
           <li>

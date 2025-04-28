@@ -8,6 +8,8 @@ export type User = {
   lastName: string;
   nickname: string;
   bio: string;
+  isBot: boolean;
+  isPremium: boolean;
   isVerified: boolean;
 };
 
@@ -45,4 +47,24 @@ export type GetUserCommentsByIdResponse = {
     total: number;
   };
   comments: Comment[];
+};
+
+export type GetCurrentUserStoriesParams = {
+  page?: number;
+  limit?: number;
+};
+
+export type GetCurrentUserStoriesResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  stories: Story[];
+};
+
+export type GetUserPrivateStoryCountResponse = {
+  count: number;
+  max: number;
 };

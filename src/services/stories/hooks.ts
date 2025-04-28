@@ -40,6 +40,7 @@ import type {
   ChangeStoryVisibilityBody,
 } from "./types";
 import { USER_QUERY_KEYS } from "../user/constants";
+import { GetCurrentUserStoriesResponse } from "../user/types";
 
 export function useGetInfiniteStories(params?: GetStoriesParams) {
   return useInfiniteQuery({
@@ -307,6 +308,27 @@ export function useChangeStoryVisibility(
       queryClient.invalidateQueries({
         queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, { id: params.id }],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.GET_USER_PRIVATE_STORY_COUNT],
+      });
+
+      queryClient.setQueriesData(
+        { queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_STORIES] },
+        (oldData: InfiniteData<GetCurrentUserStoriesResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              stories: page.stories.map((story) =>
+                story.id === params.id ? { ...story, isPrivate: !story.isPrivate } : story
+              ),
+            })),
+          };
+        }
+      );
     },
   });
 }
