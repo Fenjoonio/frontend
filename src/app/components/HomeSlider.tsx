@@ -19,10 +19,10 @@ export default function HomeSlider({ className }: HomeSliderProps) {
           href="https://survey.porsline.ir/s/NjmYt7vS"
           className="w-full h-48 flex flex-col justify-center items-center bg-primary rounded-sm"
         >
-          <span className="text-xl text-light-gray-100 font-black">
+          <span className="text-center text-xl text-light-gray-100 font-black">
             نمیخوای داستانتو همه بخونن؟ شخصیش کن!
           </span>
-          <span className="text-sm text-light-gray-100 mt-1">
+          <span className="text-center text-sm text-light-gray-100 mt-1">
             قابلیت خصوصی کردن داستان هم اومد به فنجون! بعدی چی باشه؟
           </span>
           <span className="bg-white text-primary rounded-sm py-1 px-6 mt-4">بعدی رو تو بگو!</span>
