@@ -20,10 +20,10 @@ export default function HomeSlider({ className }: HomeSliderProps) {
           className="w-full h-48 flex flex-col justify-center items-center bg-primary rounded-sm"
         >
           <span className="text-center text-xl text-light-gray-100 font-black">
-            نمیخوای داستانتو همه بخونن؟ شخصیش کن!
+            نمیخوای داستانتو همه بخونن؟
           </span>
           <span className="text-center text-sm text-light-gray-100 mt-1">
-            قابلیت خصوصی کردن داستان هم اومد به فنجون! بعدی چی باشه؟
+            قابلیت خصوصی کردن داستان هم اومد به فنجون!
           </span>
           <span className="bg-white text-primary rounded-sm py-1 px-6 mt-4">بعدی رو تو بگو!</span>
         </Link>
