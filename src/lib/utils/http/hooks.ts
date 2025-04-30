@@ -26,9 +26,6 @@ const refreshUserToken = async (request: KyRequest, options: Options, response: 
 
   try {
     const { accessToken, refreshToken } = await getUserCredentials();
-    if (!accessToken || !refreshToken) {
-      throw new AuthError("لطفا مجددا وارد شوید");
-    }
 
     const res = await ky.post<RefreshResponse>("api/auth/refresh", {
       json: { accessToken, refreshToken },
