@@ -26,7 +26,14 @@ export default async function Providers({ children }: PropsWithChildren) {
               </GTMProvider>
             </AuthProvider>
 
-            <ToastContainer rtl draggable limit={2} draggablePercent={10} />
+            <ToastContainer
+              rtl
+              draggable
+              limit={2}
+              hideProgressBar
+              closeButton={false}
+              draggablePercent={10}
+            />
           </QueryProvider>
         </LoadingProvider>
       </ThemeProvider>

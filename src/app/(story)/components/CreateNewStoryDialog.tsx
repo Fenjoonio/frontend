@@ -47,7 +47,7 @@ export default function CreateNewStoryDialog({ open, onOpenChange }: CreateNewSt
 
   const { mutate: writeStoryWithAi, isPending: isWriteWithAiPending } = useWriteStoryWithAi({
     onSuccess: (story) => {
-      setText(story);
+      setText((prevState) => `${prevState.trim()} ${story}`);
       sendGAEvent("create_story", "write_story_with_ai", {});
     },
     onError: () => {
@@ -57,7 +57,7 @@ export default function CreateNewStoryDialog({ open, onOpenChange }: CreateNewSt
   });
 
   const createNewStory = () => {
-    createStory({ text });
+    createStory({ text: text.trim() });
   };
 
   const getHelpFromAi = () => {

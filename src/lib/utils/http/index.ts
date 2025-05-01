@@ -1,11 +1,26 @@
 import hooks from "./hooks";
-import ky, { type Input } from "ky";
 import { toast } from "react-toastify";
 import { ApiError } from "@/lib/exceptions";
+import ky, { HTTPError, type Input } from "ky";
 import { isClientSide } from "@/lib/utils/environment";
 import type { ApiResponse, RequestOptions } from "./types";
 
 const request = ky.create({ hooks, retry: 0, prefixUrl: process.env.NEXT_PUBLIC_API_BASE_URL });
+
+const getErrorMessage = async (error: unknown) => {
+  if (error instanceof ApiError) {
+    return error.message;
+  }
+
+  if (error instanceof HTTPError) {
+    try {
+      const errorData = await error.response.json();
+      return errorData.message || "مشکلی پیش آمده";
+    } catch {
+      return "مشکلی پیش آمده";
+    }
+  }
+};
 
 const handleRequest = async <T = unknown>(
   method: "get" | "post" | "patch" | "put" | "delete",
@@ -24,7 +39,9 @@ const handleRequest = async <T = unknown>(
 
     if (options?.showToast !== false) {
       const errorHandler = isClientSide() ? toast.error : console.log;
-      errorHandler("مشکلی پیش آمده");
+      const message = await getErrorMessage(error);
+
+      errorHandler(message);
     }
 
     // We need this to make sure react-query works.

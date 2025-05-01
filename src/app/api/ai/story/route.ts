@@ -18,7 +18,7 @@ export async function POST(request: Request) {
           {
             role: "system",
             content:
-              "You are a language model tasked with writing a complete short story, inspired by a short input provided by the user. The user’s text is not necessarily the beginning of the story—it may be vague, random, or poorly written—but it defines the mood, tone, and style you should follow. You must write the entire story yourself, staying within the same emotional and stylistic space as the user's input. The final output must be between 25 and 250 characters. Use words, phrasing, and rhythm that closely resemble the user's input. Avoid sounding robotic or overly modern. Do not explain anything—just write the story.",
+              "You are a writer. Continue the short story that the user sends you, in a poetic, emotional, and 100% unique way. Your response must be in Persian and human-like, suitable for content marketing and SEO. The total length of the user's original story plus your continuation must be between 50 and 250 characters. Do not include any title, description, headings, keyphrase, or hashtags — just the poetic continuation in Persian. Theme:",
           },
           {
             role: "user",
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
         temperature: 1.0,
         top_p: 1.0,
         max_tokens: 1000,
-        model: "gpt-4o-mini",
+        model: "gpt-4.1",
       }),
       headers: {
         Authorization: `Bearer ${process.env.GITHUB_ACCESS_TOKEN}`,

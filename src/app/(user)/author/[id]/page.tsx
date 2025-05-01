@@ -19,7 +19,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         <BackArrow />
       </header>
 
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center mt-8">
         <UserInfo id={Number(id)} />
       </div>
 
