@@ -8,10 +8,13 @@ import {
   updateCurrentUser,
   getCurrentUserStories,
   getUserPrivateStoryCount,
+  getUserFollowersList,
 } from "./functions";
 import type {
   GetCurrentUserStoriesParams,
   GetUserByIdParams,
+  GetUserFollowersListParams,
+  GetUserFollowingsListParams,
   GetUserStoriesByIdParams,
   User,
 } from "./types";
@@ -91,6 +94,86 @@ export function useGetUserCommentsById(params: GetUserStoriesByIdParams) {
     initialPageParam: params,
     queryKey: [USER_QUERY_KEYS.GET_USER_COMMENTS_BY_ID, params],
     queryFn: ({ pageParam }) => getUserCommentsById(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { id: params.id, page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
+  });
+}
+
+export function useFollow() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: getUserFollowersList,
+    onSuccess: (_, params) => {
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.GET_USER_FOLLOWERS_LIST],
+        exact: false,
+      });
+
+      queryClient.setQueriesData(
+        { queryKey: [USER_QUERY_KEYS.GET_USER_BY_ID, { id: params.id }] },
+        (oldData: User | undefined) => {
+          if (!oldData) return oldData;
+
+          return { ...oldData, isFollowedByUser: true, followersCount: oldData.followersCount + 1 };
+        }
+      );
+    },
+  });
+}
+
+export function useUnfollow() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: getUserFollowersList,
+    onSuccess: (_, params) => {
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.GET_USER_FOLLOWERS_LIST],
+        exact: false,
+      });
+
+      queryClient.setQueriesData(
+        { queryKey: [USER_QUERY_KEYS.GET_USER_BY_ID, { id: params.id }] },
+        (oldData: User | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            isFollowedByUser: false,
+            followersCount: oldData.followersCount - 1,
+          };
+        }
+      );
+    },
+  });
+}
+
+export function useGetUserFollowersList(params: GetUserFollowersListParams) {
+  return useInfiniteQuery({
+    initialPageParam: params,
+    queryKey: [USER_QUERY_KEYS.GET_USER_FOLLOWERS_LIST, params],
+    queryFn: ({ pageParam }) => getUserFollowersList(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { id: params.id, page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
+  });
+}
+
+export function useGetUserFollowingsList(params: GetUserFollowingsListParams) {
+  return useInfiniteQuery({
+    initialPageParam: params,
+    queryKey: [USER_QUERY_KEYS.GET_USER_FOLLOWERS_LIST, params],
+    queryFn: ({ pageParam }) => getUserFollowersList(pageParam),
     getNextPageParam: (lastPage) => {
       const nextPage = lastPage.pagination.page + 1;
 
