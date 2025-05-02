@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { ArrowLeftIcon } from "lucide-react";
 import { getUserName } from "@/lib/utils/users";
 import UserAvatar from "@/components/UserAvatar";
-import { useGetUserFollowingList } from "@/services/user";
+import { useGetUserFollowingsList } from "@/services/user";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
   Sheet,
@@ -26,7 +26,7 @@ export default function UserFollowingsListSheet({
   isOpen,
   onOpenChange,
 }: UserFollowingsListSheetProps) {
-  const { data, isFetching, hasNextPage, fetchNextPage } = useGetUserFollowingList(
+  const { data, isFetching, hasNextPage, fetchNextPage } = useGetUserFollowingsList(
     { id: userId },
     { enabled: isOpen }
   );
