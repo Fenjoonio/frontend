@@ -9,6 +9,12 @@ import type {
   GetCurrentUserStoriesResponse,
   GetCurrentUserStoriesParams,
   GetUserPrivateStoryCountResponse,
+  FollowParams,
+  UnfollowParams,
+  GetUserFollowersListParams,
+  GetUserFollowersListResponse,
+  GetUserFollowingsListParams,
+  GetUserFollowingsListResponse,
 } from "./types";
 
 export async function getCurrentUser() {
@@ -57,6 +63,34 @@ export async function getUserPrivateStoryCount() {
   const response = await http.get<GetUserPrivateStoryCountResponse>(
     "v1/users/me/private-story-count"
   );
+
+  return response.data;
+}
+
+export async function follow({ id }: FollowParams) {
+  const response = await http.post<true>(`v1/users/${id}/follow`);
+
+  return response.data;
+}
+
+export async function unfollow({ id }: UnfollowParams) {
+  const response = await http.delete<true>(`v1/users/${id}/unfollow`);
+
+  return response.data;
+}
+
+export async function getUserFollowersList({ id, ...params }: GetUserFollowersListParams) {
+  const response = await http.get<GetUserFollowersListResponse>(`v1/users/${id}/followers`, {
+    searchParams: params,
+  });
+
+  return response.data;
+}
+
+export async function getUserFollowingList({ id, ...params }: GetUserFollowingsListParams) {
+  const response = await http.get<GetUserFollowingsListResponse>(`v1/users/${id}/following`, {
+    searchParams: params,
+  });
 
   return response.data;
 }

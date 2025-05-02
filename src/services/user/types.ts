@@ -11,6 +11,9 @@ export type User = {
   isBot: boolean;
   isPremium: boolean;
   isVerified: boolean;
+  followersCount: number;
+  followingsCount: number;
+  isFollowedByUser: boolean;
 };
 
 export type GetUserByIdParams = {
@@ -67,4 +70,44 @@ export type GetCurrentUserStoriesResponse = {
 export type GetUserPrivateStoryCountResponse = {
   count: number;
   max: number;
+};
+
+export type FollowParams = {
+  id: number;
+};
+
+export type UnfollowParams = {
+  id: number;
+};
+
+export type GetUserFollowersListParams = {
+  id: number;
+  page?: number;
+  limit?: number;
+};
+
+export type GetUserFollowersListResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  followers: User[];
+};
+
+export type GetUserFollowingsListParams = {
+  id: number;
+  page?: number;
+  limit?: number;
+};
+
+export type GetUserFollowingsListResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  followings: User[];
 };

@@ -1,17 +1,25 @@
 "use client";
 
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
-import { useGetUserById } from "@/services/user";
-import { Share2Icon, UserPlusIcon } from "lucide-react";
+import { SendIcon, UserPlusIcon } from "lucide-react";
+import { useFollow, useGetUserById, useUnfollow } from "@/services/user";
+import UserFollowersListSheet from "@/app/(user)/components/UserFollowersListSheet";
+import UserFollowingsListSheet from "@/app/(user)/components/UserFollowingsListSheet";
 
 type UserInfoProps = {
   id: number;
 };
 
 export default function UserInfo({ id }: UserInfoProps) {
+  const [isFollowersSheetOpen, setIsFollowersSheetOpen] = useState(false);
+  const [isFollowingsSheetOpen, setIsFollowingsSheetOpen] = useState(false);
+
   const { data: user } = useGetUserById({ id });
+  const { mutate: follow, isPending: isFollowPending } = useFollow();
+  const { mutate: unfollow, isPending: isUnfollowPending } = useUnfollow();
 
   if (!user) {
     return (
@@ -25,10 +33,11 @@ export default function UserInfo({ id }: UserInfoProps) {
   const userName = getUserName(user || {});
 
   const toggleFollow = () => {
-    toast.info("این قابلیت بزودی اضافه می‌شود.");
+    const toggleFollow = user.isFollowedByUser ? unfollow : follow;
+    toggleFollow({ id: user.id });
   };
 
-  const share = () => {
+  const message = () => {
     toast.info("این قابلیت بزودی اضافه می‌شود.");
   };
 
@@ -43,17 +52,50 @@ export default function UserInfo({ id }: UserInfoProps) {
       <h1 className="text-2xl font-bold mt-4">{userName}</h1>
       <span className="block text-sm text-soft-foreground mt-2">{user.bio}</span>
 
+      <div className="w-full flex gap-x-4 mt-4">
+        <div className="flex-1 flex gap-y-1 flex-col items-center">
+          <span className="text-2xl" onClick={() => setIsFollowersSheetOpen(true)}>
+            {user.followersCount}
+          </span>
+          <span>دنبال کنندگان</span>
+        </div>
+
+        <div className="flex-1 flex gap-y-1 flex-col items-center">
+          <span className="text-2xl" onClick={() => setIsFollowingsSheetOpen(true)}>
+            {user.followingsCount}
+          </span>
+          <span>دنبال شدگان</span>
+        </div>
+      </div>
+
       <div className="w-full flex gap-x-2 px-5 mt-6">
-        <Button className="flex-1" onClick={toggleFollow}>
+        <Button
+          className="flex-1"
+          disabled={isFollowPending || isUnfollowPending}
+          variant={user.isFollowedByUser ? "outline" : "default"}
+          onClick={toggleFollow}
+        >
           <UserPlusIcon />
-          <span className="mt-1">دنبال کردن</span>
+          <span className="mt-1">{user.isFollowedByUser ? "دنبال کرده‌اید" : "دنبال کردن"}</span>
         </Button>
 
-        <Button variant="outline" className="flex-1" onClick={share}>
-          <Share2Icon />
-          <span className="mt-1">اشتراک‌گذاری</span>
+        <Button variant="outline" className="flex-1" onClick={message}>
+          <SendIcon />
+          <span className="mt-1">پیام دادن</span>
         </Button>
       </div>
+
+      <UserFollowingsListSheet
+        userId={user.id}
+        isOpen={isFollowingsSheetOpen}
+        onOpenChange={setIsFollowingsSheetOpen}
+      />
+
+      <UserFollowersListSheet
+        userId={user.id}
+        isOpen={isFollowersSheetOpen}
+        onOpenChange={setIsFollowersSheetOpen}
+      />
     </>
   );
 }
