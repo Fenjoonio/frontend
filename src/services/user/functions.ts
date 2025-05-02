@@ -13,6 +13,7 @@ import type {
   UnfollowParams,
   GetUserFollowersListParams,
   GetUserFollowersListResponse,
+  GetUserFollowingsListParams,
   GetUserFollowingsListResponse,
 } from "./types";
 
@@ -67,7 +68,7 @@ export async function getUserPrivateStoryCount() {
 }
 
 export async function follow({ id }: FollowParams) {
-  const response = await http.get<true>(`v1/users/${id}/follow`);
+  const response = await http.post<true>(`v1/users/${id}/follow`);
 
   return response.data;
 }
@@ -86,7 +87,7 @@ export async function getUserFollowersList({ id, ...params }: GetUserFollowersLi
   return response.data;
 }
 
-export async function getUserFollowingsList({ id, ...params }: GetUserFollowersListParams) {
+export async function getUserFollowingList({ id, ...params }: GetUserFollowingsListParams) {
   const response = await http.get<GetUserFollowingsListResponse>(`v1/users/${id}/following`, {
     searchParams: params,
   });
