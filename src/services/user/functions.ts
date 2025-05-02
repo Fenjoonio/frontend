@@ -87,8 +87,8 @@ export async function getUserFollowersList({ id, ...params }: GetUserFollowersLi
   return response.data;
 }
 
-export async function getUserFollowingList({ id, ...params }: GetUserFollowingsListParams) {
-  const response = await http.get<GetUserFollowingsListResponse>(`v1/users/${id}/following`, {
+export async function getUserFollowingsList({ id, ...params }: GetUserFollowingsListParams) {
+  const response = await http.get<GetUserFollowingsListResponse>(`v1/users/${id}/followings`, {
     searchParams: params,
   });
 

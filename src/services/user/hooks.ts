@@ -11,7 +11,7 @@ import {
   getUserFollowersList,
   follow,
   unfollow,
-  getUserFollowingList,
+  getUserFollowingsList,
 } from "./functions";
 import type {
   GetCurrentUserStoriesParams,
@@ -176,7 +176,7 @@ export function useGetUserFollowersList(
   });
 }
 
-export function useGetUserFollowingList(
+export function useGetUserFollowingsList(
   params: GetUserFollowingsListParams,
   options?: { enabled?: boolean }
 ) {
@@ -184,7 +184,7 @@ export function useGetUserFollowingList(
     ...options,
     initialPageParam: params,
     queryKey: [USER_QUERY_KEYS.GET_USER_FOLLOWERS_LIST, params],
-    queryFn: ({ pageParam }) => getUserFollowingList(pageParam),
+    queryFn: ({ pageParam }) => getUserFollowingsList(pageParam),
     getNextPageParam: (lastPage) => {
       const nextPage = lastPage.pagination.page + 1;
 
