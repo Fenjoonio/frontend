@@ -17,6 +17,21 @@ export default function HomeSlider({ className }: HomeSliderProps) {
       <SwiperSlide className="px-5">
         <Link
           href="https://survey.porsline.ir/s/NjmYt7vS"
+          className="w-full h-48 flex flex-col justify-center items-center bg-danger rounded-sm"
+        >
+          <span className="text-center text-xl text-light-gray-100 font-black">
+            دنبال کننده جدید داری!
+          </span>
+          <span className="text-center text-sm text-light-gray-100 mt-1">
+            از حالا به بعد می‌تونید آدم‌ها رو تو فنجون دنبال کنید!
+          </span>
+          <span className="bg-white text-primary rounded-sm py-1 px-6 mt-4">بعدی رو تو بگو!</span>
+        </Link>
+      </SwiperSlide>
+
+      <SwiperSlide className="px-5">
+        <Link
+          href="https://survey.porsline.ir/s/NjmYt7vS"
           className="w-full h-48 flex flex-col justify-center items-center bg-primary rounded-sm"
         >
           <span className="text-center text-xl text-light-gray-100 font-black">
