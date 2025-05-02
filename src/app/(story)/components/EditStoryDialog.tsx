@@ -48,7 +48,7 @@ export default function EditStoryDialog({
   }, [story]);
 
   const editStory = () => {
-    mutate({ id: story?.id || storyId, text });
+    mutate({ id: story?.id || storyId, text: text.trim() });
   };
 
   return (

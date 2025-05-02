@@ -9,6 +9,9 @@ import {
   getCurrentUserStories,
   getUserPrivateStoryCount,
   getUserFollowersList,
+  follow,
+  unfollow,
+  getUserFollowingList,
 } from "./functions";
 import type {
   GetCurrentUserStoriesParams,
@@ -108,7 +111,7 @@ export function useFollow() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: getUserFollowersList,
+    mutationFn: follow,
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({
         queryKey: [USER_QUERY_KEYS.GET_USER_FOLLOWERS_LIST],
@@ -131,7 +134,7 @@ export function useUnfollow() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: getUserFollowersList,
+    mutationFn: unfollow,
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({
         queryKey: [USER_QUERY_KEYS.GET_USER_FOLLOWERS_LIST],
@@ -154,8 +157,12 @@ export function useUnfollow() {
   });
 }
 
-export function useGetUserFollowersList(params: GetUserFollowersListParams) {
+export function useGetUserFollowersList(
+  params: GetUserFollowersListParams,
+  options?: { enabled?: boolean }
+) {
   return useInfiniteQuery({
+    ...options,
     initialPageParam: params,
     queryKey: [USER_QUERY_KEYS.GET_USER_FOLLOWERS_LIST, params],
     queryFn: ({ pageParam }) => getUserFollowersList(pageParam),
@@ -169,11 +176,15 @@ export function useGetUserFollowersList(params: GetUserFollowersListParams) {
   });
 }
 
-export function useGetUserFollowingsList(params: GetUserFollowingsListParams) {
+export function useGetUserFollowingList(
+  params: GetUserFollowingsListParams,
+  options?: { enabled?: boolean }
+) {
   return useInfiniteQuery({
+    ...options,
     initialPageParam: params,
     queryKey: [USER_QUERY_KEYS.GET_USER_FOLLOWERS_LIST, params],
-    queryFn: ({ pageParam }) => getUserFollowersList(pageParam),
+    queryFn: ({ pageParam }) => getUserFollowingList(pageParam),
     getNextPageParam: (lastPage) => {
       const nextPage = lastPage.pagination.page + 1;
 
