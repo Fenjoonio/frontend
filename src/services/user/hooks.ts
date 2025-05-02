@@ -183,7 +183,7 @@ export function useGetUserFollowingsList(
   return useInfiniteQuery({
     ...options,
     initialPageParam: params,
-    queryKey: [USER_QUERY_KEYS.GET_USER_FOLLOWERS_LIST, params],
+    queryKey: [USER_QUERY_KEYS.GET_USER_FOLLOWING_LIST, params],
     queryFn: ({ pageParam }) => getUserFollowingsList(pageParam),
     getNextPageParam: (lastPage) => {
       const nextPage = lastPage.pagination.page + 1;
