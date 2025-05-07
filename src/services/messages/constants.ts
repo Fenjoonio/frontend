@@ -1,0 +1,3 @@
+export const enum MESSAGES_QUERY_KEYS {
+  GET_CHAT_MESSAGES = "GET_CHAT_MESSAGES",
+}
