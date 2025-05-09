@@ -12,8 +12,10 @@ import {
   follow,
   unfollow,
   getUserFollowingsList,
+  getCurrentUserBookmarks,
 } from "./functions";
 import type {
+  GetCurrentUserBookmarksParams,
   GetCurrentUserStoriesParams,
   GetUserByIdParams,
   GetUserFollowersListParams,
@@ -190,6 +192,25 @@ export function useGetUserFollowingsList(
 
       return nextPage <= lastPage.pagination.pages
         ? { id: params.id, page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
+  });
+}
+
+export function useGetCurrentUserBookmarks(
+  params: GetCurrentUserBookmarksParams,
+  options?: { enabled?: boolean }
+) {
+  return useInfiniteQuery({
+    ...options,
+    initialPageParam: params,
+    queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_BOOKMARKS, params],
+    queryFn: ({ pageParam }) => getCurrentUserBookmarks(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
         : undefined;
     },
   });

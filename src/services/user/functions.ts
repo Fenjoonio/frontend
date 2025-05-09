@@ -15,6 +15,8 @@ import type {
   GetUserFollowersListResponse,
   GetUserFollowingsListParams,
   GetUserFollowingsListResponse,
+  GetCurrentUserBookmarksParams,
+  GetCurrentUserBookmarksResponse,
 } from "./types";
 
 export async function getCurrentUser() {
@@ -89,6 +91,14 @@ export async function getUserFollowersList({ id, ...params }: GetUserFollowersLi
 
 export async function getUserFollowingsList({ id, ...params }: GetUserFollowingsListParams) {
   const response = await http.get<GetUserFollowingsListResponse>(`v1/users/${id}/followings`, {
+    searchParams: params,
+  });
+
+  return response.data;
+}
+
+export async function getCurrentUserBookmarks(params: GetCurrentUserBookmarksParams) {
+  const response = await http.get<GetCurrentUserBookmarksResponse>("v1/users/me/bookmarks", {
     searchParams: params,
   });
 

@@ -111,3 +111,18 @@ export type GetUserFollowingsListResponse = {
   };
   followings: User[];
 };
+
+export type GetCurrentUserBookmarksParams = {
+  page?: number;
+  limit?: number;
+};
+
+export type GetCurrentUserBookmarksResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  bookmarks: Story[];
+};
