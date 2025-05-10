@@ -52,9 +52,7 @@ export default function HomePage() {
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 20px)" }}
         className="w-[calc(100%-1px)] flex items-center justify-between sticky top-0 right-0 z-10 bg-background border-b border-border pb-4 px-5"
       >
-        <h1 className="text-xl font-extrabold">
-          فنجون <span className="text-xs font-semibold ms-1">#بندر_عباس</span>
-        </h1>
+        <h1 className="text-xl font-extrabold">فنجون</h1>
 
         <Link href="/notifications" className="relative">
           {Number(notificationsUnreadCount) > 0 && (
