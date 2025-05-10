@@ -48,6 +48,11 @@ export default function UserInfo({ id }: UserInfoProps) {
           {userName[0]}
         </div>
       </div>
+      {user.isPremium && (
+        <span className="text-sm text-primary bg-foreground py-2 px-4 rounded-lg -mt-3">
+          کاربر حرفه‌ای
+        </span>
+      )}
 
       <h1 className="text-2xl font-bold mt-4">{userName}</h1>
       <span className="block text-sm text-soft-foreground mt-2">{user.bio}</span>

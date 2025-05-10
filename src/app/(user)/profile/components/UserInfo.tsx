@@ -24,6 +24,11 @@ export default function UserInfo() {
           {userName[0]}
         </div>
       </div>
+      {currentUser.isPremium && (
+        <span className="text-sm text-primary bg-foreground py-2 px-4 rounded-lg -mt-3">
+          کاربر حرفه‌ای
+        </span>
+      )}
 
       <h1 className="text-2xl mt-4">{userName}</h1>
     </>
