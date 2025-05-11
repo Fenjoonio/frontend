@@ -33,11 +33,14 @@ export default function MessagePage() {
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const spacerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const isFirstRender = useRef(true);
   const [messageText, setMessageText] = useState("");
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
+
+  const previousScrollHeightRef = useRef<number>(0);
+  const previousScrollTopRef = useRef<number>(0);
+  const isLoadingMoreRef = useRef<boolean>(false);
 
   const messages = useMemo(
     () => data?.pages.flatMap((page) => page.messages ?? []).reverse() ?? [],
@@ -58,10 +61,37 @@ export default function MessagePage() {
   }, [messages]);
 
   useEffect(() => {
-    if (!isFirstRender.current && autoScrollEnabled && messagesContainerRef.current) {
+    if (
+      !isFirstRender.current &&
+      !isLoadingMoreRef.current &&
+      autoScrollEnabled &&
+      messagesContainerRef.current
+    ) {
       scrollToBottom();
     }
-  }, [messages, autoScrollEnabled]);
+
+    if (isLoadingMoreRef.current && !isFetchingNextPage) {
+      isLoadingMoreRef.current = false;
+    }
+  }, [messages, autoScrollEnabled, isFetchingNextPage]);
+
+  useEffect(() => {
+    if (
+      !isFetchingNextPage &&
+      previousScrollHeightRef.current > 0 &&
+      messagesContainerRef.current
+    ) {
+      const newScrollHeight = messagesContainerRef.current.scrollHeight;
+      const heightDifference = newScrollHeight - previousScrollHeightRef.current;
+
+      if (heightDifference > 0) {
+        messagesContainerRef.current.scrollTop = previousScrollTopRef.current + heightDifference;
+      }
+
+      previousScrollHeightRef.current = 0;
+      previousScrollTopRef.current = 0;
+    }
+  }, [isFetchingNextPage, messages]);
 
   const handleSendMessage = () => {
     if (messageText.trim()) {
@@ -77,18 +107,11 @@ export default function MessagePage() {
     const container = e.target as HTMLDivElement;
 
     if (container.scrollTop < 100 && hasNextPage && !isFetchingNextPage) {
-      const spacerHeight = spacerRef.current?.offsetHeight || 0;
-      const scrollPosition = container.scrollTop;
+      previousScrollHeightRef.current = container.scrollHeight;
+      previousScrollTopRef.current = container.scrollTop;
+      isLoadingMoreRef.current = true;
 
-      fetchNextPage().then(() => {
-        setTimeout(() => {
-          if (messagesContainerRef.current && spacerRef.current) {
-            const newSpacerHeight = spacerRef.current.offsetHeight || 0;
-            const heightDiff = newSpacerHeight - spacerHeight;
-            messagesContainerRef.current.scrollTop = scrollPosition + heightDiff;
-          }
-        }, 10);
-      });
+      fetchNextPage();
     }
 
     const isNearBottom =
@@ -143,8 +166,6 @@ export default function MessagePage() {
               />
             );
           })}
-
-          <div ref={spacerRef} className="flex-grow" />
         </div>
       </div>
 
