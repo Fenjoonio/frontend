@@ -107,8 +107,8 @@ export default function MessagePage() {
 
   return (
     <section
-      style={{ backgroundImage: "url('/assets/images/pattern.svg')", backgroundSize: "300px" }}
-      className="h-svh flex flex-col relative pb-[88px]"
+      style={{ backgroundImage: "url('/assets/images/pattern.svg')", backgroundSize: "200px" }}
+      className="h-svh flex flex-col relative"
     >
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
@@ -148,7 +148,7 @@ export default function MessagePage() {
         </div>
       </div>
 
-      <div className="w-[478px] flex gap-x-2 items-end bg-soft-background py-4 px-4 fixed bottom-0">
+      <div className="flex gap-x-2 items-end bg-soft-background py-4 px-4 sticky bottom-0">
         <Textarea
           ref={textareaRef}
           value={messageText}
