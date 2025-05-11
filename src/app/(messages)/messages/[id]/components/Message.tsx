@@ -55,7 +55,10 @@ export default function Message({
             !isLastInGroup &&
             "rounded-lg rounded-tl-xl rounded-bl-sm",
           !isMyMessage && !isFirstInGroup && !isLastInGroup && "rounded-lg rounded-bl-md",
-          !isMyMessage && !isFirstInGroup && isLastInGroup && "rounded-lg rounded-bl-none"
+          !isMyMessage && !isFirstInGroup && isLastInGroup && "rounded-lg rounded-bl-none",
+          // Add spacing between message groups
+          isFirstInGroup && "mt-4",
+          !isFirstInGroup && "mt-0.5"
         )}
       >
         {message.message}
