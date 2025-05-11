@@ -1,7 +1,7 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
 import { SendIcon, UserPlusIcon } from "lucide-react";
@@ -35,10 +35,6 @@ export default function UserInfo({ id }: UserInfoProps) {
   const toggleFollow = () => {
     const toggleFollow = user.isFollowedByUser ? unfollow : follow;
     toggleFollow({ id: user.id });
-  };
-
-  const message = () => {
-    toast.info("این قابلیت بزودی اضافه می‌شود.");
   };
 
   return (
@@ -79,10 +75,12 @@ export default function UserInfo({ id }: UserInfoProps) {
           <span className="mt-1">{user.isFollowedByUser ? "دنبال کرده‌اید" : "دنبال کردن"}</span>
         </Button>
 
-        <Button variant="outline" className="flex-1" onClick={message}>
-          <SendIcon />
-          <span className="mt-1">پیام دادن</span>
-        </Button>
+        <Link href={`/messages/${user.id}`} className="flex-1">
+          <Button variant="outline" className="w-full">
+            <SendIcon />
+            <span className="mt-1">پیام دادن</span>
+          </Button>
+        </Link>
       </div>
 
       <UserFollowingsListSheet
