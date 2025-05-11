@@ -6,8 +6,8 @@ import BackArrow from "@/components/BackArrow";
 import { getUserName } from "@/lib/utils/users";
 import { Button } from "@/components/ui/button";
 import { useGetUserById } from "@/services/user";
+import { SendHorizonalIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { SendHorizonalIcon, Loader2 } from "lucide-react";
 import { useMemo, useRef, useEffect, useState, KeyboardEvent } from "react";
 import { useGetInfiniteChatMessages, useSendMessage } from "@/services/messages";
 
