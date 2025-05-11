@@ -1,5 +1,6 @@
 "use client";
 
+import dayjs from "dayjs";
 import Message from "./components/Message";
 import { useParams } from "next/navigation";
 import BackArrow from "@/components/BackArrow";
@@ -10,6 +11,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { SendHorizonalIcon, Loader2 } from "lucide-react";
 import { useMemo, useRef, useEffect, useState, KeyboardEvent } from "react";
 import { useGetInfiniteChatMessages, useSendMessage } from "@/services/messages";
+import { cn } from "@/lib/utils";
+
+const isWithinFiveMinutes = (time1: string, time2: string) => {
+  const diff = dayjs(time1).diff(dayjs(time2), "minute");
+  return Math.abs(diff) <= 5;
+};
 
 export default function MessagePage() {
   const params = useParams<{ id: string }>();
@@ -132,8 +139,14 @@ export default function MessagePage() {
           {messages.map((message, index) => {
             const prevMessage = messages[index - 1];
             const nextMessage = messages[index + 1];
-            const isFirstInGroup = !prevMessage || prevMessage.fromId !== message.fromId;
-            const isLastInGroup = !nextMessage || nextMessage.fromId !== message.fromId;
+            const isFirstInGroup =
+              !prevMessage ||
+              prevMessage.fromId !== message.fromId ||
+              !isWithinFiveMinutes(message.createdAt, prevMessage.createdAt);
+            const isLastInGroup =
+              !nextMessage ||
+              nextMessage.fromId !== message.fromId ||
+              !isWithinFiveMinutes(message.createdAt, nextMessage.createdAt);
 
             return (
               <Message
@@ -143,6 +156,7 @@ export default function MessagePage() {
                 isFirstInGroup={isFirstInGroup}
                 isLastInGroup={isLastInGroup}
                 data-message-id={message.id}
+                className={cn({ "mt-4": isFirstInGroup }, { "mt-0.5": !isFirstInGroup })}
               />
             );
           })}
