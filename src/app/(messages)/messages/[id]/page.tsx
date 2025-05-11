@@ -26,48 +26,46 @@ export default function MessagePage() {
     onSuccess: () => {
       setMessageText("");
       setTimeout(() => {
-        if (messagesContainerRef.current) {
-          messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-        }
+        scrollToBottom();
       }, 50);
     },
   });
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const spacerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const isFirstRender = useRef(true);
   const [messageText, setMessageText] = useState("");
+  const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
 
   const messages = useMemo(
     () => data?.pages.flatMap((page) => page.messages ?? []).reverse() ?? [],
     [data?.pages]
   );
 
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   useEffect(() => {
     if (isFirstRender.current && messages.length > 0 && messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      scrollToBottom();
       isFirstRender.current = false;
     }
   }, [messages]);
 
   useEffect(() => {
-    if (!isFirstRender.current && messagesContainerRef.current) {
-      const container = messagesContainerRef.current;
-      const isNearBottom =
-        container.scrollHeight - container.scrollTop - container.clientHeight < 200;
-
-      if (isNearBottom) {
-        requestAnimationFrame(() => {
-          if (messagesContainerRef.current) {
-            messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-          }
-        });
-      }
+    if (!isFirstRender.current && autoScrollEnabled && messagesContainerRef.current) {
+      scrollToBottom();
     }
-  }, [messages]);
+  }, [messages, autoScrollEnabled]);
 
   const handleSendMessage = () => {
     if (messageText.trim()) {
+      setAutoScrollEnabled(true);
       sendMessage({
         to: +params.id,
         message: messageText.trim(),
@@ -76,27 +74,26 @@ export default function MessagePage() {
   };
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLDivElement;
-    if (target.scrollTop < 100 && hasNextPage && !isFetchingNextPage) {
-      const firstMessageElement = messagesContainerRef.current?.querySelector("[data-message-id]");
-      const firstMessageRect = firstMessageElement?.getBoundingClientRect();
+    const container = e.target as HTMLDivElement;
+
+    if (container.scrollTop < 100 && hasNextPage && !isFetchingNextPage) {
+      const spacerHeight = spacerRef.current?.offsetHeight || 0;
+      const scrollPosition = container.scrollTop;
 
       fetchNextPage().then(() => {
         setTimeout(() => {
-          if (messagesContainerRef.current && firstMessageElement) {
-            const messageId = firstMessageElement.getAttribute("data-message-id");
-            const sameMessageElement = messagesContainerRef.current.querySelector(
-              `[data-message-id="${messageId}"]`
-            );
-            if (sameMessageElement) {
-              const newRect = sameMessageElement.getBoundingClientRect();
-              const positionDiff = newRect.top - (firstMessageRect?.top || 0);
-              messagesContainerRef.current.scrollTop += positionDiff;
-            }
+          if (messagesContainerRef.current && spacerRef.current) {
+            const newSpacerHeight = spacerRef.current.offsetHeight || 0;
+            const heightDiff = newSpacerHeight - spacerHeight;
+            messagesContainerRef.current.scrollTop = scrollPosition + heightDiff;
           }
         }, 10);
       });
     }
+
+    const isNearBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+    setAutoScrollEnabled(isNearBottom);
   };
 
   const onKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -110,8 +107,8 @@ export default function MessagePage() {
 
   return (
     <section
-      style={{ backgroundImage: "url('/assets/images/pattern.svg')", backgroundSize: "300px" }}
-      className="h-svh flex flex-col relative pb-[88px]"
+      style={{ backgroundImage: "url('/assets/images/pattern.svg')", backgroundSize: "200px" }}
+      className="h-svh flex flex-col relative"
     >
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
@@ -121,14 +118,14 @@ export default function MessagePage() {
         <h1 className="text-lg font-bold mt-1">{getUserName(user)}</h1>
       </header>
 
-      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto" onScroll={handleScroll}>
-        {isFetchingNextPage && (
-          <div className="flex justify-center p-2">
-            <Loader2 className="animate-spin h-5 w-5 text-primary" />
-          </div>
-        )}
+      <div
+        ref={messagesContainerRef}
+        className="flex-1 overflow-y-auto flex flex-col-reverse"
+        onScroll={handleScroll}
+      >
+        <div ref={messagesEndRef} />
 
-        <div className="flex flex-col gap-y-1 py-4 px-2 min-h-full">
+        <div className="flex flex-col gap-y-1 py-4 px-2">
           {messages.map((message, index) => {
             const prevMessage = messages[index - 1];
             const nextMessage = messages[index + 1];
@@ -146,10 +143,12 @@ export default function MessagePage() {
               />
             );
           })}
+
+          <div ref={spacerRef} className="flex-grow" />
         </div>
       </div>
 
-      <div className="w-[478px] flex gap-x-2 items-end bg-soft-background py-4 px-4 fixed bottom-0">
+      <div className="flex gap-x-2 items-end bg-soft-background py-4 px-4 sticky bottom-0">
         <Textarea
           ref={textareaRef}
           value={messageText}
