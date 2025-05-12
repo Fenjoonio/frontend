@@ -16,31 +16,16 @@ export default function HomeSlider({ className }: HomeSliderProps) {
     <Swiper autoplay={{ delay: 10_000 }} loop className={className}>
       <SwiperSlide className="px-5">
         <Link
-          href="https://survey.porsline.ir/s/NjmYt7vS"
-          className="w-full h-48 flex flex-col justify-center items-center bg-danger rounded-sm"
-        >
-          <span className="text-center text-xl text-light-gray-100 font-black">
-            دنبال کننده جدید داری!
-          </span>
-          <span className="text-center text-sm text-light-gray-100 mt-1">
-            از حالا به بعد می‌تونید آدم‌ها رو تو فنجون دنبال کنید!
-          </span>
-          <span className="bg-white text-primary rounded-sm py-1 px-6 mt-4">بعدی رو تو بگو!</span>
-        </Link>
-      </SwiperSlide>
-
-      <SwiperSlide className="px-5">
-        <Link
-          href="https://survey.porsline.ir/s/NjmYt7vS"
+          href="https://instagram.com/fenjoon.io"
           className="w-full h-48 flex flex-col justify-center items-center bg-primary rounded-sm"
         >
           <span className="text-center text-xl text-light-gray-100 font-black">
-            نمیخوای داستانتو همه بخونن؟
+            فنجون رو دنبال کنید!
           </span>
           <span className="text-center text-sm text-light-gray-100 mt-1">
-            قابلیت خصوصی کردن داستان هم اومد به فنجون!
+            صفحه اینستاگرام فنجون ساخته شده، یادتون نره دنبالمون کنید!
           </span>
-          <span className="bg-white text-primary rounded-sm py-1 px-6 mt-4">بعدی رو تو بگو!</span>
+          <span className="bg-white text-primary rounded-sm py-1 px-6 mt-4">دنبال کردن</span>
         </Link>
       </SwiperSlide>
 
@@ -49,7 +34,7 @@ export default function HomeSlider({ className }: HomeSliderProps) {
           href="/thread"
           className="w-full h-48 flex flex-col justify-center items-center bg-success rounded-sm"
         >
-          <span className="text-xl text-light-gray-100 font-black">اومدم امانتی رو پس بدم ...</span>
+          <span className="text-xl text-light-gray-100 font-black">اگه خودش باشه چی؟ ...</span>
           <span className="text-sm text-light-gray-100 mt-1">
             دوست داری بعدش چی بشه؟ بقیه‌ش رو تو بنویس!
           </span>
