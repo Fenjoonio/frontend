@@ -38,7 +38,7 @@ export default function Message({
       <div
         key={message.id}
         className={cn(
-          "py-2 px-4",
+          "whitespace-pre-line py-2 px-4",
           isMyMessage ? "bg-primary" : "bg-soft-background",
           // Single messages
           isMyMessage && isFirstInGroup && isLastInGroup && "rounded-lg rounded-br-none",
