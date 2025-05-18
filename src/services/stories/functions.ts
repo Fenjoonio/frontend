@@ -56,8 +56,10 @@ export async function deleteStory(params: DeleteStoryParams) {
   return response.data;
 }
 
-export async function getStoryComments(params: GetStoryCommentsParams) {
-  const response = await http.get<GetStoryCommentsResponse>(`v1/stories/${params.id}/comments`);
+export async function getStoryComments({ id, ...params }: GetStoryCommentsParams) {
+  const response = await http.get<GetStoryCommentsResponse>(`v1/stories/${id}/comments`, {
+    searchParams: params,
+  });
 
   return response.data;
 }
