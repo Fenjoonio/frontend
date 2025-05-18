@@ -15,7 +15,7 @@ const ITEMS = [
     href: "/thread",
     title: "بافته",
     Icon: ChartNoAxesGanttIcon,
-    showBadge: true,
+    showBadge: false,
   },
   {
     id: 2,

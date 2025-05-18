@@ -22,7 +22,6 @@ export default function ThemeSwitcher() {
         </div>
 
         <div className="relative">
-          <span className="size-1 absolute top-0 -left-2 bg-danger rounded-sm duration-1000 animate-pulse"></span>
           <span className="text-sm mt-[2px]">حالت نمایش</span>
         </div>
 
