@@ -1,17 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import BackArrow from "@/components/BackArrow";
-import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
 import { Comment } from "@/components/Comment";
 import ReplyDialog from "./components/ReplyDialog";
+import { StorySkeleton } from "../components/Story";
+import { useEffect, useMemo, useState } from "react";
 import PullToRefresh from "@/components/PullToRefresh";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useAuthContext } from "@/providers/AuthProvider";
+import InfiniteScroll from "react-infinite-scroll-component";
 import StoryLikeButton from "@/app/(story)/components/StoryLikeButton";
 import ShareStorySheet from "@/app/(story)/components/ShareStorySheet";
 import { MessageSquareTextIcon, PenIcon, Share2Icon } from "lucide-react";
@@ -19,7 +20,6 @@ import { useGetSingleStory, useGetInfiniteStoryComments } from "@/services/stori
 
 const STORY_ID = 254;
 
-// TODO: SSR this page (get first story server side)
 export default function ThreadPage() {
   const router = useRouter();
   const { isLoggedIn } = useAuthContext();
@@ -64,13 +64,13 @@ export default function ThreadPage() {
     <section className="pb-4">
       <header
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
-        className="flex items-end justify-between bg-background sticky top-0 border-b border-border z-10 pb-3 px-2"
+        className="w-[calc(100%-1px)] flex items-center sticky top-0 right-0 z-10 bg-background border-b border-border pb-3 px-2"
       >
         <BackArrow />
+        <h1 className="text-lg font-bold mt-1">بافته</h1>
       </header>
 
       <div className="px-5 mt-4">
-        <h1 className="text-lg font-bold">به {"'بافته'"} خوش اومدی!</h1>
         <span className="block text-sm text-soft-foreground mt-1">
           اینجا داستان‌ها در هم تنیده میشن! هر هفته داستان جدیدی اینجا قرار میگیره که ادامه اون رو
           تو می‌بافی ...
@@ -131,31 +131,30 @@ export default function ThreadPage() {
         )}
       </div>
 
-      <PullToRefresh onRefresh={onRefresh} className="mx-5">
-        <section className="divide-y divide-border">
-          {comments.toReversed().map((story) => (
-            <Comment key={story.id} comment={story} className="py-6" />
-          ))}
-
-          {isFetching && (
+      <PullToRefresh onRefresh={onRefresh} className="mx-5 mt-4">
+        <InfiniteScroll
+          next={fetchNextPage}
+          dataLength={comments.length}
+          hasMore={isFetching || hasNextPage}
+          loader={
             <>
-              {Array(3)
+              {Array(5)
                 .fill(0)
                 .map((_, index) => (
-                  <div key={index} className="flex gap-x-2 py-6">
-                    <div>
-                      <div className="size-7 bg-gray-300 dark:bg-border opacity-40 rounded-lg animate-pulse"></div>
-                    </div>
-                    <div className="flex-1 mt-1">
-                      <div className="w-20 h-4 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse"></div>
-                      <div className="w-full h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-4"></div>
-                      <div className="w-[80%] h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-2"></div>
-                    </div>
-                  </div>
+                  <StorySkeleton key={index} className="pb-6 not-first:pt-6" />
                 ))}
             </>
-          )}
-        </section>
+          }
+          className="divide-y divide-border"
+        >
+          {comments.map((comment) => (
+            <Comment
+              key={comment.id}
+              comment={comment}
+              className="flex gap-x-2 pb-6 not-first:pt-6"
+            />
+          ))}
+        </InfiniteScroll>
       </PullToRefresh>
 
       <ReplyDialog storyId={STORY_ID} open={isModalOpen} onOpenChange={setIsModalOpen} />
@@ -165,18 +164,8 @@ export default function ThreadPage() {
         className="fixed left-4 p-4 bg-primary text-light-gray-100 rounded-lg cursor-pointer"
         onClick={openReplyDialog}
       >
-        <PenIcon className="w-5 h-5" />
+        <PenIcon className="size-5" />
       </button>
-
-      {hasNextPage && !isFetching && (
-        <Button
-          variant="ghost"
-          className="w-[calc(100%-40px)] mx-5"
-          onClick={() => fetchNextPage()}
-        >
-          صفحه بعد
-        </Button>
-      )}
 
       {isShareSheetOpen && (
         <ShareStorySheet
