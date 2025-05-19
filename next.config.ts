@@ -4,6 +4,14 @@ import { isApp, isDev } from "@/lib/utils/environment";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  images: {
+    remotePatterns: [
+      {
+        hostname: "s3.lexoya.com",
+        protocol: "https",
+      },
+    ],
+  },
 };
 
 const withSerwist = withSerwistInit({
