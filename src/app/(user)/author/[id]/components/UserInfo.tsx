@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
@@ -39,10 +40,20 @@ export default function UserInfo({ id }: UserInfoProps) {
 
   return (
     <>
-      <div className="w-20 h-20 shrink-0 flex items-center justify-center rounded-3xl bg-primary">
-        <div className="w-12 h-12 flex justify-center items-center overflow-hidden text-4xl text-light-gray-100 font-bold">
-          {userName[0]}
-        </div>
+      <div className="size-20 shrink-0 flex items-center justify-center rounded-3xl bg-primary cursor-pointer">
+        {user.profileImage ? (
+          <Image
+            width={48}
+            height={48}
+            alt={userName}
+            src={user.profileImage}
+            className="w-full h-full object-cover rounded-3xl"
+          />
+        ) : (
+          <div className="size-12 flex justify-center items-center overflow-hidden text-4xl text-light-gray-100 font-bold">
+            {userName[0]}
+          </div>
+        )}
       </div>
       {user.isPremium && (
         <span className="text-sm text-primary bg-foreground py-2 px-4 rounded-lg -mt-3">

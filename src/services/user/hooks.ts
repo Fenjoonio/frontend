@@ -12,6 +12,7 @@ import {
   follow,
   unfollow,
   getUserFollowingsList,
+  uploadUserProfile,
 } from "./functions";
 import type {
   GetCurrentUserStoriesParams,
@@ -191,6 +192,24 @@ export function useGetUserFollowingsList(
       return nextPage <= lastPage.pagination.pages
         ? { id: params.id, page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
         : undefined;
+    },
+  });
+}
+
+export function useUploadUserProfile() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: uploadUserProfile,
+    onSuccess: (res) => {
+      queryClient.setQueriesData(
+        { queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER] },
+        (oldData: User | undefined) => {
+          if (!oldData) return oldData;
+
+          return { ...oldData, profileImage: res.url };
+        }
+      );
     },
   });
 }

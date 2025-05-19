@@ -1,5 +1,6 @@
 "use client";
 
+import dayjs from "dayjs";
 import Message from "./components/Message";
 import { useParams } from "next/navigation";
 import BackArrow from "@/components/BackArrow";
@@ -10,7 +11,6 @@ import { SendHorizonalIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useMemo, useRef, useEffect, useState, KeyboardEvent } from "react";
 import { useGetInfiniteChatMessages, useSendMessage } from "@/services/messages";
-import dayjs from "dayjs";
 
 const isWithinFiveMinutes = (time1: string, time2: string) => {
   const diff = dayjs(time1).diff(dayjs(time2), "minute");

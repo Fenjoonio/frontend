@@ -15,6 +15,8 @@ import type {
   GetUserFollowersListResponse,
   GetUserFollowingsListParams,
   GetUserFollowingsListResponse,
+  UploadUserProfileBody,
+  UploadUserProfileResponse,
 } from "./types";
 
 export async function getCurrentUser() {
@@ -91,6 +93,21 @@ export async function getUserFollowingsList({ id, ...params }: GetUserFollowings
   const response = await http.get<GetUserFollowingsListResponse>(`v1/users/${id}/followings`, {
     searchParams: params,
   });
+
+  return response.data;
+}
+
+export async function uploadUserProfile(body: UploadUserProfileBody) {
+  const formData = new FormData();
+  formData.append("image", body.image);
+
+  const response = await http.post<UploadUserProfileResponse>(
+    `v1/users/me/profile-image`,
+    undefined,
+    {
+      body: formData,
+    }
+  );
 
   return response.data;
 }

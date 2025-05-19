@@ -11,6 +11,7 @@ export type User = {
   isBot: boolean;
   isPremium: boolean;
   isVerified: boolean;
+  profileImage?: string;
   followersCount: number;
   followingsCount: number;
   isFollowedByUser: boolean;
@@ -110,4 +111,12 @@ export type GetUserFollowingsListResponse = {
     total: number;
   };
   followings: User[];
+};
+
+export type UploadUserProfileBody = {
+  image: File;
+};
+
+export type UploadUserProfileResponse = {
+  url: string;
 };
