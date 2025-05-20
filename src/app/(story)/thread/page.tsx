@@ -147,7 +147,7 @@ export default function ThreadPage() {
           }
           className="divide-y divide-border"
         >
-          {comments.map((comment) => (
+          {comments.toReversed().map((comment) => (
             <Comment
               key={comment.id}
               comment={comment}
