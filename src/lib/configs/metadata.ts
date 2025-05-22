@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     template: "فنجون",
   },
   description: "یک دنیا داستان‌های خواندنی کوتاه",
-  metadataBase: new URL("/", "https://fenjoon.vercel.app"),
+  metadataBase: new URL("/", "https://fenjoon.io"),
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
