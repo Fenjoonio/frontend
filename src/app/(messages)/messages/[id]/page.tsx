@@ -44,11 +44,7 @@ export default function MessagePage() {
   const isFirstRender = useRef(true);
   const [messageText, setMessageText] = useState("");
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
-  const [inputBottom, setInputBottom] = useState(0); // Dynamic bottom position for input
-
-  const previousScrollHeightRef = useRef<number>(0);
-  const previousScrollTopRef = useRef<number>(0);
-  const isLoadingMoreRef = useRef<boolean>(false);
+  const [inputTranslateY, setInputTranslateY] = useState(0);
 
   const messages = useMemo(
     () => data?.pages.flatMap((page) => page.messages ?? []).reverse() ?? [],
@@ -61,29 +57,17 @@ export default function MessagePage() {
     }
   };
 
-  // Adjust input position above keyboard
-  const adjustInputPosition = () => {
-    const viewportHeight = window.innerHeight;
-    const keyboardHeight = window.visualViewport ? window.visualViewport.height : viewportHeight;
-    const safeAreaBottom =
-      parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue("--safe-area-inset-bottom")
-      ) || 0;
-    setInputBottom(viewportHeight - keyboardHeight + safeAreaBottom);
-  };
+  useEffect(() => {
+    const handleKeyboardHeightChange = (event: any) => {
+      const { height } = event.detail;
+      setInputTranslateY(height > 0 ? -height : 0);
+    };
 
-  // Handle input focus (keyboard appears)
-  const handleFocus = () => {
-    adjustInputPosition();
-    scrollToBottom(); // Ensure chat stays scrolled to bottom
-  };
-
-  // Handle input blur (keyboard hides)
-  const handleBlur = () => {
-    setTimeout(() => {
-      setInputBottom(0); // Reset to default when keyboard hides
-    }, 100); // Delay to allow button clicks
-  };
+    window.addEventListener("keyboardHeightChange", handleKeyboardHeightChange);
+    return () => {
+      window.removeEventListener("keyboardHeightChange", handleKeyboardHeightChange);
+    };
+  }, []);
 
   useEffect(() => {
     if (isFirstRender.current && messages.length > 0 && messagesContainerRef.current) {
@@ -107,6 +91,10 @@ export default function MessagePage() {
     }
   }, [messages, autoScrollEnabled, isFetchingNextPage]);
 
+  const previousScrollHeightRef = useRef<number>(0);
+  const previousScrollTopRef = useRef<number>(0);
+  const isLoadingMoreRef = useRef<boolean>(false);
+
   useEffect(() => {
     if (
       !isFetchingNextPage &&
@@ -124,27 +112,6 @@ export default function MessagePage() {
       previousScrollTopRef.current = 0;
     }
   }, [isFetchingNextPage, messages]);
-
-  // Set up keyboard detection
-  useEffect(() => {
-    const handleResize = () => {
-      if (textareaRef.current === document.activeElement) {
-        adjustInputPosition();
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener("resize", handleResize);
-    }
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener("resize", handleResize);
-      }
-    };
-  }, []);
 
   const handleSendMessage = () => {
     if (messageText.trim()) {
@@ -187,7 +154,7 @@ export default function MessagePage() {
       className="h-svh flex flex-col relative"
     >
       <header
-        style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
+        style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 12px)" }}
         className="w-[calc(100%-1px)] flex items-center sticky top-0 right-0 z-10 bg-background border-b border-border pb-3 px-2"
       >
         <BackArrow />
@@ -230,8 +197,8 @@ export default function MessagePage() {
 
       <div
         ref={inputContainerRef}
-        className="flex gap-x-2 items-end bg-soft-background sticky z-10 py-4 px-4"
-        style={{ bottom: `${inputBottom}px` }}
+        className="flex gap-x-2 items-end bg-soft-background py-4 px-4 sticky bottom-0 z-10 transition-transform will-change-transform"
+        style={{ transform: `translateY(${inputTranslateY}px)` }}
       >
         <Textarea
           ref={textareaRef}
@@ -240,8 +207,6 @@ export default function MessagePage() {
           placeholder="متن پیامت رو اینجا بنویس"
           className="max-h-32 min-h-14 caret-primary bg-background border-none resize-none"
           onKeyDown={onKeydown}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
         />
 
         <Button className="size-14 shrink-0" onClick={handleSendMessage} disabled={isSending}>
