@@ -25,7 +25,7 @@ export default function Message({
 }: MessageProps) {
   const { mutate: readMessage } = useReadMessage();
   const Icon = !!message.readAt ? CheckCheckIcon : CheckIcon;
-  const isMyMessage = message.fromId !== user.id;
+  const isMyMessage = message.fromId !== user.id || message.toId === user.id;
 
   useEffect(() => {
     if (!isMyMessage && !message.readAt) {

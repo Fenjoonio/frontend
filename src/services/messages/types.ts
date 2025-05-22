@@ -1,6 +1,7 @@
 export type Message = {
   id: number;
   fromId: number;
+  toId: number;
   message: string;
   createdAt: string;
   readAt?: string;
