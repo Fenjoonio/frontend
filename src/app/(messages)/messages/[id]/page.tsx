@@ -40,9 +40,11 @@ export default function MessagePage() {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const inputContainerRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
   const [messageText, setMessageText] = useState("");
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
+  const [inputBottom, setInputBottom] = useState(0); // Dynamic bottom position for input
 
   const previousScrollHeightRef = useRef<number>(0);
   const previousScrollTopRef = useRef<number>(0);
@@ -57,6 +59,30 @@ export default function MessagePage() {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  // Adjust input position above keyboard
+  const adjustInputPosition = () => {
+    const viewportHeight = window.innerHeight;
+    const keyboardHeight = window.visualViewport ? window.visualViewport.height : viewportHeight;
+    const safeAreaBottom =
+      parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--safe-area-inset-bottom")
+      ) || 0;
+    setInputBottom(viewportHeight - keyboardHeight + safeAreaBottom);
+  };
+
+  // Handle input focus (keyboard appears)
+  const handleFocus = () => {
+    adjustInputPosition();
+    scrollToBottom(); // Ensure chat stays scrolled to bottom
+  };
+
+  // Handle input blur (keyboard hides)
+  const handleBlur = () => {
+    setTimeout(() => {
+      setInputBottom(0); // Reset to default when keyboard hides
+    }, 100); // Delay to allow button clicks
   };
 
   useEffect(() => {
@@ -98,6 +124,27 @@ export default function MessagePage() {
       previousScrollTopRef.current = 0;
     }
   }, [isFetchingNextPage, messages]);
+
+  // Set up keyboard detection
+  useEffect(() => {
+    const handleResize = () => {
+      if (textareaRef.current === document.activeElement) {
+        adjustInputPosition();
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", handleResize);
+    }
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener("resize", handleResize);
+      }
+    };
+  }, []);
 
   const handleSendMessage = () => {
     if (messageText.trim()) {
@@ -181,7 +228,11 @@ export default function MessagePage() {
         </div>
       </div>
 
-      <div className="flex gap-x-2 items-end bg-soft-background py-4 px-4 sticky bottom-0">
+      <div
+        ref={inputContainerRef}
+        className="flex gap-x-2 items-end bg-soft-background sticky z-10 py-4 px-4"
+        style={{ bottom: `${inputBottom}px` }}
+      >
         <Textarea
           ref={textareaRef}
           value={messageText}
@@ -189,6 +240,8 @@ export default function MessagePage() {
           placeholder="متن پیامت رو اینجا بنویس"
           className="max-h-32 min-h-14 caret-primary bg-background border-none resize-none"
           onKeyDown={onKeydown}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
 
         <Button className="size-14 shrink-0" onClick={handleSendMessage} disabled={isSending}>
