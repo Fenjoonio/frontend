@@ -31,8 +31,11 @@ export default function MessagePage() {
   const { mutate: sendMessage, isPending: isSending } = useSendMessage({
     onSuccess: () => {
       setMessageText("");
+      textareaRef.current?.focus(); // Refocus the textarea immediately to prevent keyboard from closing
+
       setTimeout(() => {
         scrollToBottom();
+        textareaRef.current?.focus();
       }, 50);
     },
   });
@@ -143,7 +146,6 @@ export default function MessagePage() {
   const onKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && e.shiftKey) {
       e.preventDefault();
-      e.stopPropagation();
 
       handleSendMessage();
     }
