@@ -168,7 +168,10 @@ export default function MessagePage() {
       >
         <div ref={messagesEndRef} />
 
-        <div className="flex flex-col gap-y-1 py-4 px-2">
+        <div
+          className="flex flex-col gap-y-1 py-4 px-2 transition-transform will-change-transform"
+          style={{ transform: `translateY(${inputTranslateY}px)` }}
+        >
           {messages.map((message, index) => {
             const prevMessage = messages[index - 1];
             const nextMessage = messages[index + 1];
