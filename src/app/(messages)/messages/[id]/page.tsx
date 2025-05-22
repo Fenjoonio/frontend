@@ -64,6 +64,7 @@ export default function MessagePage() {
     };
 
     window.addEventListener("keyboardHeightChange", handleKeyboardHeightChange);
+
     return () => {
       window.removeEventListener("keyboardHeightChange", handleKeyboardHeightChange);
     };
@@ -140,8 +141,10 @@ export default function MessagePage() {
   };
 
   const onKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && e.shiftKey) {
       e.preventDefault();
+      e.stopPropagation();
+
       handleSendMessage();
     }
   };
@@ -204,7 +207,9 @@ export default function MessagePage() {
         style={{ transform: `translateY(${inputTranslateY}px)` }}
       >
         <Textarea
+          inputMode="text"
           ref={textareaRef}
+          autoComplete="off"
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}
           placeholder="متن پیامت رو اینجا بنویس"
