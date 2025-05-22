@@ -11,6 +11,12 @@ import { SendHorizonalIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useMemo, useRef, useEffect, useState, KeyboardEvent } from "react";
 import { useGetInfiniteChatMessages, useSendMessage } from "@/services/messages";
+import { cn } from "@/lib/utils";
+
+const isWithinFiveMinutes = (time1: string, time2: string) => {
+  const diff = dayjs(time1).diff(dayjs(time2), "minute");
+  return Math.abs(diff) <= 5;
+};
 
 const isWithinFiveMinutes = (time1: string, time2: string) => {
   const diff = dayjs(time1).diff(dayjs(time2), "minute");
@@ -197,6 +203,7 @@ export default function MessagePage() {
                 isFirstInGroup={isFirstInGroup}
                 isLastInGroup={isLastInGroup}
                 data-message-id={message.id}
+                className={cn({ "mt-4": isFirstInGroup }, { "mt-0.5": !isFirstInGroup })}
               />
             );
           })}

@@ -13,6 +13,7 @@ const formatCreateAtDate = (createAt: string) => {
 type MessageProps = {
   user: User;
   message: Message;
+  className?: string;
   isFirstInGroup?: boolean;
   isLastInGroup?: boolean;
 };
@@ -22,6 +23,7 @@ export default function Message({
   message,
   isFirstInGroup = true,
   isLastInGroup = true,
+  className,
 }: MessageProps) {
   const { mutate: readMessage } = useReadMessage();
   const Icon = !!message.readAt ? CheckCheckIcon : CheckIcon;
@@ -34,7 +36,7 @@ export default function Message({
   }, [message.id, message.readAt, isMyMessage, readMessage]);
 
   return (
-    <div className={cn("flex flex-col", isMyMessage ? "self-start" : "self-end")}>
+    <div className={cn("flex flex-col", isMyMessage ? "self-start" : "self-end", className)}>
       <div
         key={message.id}
         className={cn(
