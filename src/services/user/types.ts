@@ -1,3 +1,4 @@
+import type { Chat } from "@/services/messages";
 import type { Story } from "@/services/stories";
 import type { Comment } from "@/services/comments";
 
@@ -119,4 +120,19 @@ export type UploadUserProfileBody = {
 
 export type UploadUserProfileResponse = {
   url: string;
+};
+
+export type GetUserChatsParams = {
+  page?: number;
+  limit?: number;
+};
+
+export type GetUserChatsResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  chats: Chat[];
 };

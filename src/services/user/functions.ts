@@ -17,6 +17,8 @@ import type {
   GetUserFollowingsListResponse,
   UploadUserProfileBody,
   UploadUserProfileResponse,
+  GetUserChatsParams,
+  GetUserChatsResponse,
 } from "./types";
 
 export async function getCurrentUser() {
@@ -108,6 +110,14 @@ export async function uploadUserProfile(body: UploadUserProfileBody) {
       body: formData,
     }
   );
+
+  return response.data;
+}
+
+export async function getUserChats(params: GetUserChatsParams) {
+  const response = await http.get<GetUserChatsResponse>("v1/users/me/chats", {
+    searchParams: params,
+  });
 
   return response.data;
 }

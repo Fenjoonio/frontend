@@ -13,10 +13,12 @@ import {
   unfollow,
   getUserFollowingsList,
   uploadUserProfile,
+  getUserChats,
 } from "./functions";
 import type {
   GetCurrentUserStoriesParams,
   GetUserByIdParams,
+  GetUserChatsParams,
   GetUserFollowersListParams,
   GetUserFollowingsListParams,
   GetUserStoriesByIdParams,
@@ -210,6 +212,21 @@ export function useUploadUserProfile() {
           return { ...oldData, profileImage: res.url };
         }
       );
+    },
+  });
+}
+
+export function useGetUserChats(params?: GetUserChatsParams) {
+  return useInfiniteQuery({
+    initialPageParam: params || { page: 1, limit: 10 },
+    queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_CHATS, params],
+    queryFn: ({ pageParam }) => getUserChats(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
     },
   });
 }
