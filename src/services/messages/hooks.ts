@@ -1,12 +1,13 @@
 import { MESSAGES_QUERY_KEYS } from "./constants";
 import type { Message, GetChatMessagesParams, UpdateMessageBody } from "./types";
-import { useMutation, useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   sendMessage,
   getChatMessages,
   updateMessage,
   deleteMessage,
   readMessage,
+  getUserUnreadMessagesCount,
 } from "./functions";
 
 export function useGetInfiniteChatMessages(
@@ -78,5 +79,16 @@ export function useReadMessage(options?: { onSuccess?: (res: Message) => void })
       options?.onSuccess?.(response);
       queryClient.invalidateQueries({ queryKey: [MESSAGES_QUERY_KEYS.GET_CHAT_MESSAGES] });
     },
+  });
+}
+
+export function useGetUserUnreadMessagesCount(options?: {
+  enabled?: boolean;
+  refetchInterval?: number;
+}) {
+  return useQuery({
+    ...options,
+    queryKey: [MESSAGES_QUERY_KEYS.GET_USER_UNREAD_MESSAGES_COUNT],
+    queryFn: getUserUnreadMessagesCount,
   });
 }

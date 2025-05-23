@@ -1,3 +1,5 @@
+import type { User } from "@/services/user";
+
 export type Message = {
   id: number;
   fromId: number;
@@ -6,6 +8,10 @@ export type Message = {
   createdAt: string;
   readAt?: string;
   isUpdated: boolean;
+};
+
+export type Chat = User & {
+  lastMessage: Message;
 };
 
 export type SendMessageBody = {

@@ -40,3 +40,9 @@ export async function readMessage({ id }: ReadMessageParams) {
 
   return response.data;
 }
+
+export async function getUserUnreadMessagesCount() {
+  const response = await http.get<number>("v1/messages/unread-count");
+
+  return response.data;
+}
