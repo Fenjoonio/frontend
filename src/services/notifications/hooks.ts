@@ -2,7 +2,7 @@ import { NOTIFICATIONS_QUERY_KEYS } from "./constants";
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import {
   getUserNotifications,
-  getUserNotificationsUnreadCount,
+  getUserUnreadNotificationsCount,
   markNotificationAsRead,
 } from "./functions";
 
@@ -22,14 +22,14 @@ export function useGetUserNotifications(options?: { enabled?: boolean; refetchIn
   });
 }
 
-export function useGetUserNotificationsUnreadCount(options?: {
+export function useGetUnreadNotificationsCount(options?: {
   enabled?: boolean;
   refetchInterval?: number;
 }) {
   return useQuery({
     ...options,
-    queryKey: [NOTIFICATIONS_QUERY_KEYS.GET_USER_NOTIFICATIONS_UNREAD_COUNT],
-    queryFn: getUserNotificationsUnreadCount,
+    queryKey: [NOTIFICATIONS_QUERY_KEYS.GET_USER_UNREAD_NOTIFICATIONS_COUNT],
+    queryFn: getUserUnreadNotificationsCount,
   });
 }
 

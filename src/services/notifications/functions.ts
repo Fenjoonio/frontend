@@ -13,7 +13,7 @@ export async function getUserNotifications(params: GetUserNotificationsParams) {
   return response.data;
 }
 
-export async function getUserNotificationsUnreadCount() {
+export async function getUserUnreadNotificationsCount() {
   const response = await http.get<number>("v1/notifications/unread-count");
 
   return response.data;

@@ -10,10 +10,10 @@ import { useAuthContext } from "@/providers/AuthProvider";
 import { useGetInfiniteStories } from "@/services/stories";
 import { BellIcon, PenIcon, SendIcon } from "lucide-react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Story, { StorySkeleton } from "@/app/(story)/components/Story";
-import CreateNewStoryDialog from "./(story)/components/CreateNewStoryDialog";
-import { useGetUserNotificationsUnreadCount } from "@/services/notifications";
 import { useGetUserUnreadMessagesCount } from "@/services/messages";
+import Story, { StorySkeleton } from "@/app/(story)/components/Story";
+import { useGetUnreadNotificationsCount } from "@/services/notifications";
+import CreateNewStoryDialog from "./(story)/components/CreateNewStoryDialog";
 
 export default function HomePage() {
   const router = useRouter();
@@ -24,7 +24,7 @@ export default function HomePage() {
     limit: 10,
   });
 
-  const { data: notificationsUnreadCount } = useGetUserNotificationsUnreadCount({
+  const { data: unreadNotificationsCount } = useGetUnreadNotificationsCount({
     enabled: isLoggedIn,
     refetchInterval: 5000,
   });
@@ -62,7 +62,7 @@ export default function HomePage() {
 
         <div className="flex gap-x-4 items-center">
           <Link href="/notifications" className="relative">
-            {Number(notificationsUnreadCount) > 0 && (
+            {Number(unreadNotificationsCount) > 0 && (
               <span className="size-[6px] absolute bottom-1 right-0 bg-danger rounded-sm"></span>
             )}
 
