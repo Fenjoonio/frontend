@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useGetUserById } from "@/services/user";
 import { SendHorizonalIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { useMemo, useEffect, useState, KeyboardEvent } from "react";
+import { useMemo, useEffect, useState, useRef, KeyboardEvent } from "react";
 import { useGetInfiniteChatMessages, useSendMessage } from "@/services/messages";
 
 const isWithinFiveMinutes = (time1: string, time2: string) => {
@@ -23,19 +23,16 @@ export default function MessagePage() {
   const [messageText, setMessageText] = useState("");
   const { data: user } = useGetUserById({ id: +params.id });
   const [inputTranslateY, setInputTranslateY] = useState(0);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesStartRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const { data } = useGetInfiniteChatMessages(
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetInfiniteChatMessages(
     {
       userId: +params.id,
     },
     { refetchInterval: 1500 }
   );
-
-  const { mutate: sendMessage, isPending: isSending } = useSendMessage({
-    onSuccess: () => {
-      setMessageText("");
-    },
-  });
 
   const messages = useMemo(
     () => data?.pages.flatMap((page) => page.messages ?? []).reverse() ?? [],
@@ -54,6 +51,46 @@ export default function MessagePage() {
       window.removeEventListener("keyboardHeightChange", handleKeyboardHeightChange);
     };
   }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isIntersecting = entries[0].isIntersecting && hasNextPage && !isFetchingNextPage;
+
+        if (isIntersecting) {
+          const scrollContainer = scrollContainerRef.current;
+
+          if (scrollContainer) {
+            const prevScrollHeight = scrollContainer.scrollHeight;
+            fetchNextPage().then(() => {
+              const newScrollHeight = scrollContainer.scrollHeight;
+              scrollContainer.scrollTop += newScrollHeight - prevScrollHeight;
+            });
+          }
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (messagesStartRef.current) {
+      observer.observe(messagesStartRef.current);
+    }
+
+    return () => {
+      if (messagesStartRef.current) {
+        observer.unobserve(messagesStartRef.current);
+      }
+
+      observer.disconnect();
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  const { mutate: sendMessage, isPending: isSending } = useSendMessage({
+    onSuccess: () => {
+      setMessageText("");
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    },
+  });
 
   const handleSendMessage = () => {
     if (messageText.trim()) {
@@ -86,11 +123,32 @@ export default function MessagePage() {
         <h1 className="text-lg font-bold mt-1">{getUserName(user)}</h1>
       </header>
 
-      <div className="flex-1 overflow-y-auto flex flex-col-reverse">
+      <div className="flex-1 overflow-y-auto flex flex-col-reverse" ref={scrollContainerRef}>
         <div
           className="flex flex-col gap-y-1 py-4 px-2 transition-transform will-change-transform"
           style={{ transform: `translateY(${inputTranslateY}px)` }}
         >
+          <div ref={messagesStartRef} />
+
+          {hasNextPage && isFetchingNextPage && (
+            <>
+              <div className="flex gap-y-1 flex-col items-end">
+                <div className="w-16 h-10 py-2 px-4 bg-soft-background/90 animate-pulse rounded-lg rounded-tl-xl rounded-bl-sm" />
+                <div className="w-28 h-10 py-2 px-4 bg-soft-background/90 animate-pulse rounded-lg rounded-bl-none" />
+              </div>
+
+              <div className="flex gap-y-1 flex-col items-start mt-4">
+                <div className="w-24 h-10 py-2 px-4 bg-soft-background/90 animate-pulse rounded-lg rounded-tr-xl rounded-br-sm" />
+                <div className="w-16 h-10 py-2 px-4 bg-soft-background/90 animate-pulse rounded-lg rounded-br-md" />
+                <div className="w-20 h-10 py-2 px-4 bg-soft-background/90 animate-pulse rounded-lg rounded-br-none" />
+              </div>
+
+              <div className="flex gap-y-1 flex-col items-end mt-4">
+                <div className="w-24 h-10 py-2 px-4 bg-soft-background/90 animate-pulse rounded-lg rounded-tl-xl rounded-bl-sm" />
+              </div>
+            </>
+          )}
+
           {messages.map((message, index) => {
             const prevMessage = messages[index - 1];
             const nextMessage = messages[index + 1];
@@ -115,6 +173,7 @@ export default function MessagePage() {
               />
             );
           })}
+          <div ref={messagesEndRef} />
         </div>
       </div>
 
