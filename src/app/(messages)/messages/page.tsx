@@ -1,17 +1,19 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo } from "react";
 import BackArrow from "@/components/BackArrow";
+import { getUserName } from "@/lib/utils/users";
+import UserAvatar from "@/components/UserAvatar";
+import { useGetUserChats } from "@/services/user";
 import PullToRefresh from "@/components/PullToRefresh";
-import { useGetCurrentUserStories } from "@/services/user";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Story, { StorySkeleton } from "@/app/(story)/components/Story";
 
 export default function MessagesPage() {
-  const { data, isFetching, hasNextPage, fetchNextPage, refetch } = useGetCurrentUserStories();
+  const { data, isFetching, hasNextPage, fetchNextPage, refetch } = useGetUserChats();
 
-  const stories = useMemo(() => {
-    return data?.pages ? data.pages.flatMap((page) => page.stories ?? []) : [];
+  const chats = useMemo(() => {
+    return data?.pages ? data.pages.flatMap((page) => page.chats ?? []) : [];
   }, [data?.pages]);
 
   const onRefresh = async () => {
@@ -37,26 +39,40 @@ export default function MessagesPage() {
       <PullToRefresh onRefresh={onRefresh} className="mx-5 mt-10">
         <InfiniteScroll
           next={fetchNextPage}
-          dataLength={stories.length}
+          dataLength={chats.length}
           hasMore={isFetching || hasNextPage}
           loader={
             <>
               {Array(5)
                 .fill(0)
                 .map((_, index) => (
-                  <StorySkeleton key={index} className="pb-6 not-first:pt-6" />
+                  <div key={index} className="flex gap-x-2 pb-4 not-first:pt-4">
+                    <div>
+                      <div className="size-11 bg-gray-300 dark:bg-border opacity-40 rounded-lg animate-pulse"></div>
+                    </div>
+
+                    <div className="flex-1 mt-1">
+                      <div className="w-20 h-4 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse"></div>
+                      <div className="w-40 h-4 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-1"></div>
+                    </div>
+                  </div>
                 ))}
             </>
           }
-          endMessage={
-            <span className="block text-center text-sm text-soft-foreground mt-8 mb-4">
-              به انتهای لیست رسیدی
-            </span>
-          }
           className="divide-y divide-border"
         >
-          {stories.map((story) => (
-            <Story key={story.id} story={story} className="flex gap-x-2 pb-6 not-first:pt-6" />
+          {chats.map((chat) => (
+            <Link
+              key={chat.id}
+              href={`/messages/${chat.id}`}
+              className="flex items-center gap-x-2 pb-4 not-first:pt-4"
+            >
+              <UserAvatar user={chat} className="size-11" />
+              <div className="flex gap-y-1 flex-col justify-center">
+                <span className="text-sm font-bold">{getUserName(chat)}</span>
+                <span className="text-xs text-soft-foreground">{chat.lastMessage.message}</span>
+              </div>
+            </Link>
           ))}
         </InfiniteScroll>
       </PullToRefresh>
