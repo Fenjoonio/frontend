@@ -40,7 +40,7 @@ export default function Message({
       <div
         key={message.id}
         className={cn(
-          "whitespace-pre-line py-2 px-4",
+          "whitespace-pre-line max-w-64 py-2 px-4",
           isMyMessage ? "bg-primary" : "bg-soft-background",
           // Single messages
           isMyMessage && isFirstInGroup && isLastInGroup && "rounded-lg rounded-br-none",
@@ -57,10 +57,7 @@ export default function Message({
             !isLastInGroup &&
             "rounded-lg rounded-tl-xl rounded-bl-sm",
           !isMyMessage && !isFirstInGroup && !isLastInGroup && "rounded-lg rounded-bl-md",
-          !isMyMessage && !isFirstInGroup && isLastInGroup && "rounded-lg rounded-bl-none",
-          // Add spacing between message groups
-          isFirstInGroup && "mt-4",
-          !isFirstInGroup && "mt-0.5"
+          !isMyMessage && !isFirstInGroup && isLastInGroup && "rounded-lg rounded-bl-none"
         )}
       >
         {message.message}
