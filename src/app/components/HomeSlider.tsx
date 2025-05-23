@@ -17,7 +17,7 @@ export default function HomeSlider({ className }: HomeSliderProps) {
       <SwiperSlide className="px-5">
         <Link
           href="https://instagram.com/fenjoon.io"
-          className="w-full h-48 flex flex-col justify-center items-center bg-primary rounded-sm"
+          className="w-full h-48 flex flex-col justify-center items-center bg-primary rounded-sm px-4"
         >
           <span className="text-center text-xl text-light-gray-100 font-black">
             فنجون رو دنبال کنید!
@@ -32,7 +32,7 @@ export default function HomeSlider({ className }: HomeSliderProps) {
       <SwiperSlide className="px-5">
         <Link
           href="/thread"
-          className="w-full h-48 flex flex-col justify-center items-center bg-success rounded-sm"
+          className="w-full h-48 flex flex-col justify-center items-center bg-success rounded-sm px-4"
         >
           <span className="text-xl text-light-gray-100 font-black">اگه خودش باشه چی؟ ...</span>
           <span className="text-sm text-light-gray-100 mt-1">
