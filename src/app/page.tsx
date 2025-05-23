@@ -4,15 +4,16 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import HomeSlider from "./components/HomeSlider";
-import { BellIcon, PenIcon } from "lucide-react";
-import Story, { StorySkeleton } from "@/app/(story)/components/Story";
 import PullToRefresh from "@/components/PullToRefresh";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useGetInfiniteStories } from "@/services/stories";
+import { BellIcon, PenIcon, SendIcon } from "lucide-react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Story, { StorySkeleton } from "@/app/(story)/components/Story";
 import CreateNewStoryDialog from "./(story)/components/CreateNewStoryDialog";
 import { useGetUserNotificationsUnreadCount } from "@/services/notifications";
+import { useGetUserUnreadMessagesCount } from "@/services/messages";
 
 export default function HomePage() {
   const router = useRouter();
@@ -24,6 +25,11 @@ export default function HomePage() {
   });
 
   const { data: notificationsUnreadCount } = useGetUserNotificationsUnreadCount({
+    enabled: isLoggedIn,
+    refetchInterval: 5000,
+  });
+
+  const { data: unreadMessagesCount } = useGetUserUnreadMessagesCount({
     enabled: isLoggedIn,
     refetchInterval: 5000,
   });
@@ -54,13 +60,23 @@ export default function HomePage() {
       >
         <h1 className="text-xl font-extrabold">فنجون</h1>
 
-        <Link href="/notifications" className="relative">
-          {Number(notificationsUnreadCount) > 0 && (
-            <span className="size-[6px] absolute bottom-1 right-0 bg-danger rounded-sm"></span>
-          )}
+        <div className="flex gap-x-4 items-center">
+          <Link href="/notifications" className="relative">
+            {Number(notificationsUnreadCount) > 0 && (
+              <span className="size-[6px] absolute bottom-1 right-0 bg-danger rounded-sm"></span>
+            )}
 
-          <BellIcon className="w-5 h-5 cursor-pointer" />
-        </Link>
+            <BellIcon className="size-5 cursor-pointer" />
+          </Link>
+
+          <Link href="/messages" className="relative">
+            {Number(unreadMessagesCount) > 0 && (
+              <span className="size-[6px] absolute bottom-1 right-0 bg-danger rounded-sm"></span>
+            )}
+
+            <SendIcon className="size-5 cursor-pointer" />
+          </Link>
+        </div>
       </header>
 
       <HomeSlider className="mt-4" />
