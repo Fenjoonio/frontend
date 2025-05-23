@@ -60,7 +60,7 @@ export default function HomePage() {
       >
         <h1 className="text-xl font-extrabold">فنجون</h1>
 
-        <div className="flex gap-x-4 items-center">
+        <div className="flex gap-x-6 items-center">
           <Link href="/notifications" className="relative">
             {Number(unreadNotificationsCount) > 0 && (
               <span className="size-[6px] absolute bottom-1 right-0 bg-danger rounded-sm"></span>
