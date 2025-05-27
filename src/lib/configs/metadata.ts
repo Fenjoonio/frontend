@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "فنجون؛ یک فنجان خواندنی",
-    template: "فنجون",
+    default: "فنجون؛ شبکه اجتماعی داستان‌های کوتاه",
+    template: "%s | فنجون",
   },
   description: "یک دنیا داستان‌های خواندنی کوتاه",
   metadataBase: new URL("/", "https://fenjoon.io"),
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     },
   ],
   openGraph: {
-    title: "فنجون؛ یک فنجان خواندنی",
+    title: "فنجون؛ شبکه اجتماعی داستان‌های کوتاه",
     description: "یک دنیا داستان‌های خواندنی کوتاه",
     url: "/",
     siteName: "فنجون",
