@@ -34,7 +34,9 @@ export default function HomeSlider({ className }: HomeSliderProps) {
           href="/thread"
           className="w-full h-48 flex flex-col justify-center items-center bg-success rounded-sm px-4"
         >
-          <span className="text-xl text-light-gray-100 font-black">اگه خودش باشه چی؟ ...</span>
+          <span className="text-xl text-light-gray-100 font-black">
+            شروع به نوشتن کرد ... اما مردد بود
+          </span>
           <span className="text-sm text-light-gray-100 mt-1">
             دوست داری بعدش چی بشه؟ بقیه‌ش رو تو بنویس!
           </span>
