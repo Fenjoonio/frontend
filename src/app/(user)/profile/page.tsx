@@ -5,12 +5,12 @@ import LogoutButton from "./components/LogoutButton";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import ViewProfileButton from "./components/ViewProfileButton";
 import {
-  ArrowLeftIcon,
+  ArrowLeftIcon, BookMarked,
   DownloadIcon,
   NotebookPenIcon,
   ScaleIcon,
   StarIcon,
-  UserPenIcon,
+  UserPenIcon
 } from "lucide-react";
 
 const getDownloadLinkBaseOnUtmSource = (utmSource: string) => {
@@ -65,6 +65,18 @@ export default async function ProfilePage() {
               </div>
 
               <span className="text-sm  mt-[2px]">داستان‌های من</span>
+
+              <ArrowLeftIcon className="size-5 ms-auto me-1" />
+            </Link>
+          </li>
+
+          <li>
+            <Link href="/profile/bookmarks" className="flex gap-x-2 items-center py-3 px-2">
+              <div className="bg-background rounded-lg p-2">
+                <BookMarked className="size-5 " />
+              </div>
+
+              <span className="text-sm  mt-[2px]">علاقه‌مندی‌ها</span>
 
               <ArrowLeftIcon className="size-5 ms-auto me-1" />
             </Link>

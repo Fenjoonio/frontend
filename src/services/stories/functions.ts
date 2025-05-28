@@ -1,6 +1,6 @@
 import http from "@/lib/utils/http";
 import type { Comment } from "@/services/comments/types";
-import type {
+import {
   Story,
   AddNewStoryBody,
   DeleteStoryParams,
@@ -16,13 +16,14 @@ import type {
   DislikeStoryParams,
   EditStoryBody,
   ShareStoryParams,
+  StoryBookmark,
   ReportStoryBody,
   WriteStoryWithAiBody,
   GetStoryLikersParams,
   GetStoryLikersResponse,
   GetAuthorOtherStoriesParams,
   GetAuthorOtherStoriesResponse,
-  ChangeStoryVisibilityBody,
+  ChangeStoryVisibilityBody, DeleteStoryBookmark
 } from "./types";
 import { isClientSide } from "@/lib/utils/environment";
 
@@ -107,6 +108,19 @@ export async function changeStoryVisibility({ id, ...body }: ChangeStoryVisibili
 
   return response.data;
 }
+
+export async function addStoryBookmark({ id }: StoryBookmark) {
+  const response = await http.post<StoryBookmark>(`v1/stories/${id}/bookmarks`);
+
+  return response.data;
+}
+
+export async function deleteStoryBookmark({ id }:DeleteStoryBookmark) {
+  const response = await http.delete<DeleteStoryBookmark>(`v1/stories/${id}/bookmarks`);
+
+  return response.data;
+}
+
 
 export async function getAuthorOtherStories({ id }: GetAuthorOtherStoriesParams) {
   const response = await http.get<GetAuthorOtherStoriesResponse>(

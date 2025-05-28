@@ -58,8 +58,23 @@ export type GetCurrentUserStoriesParams = {
   page?: number;
   limit?: number;
 };
+export type GetCurrentUserBookmarksParams = {
+  page?: number;
+  limit?: number;
+};
 
 export type GetCurrentUserStoriesResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  stories: Story[];
+};
+
+export type GetCurrentUserBookmarksResponse = {
+  data: any;
   pagination: {
     limit: number;
     page: number;
