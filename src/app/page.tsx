@@ -58,7 +58,10 @@ export default function HomePage() {
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 20px)" }}
         className="w-[calc(100%-1px)] flex items-center justify-between sticky top-0 right-0 z-10 bg-background border-b border-border pb-4 px-5"
       >
-        <h1 className="text-xl font-extrabold">فنجون</h1>
+        <div className="flex gap-x-2 items-center">
+          <h1 className="text-xl font-extrabold">فنجون</h1>
+          <span className="text-soft-foreground">#ایران</span>
+        </div>
 
         <div className="flex gap-x-6 items-center">
           <Link href="/notifications" className="relative">
