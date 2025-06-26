@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@editorjs/editorjs": "^2.30.8",
+    "@editorjs/header": "^2.8.8",
+    "@editorjs/paragraph": "^2.11.7",
     "@hookform/resolvers": "^4.1.0",
     "@hugocxl/react-to-image": "^0.0.9",
     "@next/third-parties": "^15.1.7",

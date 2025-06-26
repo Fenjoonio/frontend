@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import HomeSlider from "./components/HomeSlider";
+import HomeNovels from "./components/HomeNovels";
 import PullToRefresh from "@/components/PullToRefresh";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useAuthContext } from "@/providers/AuthProvider";
@@ -60,7 +61,7 @@ export default function HomePage() {
       >
         <div className="flex gap-x-2 items-center">
           <h1 className="text-xl font-extrabold">فنجون</h1>
-          <span className="text-soft-foreground">#ایران</span>
+          {/* <span className="text-soft-foreground">#ایران</span> */}
         </div>
 
         <div className="flex gap-x-6 items-center">
@@ -85,6 +86,10 @@ export default function HomePage() {
       <HomeSlider className="mt-4" />
 
       <h3 className="text-sm text-soft-foreground mt-6 px-5">آخرین داستان‌ها</h3>
+
+      <HomeNovels className="mx-5 mt-4" />
+
+      <h3 className="text-sm text-soft-foreground mt-6 px-5">آخرین داستانک‌ها</h3>
 
       <PullToRefresh onRefresh={onRefresh} className="mx-5 mt-4">
         <InfiniteScroll
