@@ -13,11 +13,10 @@ import {
 } from "@/components/ui/sheet";
 
 type MenuSheetProps = {
-  storyId: number;
   className?: string;
 };
 
-export default function MenuSheet({ storyId, className }: MenuSheetProps) {
+export default function MenuSheet({ className }: MenuSheetProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const onReport = () => {

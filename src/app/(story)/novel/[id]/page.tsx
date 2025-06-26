@@ -1,12 +1,12 @@
+import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import MenuSheet from "./components/MenuSheet";
 import BackArrow from "@/components/BackArrow";
+import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
-import Link from "next/link";
 import UserAvatar from "@/components/UserAvatar";
 import NovelChapters from "./components/NovelChapters";
-import { Button } from "@/components/ui/button";
 
 const novels = [
   {
@@ -85,10 +85,7 @@ export default async function NovelPage({ params }: NovelPageProps) {
         <BackArrow />
         <h1 className="text-lg font-bold mt-1">{novel.title}</h1>
 
-        <MenuSheet
-          storyId={+id}
-          className="w-10 h-10 flex items-center justify-center cursor-pointer ms-auto"
-        />
+        <MenuSheet className="w-10 h-10 flex items-center justify-center cursor-pointer ms-auto" />
       </header>
 
       <div className="px-5 mt-4">
