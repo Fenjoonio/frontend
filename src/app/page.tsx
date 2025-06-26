@@ -61,7 +61,7 @@ export default function HomePage() {
       >
         <div className="flex gap-x-2 items-center">
           <h1 className="text-xl font-extrabold">فنجون</h1>
-          <span className="text-soft-foreground">#ایران</span>
+          {/* <span className="text-soft-foreground">#ایران</span> */}
         </div>
 
         <div className="flex gap-x-6 items-center">
