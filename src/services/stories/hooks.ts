@@ -43,6 +43,7 @@ import type {
   StoryBookmark
 } from "./types";
 import { USER_QUERY_KEYS } from "../user/constants";
+import { CAMPAIGN_QUERY_KEYS } from "../campaigns/constants";
 import { GetCurrentUserStoriesResponse } from "../user/types";
 export function useGetInfiniteStories(params?: GetStoriesParams) {
   return useInfiniteQuery({
@@ -198,6 +199,28 @@ export function useLikeStory(params: LikeStoryParams, options?: { onSuccess?: ()
       );
 
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORY_LIKERS, params] });
+
+      // TODO: Remove this after campaign
+      queryClient.setQueriesData(
+        { queryKey: [CAMPAIGN_QUERY_KEYS.GET_CAMPAIGN_STORIES] },
+        (oldData: InfiniteData<GetStoriesResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              stories: page.stories.map((story) =>
+                story.id === params.id
+                  ? { ...story, likesCount: story.likesCount + 1, isLikedByUser: true }
+                  : story
+              ),
+            })),
+          };
+        }
+      );
+
+      queryClient.invalidateQueries({ queryKey: [CAMPAIGN_QUERY_KEYS.GET_CAMPAIGN_LEADERBOARD] });
     },
   });
 }
@@ -259,6 +282,28 @@ export function useDislikeStory(params: DislikeStoryParams, options?: { onSucces
       );
 
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORY_LIKERS, params] });
+
+      // TODO: Remove this after campaign
+      queryClient.setQueriesData(
+        { queryKey: [CAMPAIGN_QUERY_KEYS.GET_CAMPAIGN_STORIES] },
+        (oldData: InfiniteData<GetStoriesResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              stories: page.stories.map((story) =>
+                story.id === params.id
+                  ? { ...story, likesCount: story.likesCount - 1, isLikedByUser: false }
+                  : story
+              ),
+            })),
+          };
+        }
+      );
+
+      queryClient.invalidateQueries({ queryKey: [CAMPAIGN_QUERY_KEYS.GET_CAMPAIGN_LEADERBOARD] });
     },
   });
 }

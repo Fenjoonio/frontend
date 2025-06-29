@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import HomeSlider from "./components/HomeSlider";
+import HomeNovels from "./components/HomeNovels";
 import PullToRefresh from "@/components/PullToRefresh";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useAuthContext } from "@/providers/AuthProvider";
@@ -58,7 +59,10 @@ export default function HomePage() {
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 20px)" }}
         className="w-[calc(100%-1px)] flex items-center justify-between sticky top-0 right-0 z-10 bg-background border-b border-border pb-4 px-5"
       >
-        <h1 className="text-xl font-extrabold">فنجون</h1>
+        <div className="flex gap-x-2 items-center">
+          <h1 className="text-xl font-extrabold">فنجون</h1>
+          {/* <span className="text-soft-foreground">#ایران</span> */}
+        </div>
 
         <div className="flex gap-x-6 items-center">
           <Link href="/notifications" className="relative">
@@ -82,6 +86,10 @@ export default function HomePage() {
       <HomeSlider className="mt-4" />
 
       <h3 className="text-sm text-soft-foreground mt-6 px-5">آخرین داستان‌ها</h3>
+
+      <HomeNovels className="mx-5 mt-4" />
+
+      <h3 className="text-sm text-soft-foreground mt-6 px-5">آخرین داستانک‌ها</h3>
 
       <PullToRefresh onRefresh={onRefresh} className="mx-5 mt-4">
         <InfiniteScroll
