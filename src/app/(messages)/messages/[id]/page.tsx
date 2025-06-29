@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useGetUserById } from "@/services/user";
 import { SendHorizonalIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { useMemo, useRef, useEffect, useState, KeyboardEvent } from "react";
+import { useMemo, useEffect, useState, useRef, KeyboardEvent } from "react";
 import { useGetInfiniteChatMessages, useSendMessage } from "@/services/messages";
 
 const isWithinFiveMinutes = (time1: string, time2: string) => {
@@ -20,46 +20,24 @@ const isWithinFiveMinutes = (time1: string, time2: string) => {
 
 export default function MessagePage() {
   const params = useParams<{ id: string }>();
+  const [messageText, setMessageText] = useState("");
   const { data: user } = useGetUserById({ id: +params.id });
+  const [inputTranslateY, setInputTranslateY] = useState(0);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesStartRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const { data, isFetchingNextPage, hasNextPage, fetchNextPage } = useGetInfiniteChatMessages(
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetInfiniteChatMessages(
     {
       userId: +params.id,
     },
-    { refetchInterval: 2500 }
+    { refetchInterval: 1500 }
   );
-
-  const { mutate: sendMessage, isPending: isSending } = useSendMessage({
-    onSuccess: () => {
-      setMessageText("");
-      textareaRef.current?.focus(); // Refocus the textarea immediately to prevent keyboard from closing
-
-      setTimeout(() => {
-        scrollToBottom();
-        textareaRef.current?.focus();
-      }, 50);
-    },
-  });
-
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const inputContainerRef = useRef<HTMLDivElement>(null);
-  const isFirstRender = useRef(true);
-  const [messageText, setMessageText] = useState("");
-  const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
-  const [inputTranslateY, setInputTranslateY] = useState(0);
 
   const messages = useMemo(
     () => data?.pages.flatMap((page) => page.messages ?? []).reverse() ?? [],
     [data?.pages]
   );
-
-  const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   useEffect(() => {
     const handleKeyboardHeightChange = (event: any) => {
@@ -75,52 +53,47 @@ export default function MessagePage() {
   }, []);
 
   useEffect(() => {
-    if (isFirstRender.current && messages.length > 0 && messagesContainerRef.current) {
-      scrollToBottom();
-      isFirstRender.current = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isIntersecting = entries[0].isIntersecting && hasNextPage && !isFetchingNextPage;
+
+        if (isIntersecting) {
+          const scrollContainer = scrollContainerRef.current;
+
+          if (scrollContainer) {
+            const prevScrollHeight = scrollContainer.scrollHeight;
+            fetchNextPage().then(() => {
+              const newScrollHeight = scrollContainer.scrollHeight;
+              scrollContainer.scrollTop += newScrollHeight - prevScrollHeight;
+            });
+          }
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (messagesStartRef.current) {
+      observer.observe(messagesStartRef.current);
     }
-  }, [messages]);
 
-  useEffect(() => {
-    if (
-      !isFirstRender.current &&
-      !isLoadingMoreRef.current &&
-      autoScrollEnabled &&
-      messagesContainerRef.current
-    ) {
-      scrollToBottom();
-    }
-
-    if (isLoadingMoreRef.current && !isFetchingNextPage) {
-      isLoadingMoreRef.current = false;
-    }
-  }, [messages, autoScrollEnabled, isFetchingNextPage]);
-
-  const previousScrollHeightRef = useRef<number>(0);
-  const previousScrollTopRef = useRef<number>(0);
-  const isLoadingMoreRef = useRef<boolean>(false);
-
-  useEffect(() => {
-    if (
-      !isFetchingNextPage &&
-      previousScrollHeightRef.current > 0 &&
-      messagesContainerRef.current
-    ) {
-      const newScrollHeight = messagesContainerRef.current.scrollHeight;
-      const heightDifference = newScrollHeight - previousScrollHeightRef.current;
-
-      if (heightDifference > 0) {
-        messagesContainerRef.current.scrollTop = previousScrollTopRef.current + heightDifference;
+    return () => {
+      if (messagesStartRef.current) {
+        observer.unobserve(messagesStartRef.current);
       }
 
-      previousScrollHeightRef.current = 0;
-      previousScrollTopRef.current = 0;
-    }
-  }, [isFetchingNextPage, messages]);
+      observer.disconnect();
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  const { mutate: sendMessage, isPending: isSending } = useSendMessage({
+    onSuccess: () => {
+      setMessageText("");
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    },
+  });
 
   const handleSendMessage = () => {
     if (messageText.trim()) {
-      setAutoScrollEnabled(true);
       sendMessage({
         to: +params.id,
         message: messageText.trim(),
@@ -128,26 +101,9 @@ export default function MessagePage() {
     }
   };
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const container = e.target as HTMLDivElement;
-
-    if (container.scrollTop < 100 && hasNextPage && !isFetchingNextPage) {
-      previousScrollHeightRef.current = container.scrollHeight;
-      previousScrollTopRef.current = container.scrollTop;
-      isLoadingMoreRef.current = true;
-
-      fetchNextPage();
-    }
-
-    const isNearBottom =
-      container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-    setAutoScrollEnabled(isNearBottom);
-  };
-
   const onKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && e.shiftKey) {
       e.preventDefault();
-
       handleSendMessage();
     }
   };
@@ -167,17 +123,32 @@ export default function MessagePage() {
         <h1 className="text-lg font-bold mt-1">{getUserName(user)}</h1>
       </header>
 
-      <div
-        ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto flex flex-col-reverse"
-        onScroll={handleScroll}
-      >
-        <div ref={messagesEndRef} />
-
+      <div className="flex-1 overflow-y-auto flex flex-col-reverse" ref={scrollContainerRef}>
         <div
           className="flex flex-col gap-y-1 py-4 px-2 transition-transform will-change-transform"
           style={{ transform: `translateY(${inputTranslateY}px)` }}
         >
+          <div ref={messagesStartRef} />
+
+          {hasNextPage && isFetchingNextPage && (
+            <>
+              <div className="flex gap-y-1 flex-col items-end">
+                <div className="w-16 h-10 py-2 px-4 bg-soft-background/90 animate-pulse rounded-lg rounded-tl-xl rounded-bl-sm" />
+                <div className="w-28 h-10 py-2 px-4 bg-soft-background/90 animate-pulse rounded-lg rounded-bl-none" />
+              </div>
+
+              <div className="flex gap-y-1 flex-col items-start mt-4">
+                <div className="w-24 h-10 py-2 px-4 bg-soft-background/90 animate-pulse rounded-lg rounded-tr-xl rounded-br-sm" />
+                <div className="w-16 h-10 py-2 px-4 bg-soft-background/90 animate-pulse rounded-lg rounded-br-md" />
+                <div className="w-20 h-10 py-2 px-4 bg-soft-background/90 animate-pulse rounded-lg rounded-br-none" />
+              </div>
+
+              <div className="flex gap-y-1 flex-col items-end mt-4">
+                <div className="w-24 h-10 py-2 px-4 bg-soft-background/90 animate-pulse rounded-lg rounded-tl-xl rounded-bl-sm" />
+              </div>
+            </>
+          )}
+
           {messages.map((message, index) => {
             const prevMessage = messages[index - 1];
             const nextMessage = messages[index + 1];
@@ -202,17 +173,16 @@ export default function MessagePage() {
               />
             );
           })}
+          <div ref={messagesEndRef} />
         </div>
       </div>
 
       <div
-        ref={inputContainerRef}
         className="flex gap-x-2 items-end bg-soft-background py-4 px-4 sticky bottom-0 z-10 transition-transform will-change-transform"
         style={{ transform: `translateY(${inputTranslateY}px)` }}
       >
         <Textarea
           inputMode="text"
-          ref={textareaRef}
           autoComplete="off"
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}

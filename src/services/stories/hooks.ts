@@ -5,6 +5,7 @@ import {
   addStoryComment,
   changeStoryVisibility,
   deleteStory,
+  deleteStoryBookmark,
   dislikeStory,
   editStory,
   getAuthorOtherStories,
@@ -15,7 +16,8 @@ import {
   likeStory,
   reportStory,
   shareStory,
-  writeStoryWithAi,
+  addStoryBookmark,
+  writeStoryWithAi
 } from "./functions";
 import {
   useQuery,
@@ -38,10 +40,10 @@ import type {
   GetStoriesResponse,
   GetAuthorOtherStoriesParams,
   ChangeStoryVisibilityBody,
+  StoryBookmark
 } from "./types";
 import { USER_QUERY_KEYS } from "../user/constants";
 import { GetCurrentUserStoriesResponse } from "../user/types";
-
 export function useGetInfiniteStories(params?: GetStoriesParams) {
   return useInfiniteQuery({
     initialPageParam: params || { page: 1, limit: 5 },
@@ -348,5 +350,65 @@ export function useWriteStoryWithAi(options?: {
     ...options,
     mutationKey: [STORIES_QUERY_KEYS.WRITE_STORY_WITH_AI],
     mutationFn: writeStoryWithAi,
+  });
+}
+
+export function useStoryBookmark(options?: {
+  onSuccess?: (res: string, variables: StoryBookmark) => void;
+  onError?: (err: unknown) => void;
+}) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: [STORIES_QUERY_KEYS.BOOKMARK_STORY],
+    mutationFn: addStoryBookmark,
+    onSuccess: (res:string, variables) => {
+      options?.onSuccess?.(res, variables);
+
+      queryClient.setQueriesData(
+        { queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, { id: variables.id }] },
+        (oldData: Story | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            isBookmarkedByUser: true,
+          };
+        }
+      );
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_BOOKMARKS],
+      });
+    },
+  });
+}
+
+export function useDeleteStoryBookmark(options?: {
+  onSuccess?: (res: string, variables: StoryBookmark) => void;
+  onError?: (err: unknown) => void;
+}) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: [STORIES_QUERY_KEYS.DELETE_BOOKMARK_STORY],
+    mutationFn: deleteStoryBookmark,
+    onSuccess: (res:string, variables) => {
+      options?.onSuccess?.(res , variables);
+
+      queryClient.setQueriesData(
+        { queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, { id: variables.id }] },
+        (oldData: Story | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            isBookmarkedByUser: false,
+          };
+        }
+      );
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_BOOKMARKS],
+      });
+    },
   });
 }

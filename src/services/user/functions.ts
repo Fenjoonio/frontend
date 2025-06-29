@@ -19,6 +19,8 @@ import type {
   UploadUserProfileResponse,
   GetUserChatsParams,
   GetUserChatsResponse,
+  GetCurrentUserBookmarksParams,
+  GetCurrentUserBookmarksResponse
 } from "./types";
 
 export async function getCurrentUser() {
@@ -57,6 +59,14 @@ export async function getUserCommentsById({ id, ...params }: GetUserCommentsById
 
 export async function getCurrentUserStories(params: GetCurrentUserStoriesParams) {
   const response = await http.get<GetCurrentUserStoriesResponse>("v1/users/me/stories", {
+    searchParams: params,
+  });
+
+  return response.data;
+}
+
+export async function getCurrentUserBookmarks(params: GetCurrentUserBookmarksParams) {
+  const response = await http.get<GetCurrentUserBookmarksResponse>("v1/users/me/bookmarks", {
     searchParams: params,
   });
 

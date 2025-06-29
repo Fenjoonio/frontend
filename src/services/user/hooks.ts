@@ -13,16 +13,17 @@ import {
   unfollow,
   getUserFollowingsList,
   uploadUserProfile,
-  getUserChats,
+  getUserChats, getCurrentUserBookmarks
 } from "./functions";
-import type {
+import {
+  GetCurrentUserBookmarksParams,
   GetCurrentUserStoriesParams,
   GetUserByIdParams,
   GetUserChatsParams,
   GetUserFollowersListParams,
   GetUserFollowingsListParams,
   GetUserStoriesByIdParams,
-  User,
+  User
 } from "./types";
 
 export function useGetCurrentUser() {
@@ -65,6 +66,23 @@ export function useGetCurrentUserStories(
     },
   });
 }
+export function useGetCurrentUserBookmarks(
+  params: GetCurrentUserBookmarksParams = { page: 1, limit: 10 }
+) {
+  return useInfiniteQuery({
+    initialPageParam: params,
+    queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_BOOKMARKS, params],
+    queryFn: ({ pageParam }) => getCurrentUserBookmarks(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
+  });
+}
+
 
 export function useGetUserPrivateStoryCount() {
   return useQuery({

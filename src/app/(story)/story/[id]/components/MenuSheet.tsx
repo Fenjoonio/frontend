@@ -4,18 +4,24 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils/classnames";
 import EditStoryDialog from "@/app/(story)/components/EditStoryDialog";
-import { useDeleteStory, useGetSingleStory } from "@/services/stories";
+import {
+  useDeleteStory,
+  useDeleteStoryBookmark,
+  useGetSingleStory,
+  useStoryBookmark
+} from "@/services/stories";
 import ShareStorySheet from "@/app/(story)/components/ShareStorySheet";
 import ReportStoryDialog from "@/app/(story)/components/ReportStoryDialog";
 import StoryVisibilityChangeSheet from "@/app/(story)/components/StoryVisibilityChangeSheet";
 import {
+  Bookmark, BookmarkCheck,
   EditIcon,
   EyeIcon,
   EyeOffIcon,
   FlagIcon,
   MoreHorizontalIcon,
   Share2Icon,
-  TrashIcon,
+  TrashIcon
 } from "lucide-react";
 import {
   Sheet,
@@ -23,8 +29,9 @@ import {
   SheetHeader,
   SheetContent,
   SheetTrigger,
-  SheetDescription,
+  SheetDescription
 } from "@/components/ui/sheet";
+import { toast } from "react-toastify";
 
 type MenuSheetProps = {
   storyId: number;
@@ -43,8 +50,25 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
     onSuccess: () => {
       setIsOpen(false);
       router.push("/");
-    },
+    }
   });
+  console.log(story);
+  const { mutate: addBookmark } = useStoryBookmark({
+    onSuccess: () => {
+      toast.success("داستان به لیست علاقه‌مندی‌ها افزوده شد");
+      setIsOpen(false);
+    },
+    onError: () => {
+      toast.error("افزودن به علاقه‌مندی‌ها با خطا مواجه شد");
+    }
+  });
+  const { mutate: deleteBookmark } = useDeleteStoryBookmark({
+    onSuccess: () => {
+      toast.success("داستان از لیست علاقه‌مندی‌ها حذف شد");
+      setIsOpen(false);
+    }
+  });
+
 
   const onReport = () => {
     setIsReportStoryDialogOpen(true);
@@ -60,6 +84,13 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
     setIsShareStorySheetOpen(true);
     setIsOpen(false);
   };
+
+  const onBookmark = async () => {
+    if (!story?.id) return;
+    const action = story.isBookmarkedByUser ? deleteBookmark : addBookmark;
+    action({ id: story.id });
+  };
+
 
   const onEdit = () => {
     setIsEditStoryDialogOpen(true);
@@ -95,6 +126,36 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
               <span className="mt-[2px]">اشتراک‌گذاری</span>
             </li>
 
+            <li
+              className="flex gap-x-2 items-center py-4 cursor-pointer"
+              onClick={onBookmark}
+            >
+  <span className="relative size-5">
+    <span
+      className={cn(
+        "absolute inset-0",
+        story?.isBookmarkedByUser ? "" : "hidden"
+      )}
+    >
+      <BookmarkCheck className="size-5" />
+    </span>
+    <span
+      className={cn(
+        "absolute inset-0",
+        !story?.isBookmarkedByUser ? "" : "hidden"
+      )}
+    >
+      <Bookmark className="size-5" />
+    </span>
+  </span>
+              <span className="mt-[4px]">
+    {story?.isBookmarkedByUser
+      ? "حذف از لیست علاقه مندی ها"
+      : "اضافه به لیست علاقه مندی ها"}
+              </span>
+            </li>
+
+
             {!!story?.isEditableByUser && (
               <li className="flex gap-x-2 items-center py-4 cursor-pointer" onClick={onEdit}>
                 <EditIcon className="size-5" />
@@ -124,7 +185,7 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
             {!!story?.isDeletableByUser && (
               <li
                 className={cn("flex gap-x-2 items-center py-4 cursor-pointer", {
-                  "opacity-50": isDeletePending,
+                  "opacity-50": isDeletePending
                 })}
                 onClick={onDelete}
               >

@@ -14,6 +14,7 @@ export type Story = {
   isEditableByUser: boolean;
   isDeletableByUser: boolean;
   isPrivatableByUser: boolean;
+  isBookmarkedByUser: boolean;
 };
 
 export type GetStoriesParams = {
@@ -113,6 +114,14 @@ export type ReportStoryBody = {
 export type ChangeStoryVisibilityBody = {
   id: number;
   isPrivate: boolean;
+};
+
+export type StoryBookmark = {
+  id: number;
+};
+
+export type DeleteStoryBookmark = {
+  id: number;
 };
 
 export type WriteStoryWithAiBody = {
