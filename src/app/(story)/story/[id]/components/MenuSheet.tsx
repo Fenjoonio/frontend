@@ -52,7 +52,7 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
       router.push("/");
     }
   });
-  console.log(story);
+
   const { mutate: addBookmark } = useStoryBookmark({
     onSuccess: () => {
       toast.success("داستان به لیست علاقه‌مندی‌ها افزوده شد");
@@ -68,7 +68,6 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
       setIsOpen(false);
     }
   });
-
 
   const onReport = () => {
     setIsReportStoryDialogOpen(true);

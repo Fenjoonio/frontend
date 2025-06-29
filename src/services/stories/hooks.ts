@@ -5,7 +5,6 @@ import {
   addStoryComment,
   changeStoryVisibility,
   deleteStory,
-  deleteStoryBookmark,
   dislikeStory,
   editStory,
   getAuthorOtherStories,
@@ -17,6 +16,7 @@ import {
   reportStory,
   shareStory,
   addStoryBookmark,
+  deleteStoryBookmark,
   writeStoryWithAi
 } from "./functions";
 import {
@@ -282,28 +282,6 @@ export function useDislikeStory(params: DislikeStoryParams, options?: { onSucces
       );
 
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORY_LIKERS, params] });
-
-      // TODO: Remove this after campaign
-      queryClient.setQueriesData(
-        { queryKey: [CAMPAIGN_QUERY_KEYS.GET_CAMPAIGN_STORIES] },
-        (oldData: InfiniteData<GetStoriesResponse> | undefined) => {
-          if (!oldData) return oldData;
-
-          return {
-            ...oldData,
-            pages: oldData.pages.map((page) => ({
-              ...page,
-              stories: page.stories.map((story) =>
-                story.id === params.id
-                  ? { ...story, likesCount: story.likesCount - 1, isLikedByUser: false }
-                  : story
-              ),
-            })),
-          };
-        }
-      );
-
-      queryClient.invalidateQueries({ queryKey: [CAMPAIGN_QUERY_KEYS.GET_CAMPAIGN_LEADERBOARD] });
     },
   });
 }
@@ -399,7 +377,7 @@ export function useWriteStoryWithAi(options?: {
 }
 
 export function useStoryBookmark(options?: {
-  onSuccess?: (res: string, variables: StoryBookmark) => void;
+  onSuccess?: (res: StoryBookmark, variables: StoryBookmark) => void;
   onError?: (err: unknown) => void;
 }) {
   const queryClient = useQueryClient();
@@ -407,7 +385,7 @@ export function useStoryBookmark(options?: {
   return useMutation({
     mutationKey: [STORIES_QUERY_KEYS.BOOKMARK_STORY],
     mutationFn: addStoryBookmark,
-    onSuccess: (res:string, variables) => {
+    onSuccess: (res, variables) => {
       options?.onSuccess?.(res, variables);
 
       queryClient.setQueriesData(
@@ -421,6 +399,7 @@ export function useStoryBookmark(options?: {
           };
         }
       );
+
       queryClient.invalidateQueries({
         queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_BOOKMARKS],
       });
@@ -429,7 +408,7 @@ export function useStoryBookmark(options?: {
 }
 
 export function useDeleteStoryBookmark(options?: {
-  onSuccess?: (res: string, variables: StoryBookmark) => void;
+  onSuccess?: (res: StoryBookmark, variables: StoryBookmark) => void;
   onError?: (err: unknown) => void;
 }) {
   const queryClient = useQueryClient();
@@ -437,8 +416,8 @@ export function useDeleteStoryBookmark(options?: {
   return useMutation({
     mutationKey: [STORIES_QUERY_KEYS.DELETE_BOOKMARK_STORY],
     mutationFn: deleteStoryBookmark,
-    onSuccess: (res:string, variables) => {
-      options?.onSuccess?.(res , variables);
+    onSuccess: (res, variables) => {
+      options?.onSuccess?.(res, variables);
 
       queryClient.setQueriesData(
         { queryKey: [STORIES_QUERY_KEYS.GET_SINGLE_STORY, { id: variables.id }] },
@@ -451,6 +430,7 @@ export function useDeleteStoryBookmark(options?: {
           };
         }
       );
+
       queryClient.invalidateQueries({
         queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_BOOKMARKS],
       });
