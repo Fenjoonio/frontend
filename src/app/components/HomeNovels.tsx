@@ -29,6 +29,29 @@ const novels = [
       phone: "",
     },
   },
+  {
+    id: 1,
+    title: "جزیره نامرئی",
+    image: "https://s3.lexoya.com/fenjoon/novels/f1125435-d45f-41bc-a143-915faed27854.png",
+    summery: `مردی که همه حرف‌هایش را باور نمی‌کنند، نقشه‌ای اسرارآمیز از جزیره‌ای ناشناخته پیدا می‌کند. با کوله‌باری از امید و دوربینی کهنه، به سفری پر رمز و راز می‌رود تا اثبات کند حقیقتی که می‌گوید واقعی است. اما آنچه در آن جزیره انتظارش را می‌کشد، چیزی فراتر از تصوراتش است؛ جایی که واقعیت و سرنوشت به هم گره خورده‌اند.`,
+    user: {
+      id: 108,
+      bio: "نویسنده رمان پسری با چشمان سیاه و علاقه شدید به رمان نویسی",
+      followersCount: 4,
+      followingsCount: 2,
+      isFollowedByUser: false,
+      firstName: "فاطمه",
+      lastName: "حسنلو",
+      nickname: "فاطمه",
+      isVerified: false,
+      isBot: false,
+      isPremium: false,
+      profileImage:
+        "https://s3.lexoya.com/fenjoon/profiles/c6909354-242f-4ec3-af15-d0109109cb24.jpeg",
+      phone: "",
+      createdAt: "2025-03-03T14:32:37.68221Z",
+    },
+  },
 ];
 
 type HomeNovelsProps = {
