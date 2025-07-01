@@ -299,6 +299,11 @@
 .slide-out {
   animation: slide-out 150ms ease-in-out 2s 1 normal forwards;
 }
+@media (max-width: 768px) {
+  .scrollbar-none::-webkit-scrollbar {
+    display: none !important;
+  }
+}
 
 @keyframes slide-out {
   from {
