@@ -29,7 +29,7 @@ export default function CommentLikeButton({
       onSuccess: () => {
         sendGAEvent("event", "like_comment_click", { commentId });
       },
-    }
+    },
   );
   const { mutate: dislike, isPending: isDislikePending } = useDislikeComment(
     { id: commentId },
@@ -37,7 +37,7 @@ export default function CommentLikeButton({
       onSuccess: () => {
         sendGAEvent("event", "dislike_comment_click", { commentId });
       },
-    }
+    },
   );
 
   const onHeartClick = () => {
@@ -55,7 +55,7 @@ export default function CommentLikeButton({
             "cursor-pointer",
             { "opacity-50": isLikePending || isDislikePending },
             { "fill-danger stroke-danger": isLikedByUser },
-            className
+            className,
           )}
           onClick={onHeartClick}
         />

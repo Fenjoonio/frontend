@@ -17,7 +17,7 @@ import {
   shareStory,
   addStoryBookmark,
   deleteStoryBookmark,
-  writeStoryWithAi
+  writeStoryWithAi,
 } from "./functions";
 import {
   useQuery,
@@ -40,7 +40,7 @@ import type {
   GetStoriesResponse,
   GetAuthorOtherStoriesParams,
   ChangeStoryVisibilityBody,
-  StoryBookmark
+  StoryBookmarkParams,
 } from "./types";
 import { USER_QUERY_KEYS } from "../user/constants";
 import { CAMPAIGN_QUERY_KEYS } from "../campaigns/constants";
@@ -82,7 +82,7 @@ export function useAddNewStory(options?: { onSuccess?: (res: AddNewStoryResponse
 
 export function useEditStory(
   params: Pick<EditStoryBody, "id">,
-  options?: { onSuccess?: (res: Story) => void }
+  options?: { onSuccess?: (res: Story) => void },
 ) {
   const queryClient = useQueryClient();
 
@@ -163,11 +163,11 @@ export function useLikeStory(params: LikeStoryParams, options?: { onSuccess?: ()
               stories: page.stories.map((story) =>
                 story.id === params.id
                   ? { ...story, likesCount: story.likesCount + 1, isLikedByUser: true }
-                  : story
+                  : story,
               ),
             })),
           };
-        }
+        },
       );
 
       queryClient.setQueriesData(
@@ -176,7 +176,7 @@ export function useLikeStory(params: LikeStoryParams, options?: { onSuccess?: ()
           if (!oldData) return oldData;
 
           return { ...oldData, likesCount: oldData.likesCount + 1, isLikedByUser: true };
-        }
+        },
       );
 
       queryClient.setQueriesData(
@@ -191,11 +191,11 @@ export function useLikeStory(params: LikeStoryParams, options?: { onSuccess?: ()
               stories: page.stories.map((story) =>
                 story.id === params.id
                   ? { ...story, likesCount: story.likesCount + 1, isLikedByUser: true }
-                  : story
+                  : story,
               ),
             })),
           };
-        }
+        },
       );
 
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORY_LIKERS, params] });
@@ -213,11 +213,11 @@ export function useLikeStory(params: LikeStoryParams, options?: { onSuccess?: ()
               stories: page.stories.map((story) =>
                 story.id === params.id
                   ? { ...story, likesCount: story.likesCount + 1, isLikedByUser: true }
-                  : story
+                  : story,
               ),
             })),
           };
-        }
+        },
       );
 
       queryClient.invalidateQueries({ queryKey: [CAMPAIGN_QUERY_KEYS.GET_CAMPAIGN_LEADERBOARD] });
@@ -246,11 +246,11 @@ export function useDislikeStory(params: DislikeStoryParams, options?: { onSucces
               stories: page.stories.map((story) =>
                 story.id === params.id
                   ? { ...story, likesCount: story.likesCount - 1, isLikedByUser: false }
-                  : story
+                  : story,
               ),
             })),
           };
-        }
+        },
       );
 
       queryClient.setQueriesData(
@@ -259,7 +259,7 @@ export function useDislikeStory(params: DislikeStoryParams, options?: { onSucces
           if (!oldData) return oldData;
 
           return { ...oldData, likesCount: oldData.likesCount - 1, isLikedByUser: false };
-        }
+        },
       );
 
       queryClient.setQueriesData(
@@ -274,11 +274,11 @@ export function useDislikeStory(params: DislikeStoryParams, options?: { onSucces
               stories: page.stories.map((story) =>
                 story.id === params.id
                   ? { ...story, likesCount: story.likesCount - 1, isLikedByUser: false }
-                  : story
+                  : story,
               ),
             })),
           };
-        }
+        },
       );
 
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORY_LIKERS, params] });
@@ -320,7 +320,7 @@ export function useReportStory(options?: { onSuccess?: () => void }) {
 
 export function useChangeStoryVisibility(
   params: Pick<ChangeStoryVisibilityBody, "id">,
-  options?: { onSuccess?: () => void }
+  options?: { onSuccess?: () => void },
 ) {
   const queryClient = useQueryClient();
 
@@ -348,11 +348,11 @@ export function useChangeStoryVisibility(
             pages: oldData.pages.map((page) => ({
               ...page,
               stories: page.stories.map((story) =>
-                story.id === params.id ? { ...story, isPrivate: !story.isPrivate } : story
+                story.id === params.id ? { ...story, isPrivate: !story.isPrivate } : story,
               ),
             })),
           };
-        }
+        },
       );
     },
   });
@@ -397,7 +397,7 @@ export function useStoryBookmark(options?: {
             ...oldData,
             isBookmarkedByUser: true,
           };
-        }
+        },
       );
 
       queryClient.invalidateQueries({
@@ -428,7 +428,7 @@ export function useDeleteStoryBookmark(options?: {
             ...oldData,
             isBookmarkedByUser: false,
           };
-        }
+        },
       );
 
       queryClient.invalidateQueries({

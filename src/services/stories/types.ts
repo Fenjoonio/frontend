@@ -116,7 +116,7 @@ export type ChangeStoryVisibilityBody = {
   isPrivate: boolean;
 };
 
-export type StoryBookmark = {
+export type StoryBookmarkParams = {
   id: number;
 };
 

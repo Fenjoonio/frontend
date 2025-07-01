@@ -16,14 +16,14 @@ import type {
   DislikeStoryParams,
   EditStoryBody,
   ShareStoryParams,
-  StoryBookmark,
+  StoryBookmarkParams,
   ReportStoryBody,
   WriteStoryWithAiBody,
   GetStoryLikersParams,
   GetStoryLikersResponse,
   GetAuthorOtherStoriesParams,
   GetAuthorOtherStoriesResponse,
-  DeleteStoryBookmark ,
+  DeleteStoryBookmark,
   ChangeStoryVisibilityBody,
 } from "./types";
 import { isClientSide } from "@/lib/utils/environment";
@@ -110,22 +110,21 @@ export async function changeStoryVisibility({ id, ...body }: ChangeStoryVisibili
   return response.data;
 }
 
-export async function addStoryBookmark({ id }: StoryBookmark) {
-  const response = await http.post<StoryBookmark>(`v1/stories/${id}/bookmarks`);
+export async function addStoryBookmark({ id }: StoryBookmarkParams) {
+  const response = await http.post<StoryBookmarkParams>(`v1/stories/${id}/bookmarks`);
 
   return response.data;
 }
 
-export async function deleteStoryBookmark({ id }:DeleteStoryBookmark) {
+export async function deleteStoryBookmark({ id }: DeleteStoryBookmark) {
   const response = await http.delete<DeleteStoryBookmark>(`v1/stories/${id}/bookmarks`);
 
   return response.data;
 }
 
-
 export async function getAuthorOtherStories({ id }: GetAuthorOtherStoriesParams) {
   const response = await http.get<GetAuthorOtherStoriesResponse>(
-    `v1/stories/${id}/related-by-author`
+    `v1/stories/${id}/related-by-author`,
   );
 
   return response.data;

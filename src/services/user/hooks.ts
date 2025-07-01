@@ -13,7 +13,8 @@ import {
   unfollow,
   getUserFollowingsList,
   uploadUserProfile,
-  getUserChats, getCurrentUserBookmarks
+  getUserChats,
+  getCurrentUserBookmarks,
 } from "./functions";
 import {
   GetCurrentUserBookmarksParams,
@@ -23,7 +24,7 @@ import {
   GetUserFollowersListParams,
   GetUserFollowingsListParams,
   GetUserStoriesByIdParams,
-  User
+  User,
 } from "./types";
 
 export function useGetCurrentUser() {
@@ -51,7 +52,7 @@ export function useUpdateCurrentUser(options?: {
 }
 
 export function useGetCurrentUserStories(
-  params: GetCurrentUserStoriesParams = { page: 1, limit: 10 }
+  params: GetCurrentUserStoriesParams = { page: 1, limit: 10 },
 ) {
   return useInfiniteQuery({
     initialPageParam: params,
@@ -67,7 +68,7 @@ export function useGetCurrentUserStories(
   });
 }
 export function useGetCurrentUserBookmarks(
-  params: GetCurrentUserBookmarksParams = { page: 1, limit: 10 }
+  params: GetCurrentUserBookmarksParams = { page: 1, limit: 10 },
 ) {
   return useInfiniteQuery({
     initialPageParam: params,
@@ -82,7 +83,6 @@ export function useGetCurrentUserBookmarks(
     },
   });
 }
-
 
 export function useGetUserPrivateStoryCount() {
   return useQuery({
@@ -145,7 +145,7 @@ export function useFollow() {
           if (!oldData) return oldData;
 
           return { ...oldData, isFollowedByUser: true, followersCount: oldData.followersCount + 1 };
-        }
+        },
       );
     },
   });
@@ -172,7 +172,7 @@ export function useUnfollow() {
             isFollowedByUser: false,
             followersCount: oldData.followersCount - 1,
           };
-        }
+        },
       );
     },
   });
@@ -180,7 +180,7 @@ export function useUnfollow() {
 
 export function useGetUserFollowersList(
   params: GetUserFollowersListParams,
-  options?: { enabled?: boolean }
+  options?: { enabled?: boolean },
 ) {
   return useInfiniteQuery({
     ...options,
@@ -199,7 +199,7 @@ export function useGetUserFollowersList(
 
 export function useGetUserFollowingsList(
   params: GetUserFollowingsListParams,
-  options?: { enabled?: boolean }
+  options?: { enabled?: boolean },
 ) {
   return useInfiniteQuery({
     ...options,
@@ -228,7 +228,7 @@ export function useUploadUserProfile() {
           if (!oldData) return oldData;
 
           return { ...oldData, profileImage: res.url };
-        }
+        },
       );
     },
   });

@@ -31,7 +31,7 @@ export default function StoryLikeButton({
       onSuccess: () => {
         sendGAEvent("event", "like_story_click", { storyId });
       },
-    }
+    },
   );
   const { mutate: dislike, isPending: isDislikePending } = useDislikeStory(
     { id: storyId },
@@ -39,7 +39,7 @@ export default function StoryLikeButton({
       onSuccess: () => {
         sendGAEvent("event", "dislike_story_click", { storyId });
       },
-    }
+    },
   );
 
   const onHeartClick = () => {
@@ -57,7 +57,7 @@ export default function StoryLikeButton({
             "cursor-pointer",
             { "opacity-50": isLikePending || isDislikePending },
             { "fill-danger stroke-danger": isLikedByUser },
-            className
+            className,
           )}
           onClick={onHeartClick}
         />

@@ -94,7 +94,7 @@ export default function CreateNewStoryDialog({ open, onOpenChange }: CreateNewSt
           <div
             className={cn(
               "slide-out flex items-center justify-end absolute bottom-5 left-3 overflow-hidden bg-soft-background rounded-md",
-              { "opacity-50": isWriteWithAiPending }
+              { "opacity-50": isWriteWithAiPending },
             )}
             onClick={getHelpFromAi}
           >
@@ -108,7 +108,9 @@ export default function CreateNewStoryDialog({ open, onOpenChange }: CreateNewSt
           </div>
         </div>
 
-        <span className="text-sm text-soft-foreground mt-2">نکته: داستان‌هایی که برای مسابقه می‌نویسید در صفحه اصلی فنجون نیز نمایش داده خواهند شد.</span>
+        <span className="text-sm text-soft-foreground mt-2">
+          نکته: داستان‌هایی که برای مسابقه می‌نویسید در صفحه اصلی فنجون نیز نمایش داده خواهند شد.
+        </span>
 
         <DialogFooter className="flex gap-x-2">
           <DialogClose asChild>

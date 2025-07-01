@@ -93,7 +93,7 @@ export default function CreateNewStoryDialog({ open, onOpenChange }: CreateNewSt
           <div
             className={cn(
               "slide-out flex items-center justify-end absolute bottom-5 left-3 overflow-hidden bg-soft-background rounded-md",
-              { "opacity-50": isWriteWithAiPending }
+              { "opacity-50": isWriteWithAiPending },
             )}
             onClick={getHelpFromAi}
           >

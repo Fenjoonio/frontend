@@ -15,7 +15,7 @@ export default function UserAvatar({ user, className }: UserAvatarProps) {
     <div
       className={cn(
         "size-7 shrink-0 flex items-center justify-center rounded-lg bg-primary",
-        className
+        className,
       )}
     >
       {user.profileImage ? (

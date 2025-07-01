@@ -21,7 +21,7 @@ import { GetUserCommentsByIdResponse } from "../user/types";
 
 export function useEditComment(
   params: Pick<EditCommentBody, "id">,
-  options?: { onSuccess?: (res: Comment) => void }
+  options?: { onSuccess?: (res: Comment) => void },
 ) {
   return useMutation({
     ...options,
@@ -59,11 +59,11 @@ export function useLikeComment(params: LikeCommentParams, options?: { onSuccess?
               comments: page.comments.map((comment) =>
                 comment.id === params.id
                   ? { ...comment, likesCount: comment.likesCount + 1, isLikedByUser: true }
-                  : comment
+                  : comment,
               ),
             })),
           };
-        }
+        },
       );
 
       queryClient.setQueriesData(
@@ -78,11 +78,11 @@ export function useLikeComment(params: LikeCommentParams, options?: { onSuccess?
               comments: page.comments.map((comment) =>
                 comment.id === params.id
                   ? { ...comment, likesCount: comment.likesCount + 1, isLikedByUser: true }
-                  : comment
+                  : comment,
               ),
             })),
           };
-        }
+        },
       );
 
       queryClient.invalidateQueries({ queryKey: [COMMENTS_QUERY_KEYS.GET_COMMENT_LIKERS, params] });
@@ -92,7 +92,7 @@ export function useLikeComment(params: LikeCommentParams, options?: { onSuccess?
 
 export function useDislikeComment(
   params: DislikeCommentParams,
-  options?: { onSuccess?: () => void }
+  options?: { onSuccess?: () => void },
 ) {
   const queryClient = useQueryClient();
 
@@ -114,11 +114,11 @@ export function useDislikeComment(
               comments: page.comments.map((comment) =>
                 comment.id === params.id
                   ? { ...comment, likesCount: comment.likesCount - 1, isLikedByUser: false }
-                  : comment
+                  : comment,
               ),
             })),
           };
-        }
+        },
       );
 
       queryClient.setQueriesData(
@@ -133,11 +133,11 @@ export function useDislikeComment(
               comments: page.comments.map((comment) =>
                 comment.id === params.id
                   ? { ...comment, likesCount: comment.likesCount - 1, isLikedByUser: false }
-                  : comment
+                  : comment,
               ),
             })),
           };
-        }
+        },
       );
 
       queryClient.invalidateQueries({ queryKey: [COMMENTS_QUERY_KEYS.GET_COMMENT_LIKERS, params] });
@@ -147,7 +147,7 @@ export function useDislikeComment(
 
 export function useGetCommentLikers(
   params: GetCommentLikersParams,
-  options?: { enabled?: boolean }
+  options?: { enabled?: boolean },
 ) {
   return useInfiniteQuery({
     ...options,

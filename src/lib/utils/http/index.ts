@@ -26,7 +26,7 @@ const handleRequest = async <T = unknown>(
   method: "get" | "post" | "patch" | "put" | "delete",
   input: Input,
   options?: RequestOptions,
-  json?: unknown
+  json?: unknown,
 ): Promise<ApiResponse<T>> => {
   try {
     const requestOptions = json ? { json, ...options } : options;

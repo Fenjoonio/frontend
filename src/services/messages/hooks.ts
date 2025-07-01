@@ -12,7 +12,7 @@ import {
 
 export function useGetInfiniteChatMessages(
   params: GetChatMessagesParams,
-  options?: { refetchInterval?: number }
+  options?: { refetchInterval?: number },
 ) {
   return useInfiniteQuery({
     ...options,
@@ -45,7 +45,7 @@ export function useSendMessage(options?: { onSuccess?: (res: Message) => void })
 
 export function useUpdateMessage(
   params: Pick<UpdateMessageBody, "id">,
-  options?: { onSuccess?: (res: Message) => void }
+  options?: { onSuccess?: (res: Message) => void },
 ) {
   const queryClient = useQueryClient();
 

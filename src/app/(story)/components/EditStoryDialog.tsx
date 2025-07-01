@@ -38,7 +38,7 @@ export default function EditStoryDialog({
         onOpenChange(false);
         onEdit?.(response);
       },
-    }
+    },
   );
 
   useEffect(() => {

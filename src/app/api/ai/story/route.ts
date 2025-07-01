@@ -6,7 +6,7 @@ export async function POST(request: Request) {
   if (!text) {
     return NextResponse.json(
       { success: false, message: "اطلاعات وارد شده را بررسی کنید" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 

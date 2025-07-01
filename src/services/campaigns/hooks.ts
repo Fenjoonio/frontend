@@ -11,12 +11,14 @@ export function useAddCampaignStory(options?: { onSuccess?: (res: AddNewStoryRes
     mutationFn: addCampaignStory,
     onSuccess: (response) => {
       options?.onSuccess?.(response);
-      queryClient.invalidateQueries({ queryKey: [CAMPAIGN_QUERY_KEYS.GET_CAMPAIGN_STORIES], exact: false });
+      queryClient.invalidateQueries({
+        queryKey: [CAMPAIGN_QUERY_KEYS.GET_CAMPAIGN_STORIES],
+        exact: false,
+      });
       queryClient.invalidateQueries({ queryKey: [STORIES_QUERY_KEYS.GET_STORIES], exact: false });
     },
   });
 }
-
 
 export function useGetCampaignStories(params?: GetStoriesParams) {
   return useInfiniteQuery({

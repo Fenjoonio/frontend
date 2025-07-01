@@ -28,7 +28,7 @@ export default function UserFollowersListSheet({
 }: UserFollowersListSheetProps) {
   const { data, isFetching, hasNextPage, fetchNextPage } = useGetUserFollowersList(
     { id: userId },
-    { enabled: isOpen }
+    { enabled: isOpen },
   );
 
   const users = useMemo(() => {

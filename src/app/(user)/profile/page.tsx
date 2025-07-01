@@ -5,12 +5,13 @@ import LogoutButton from "./components/LogoutButton";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import ViewProfileButton from "./components/ViewProfileButton";
 import {
-  ArrowLeftIcon, BookMarked,
+  ArrowLeftIcon,
+  BookMarked,
   DownloadIcon,
   NotebookPenIcon,
   ScaleIcon,
   StarIcon,
-  UserPenIcon
+  UserPenIcon,
 } from "lucide-react";
 
 const getDownloadLinkBaseOnUtmSource = (utmSource: string) => {

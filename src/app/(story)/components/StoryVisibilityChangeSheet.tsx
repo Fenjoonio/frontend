@@ -33,7 +33,7 @@ export default function StoryVisibilityChangeSheet({
         onOpenChange(false);
         toast.success("وضعیت نمایش داستان با موفقیت تغییر کرد");
       },
-    }
+    },
   );
 
   const description = story?.isPrivate

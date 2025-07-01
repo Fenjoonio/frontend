@@ -31,12 +31,12 @@ export default function MessagePage() {
     {
       userId: +params.id,
     },
-    { refetchInterval: 1500 }
+    { refetchInterval: 1500 },
   );
 
   const messages = useMemo(
     () => data?.pages.flatMap((page) => page.messages ?? []).reverse() ?? [],
-    [data?.pages]
+    [data?.pages],
   );
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function MessagePage() {
           }
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (messagesStartRef.current) {

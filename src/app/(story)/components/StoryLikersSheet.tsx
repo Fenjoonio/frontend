@@ -24,7 +24,7 @@ type StoryLikersSheetProps = {
 export default function StoryLikersSheet({ storyId, isOpen, onOpenChange }: StoryLikersSheetProps) {
   const { data, isFetching, hasNextPage, fetchNextPage } = useGetStoryLikers(
     { id: storyId },
-    { enabled: isOpen }
+    { enabled: isOpen },
   );
 
   const users = useMemo(() => {

@@ -14,7 +14,8 @@ import ShareStorySheet from "@/app/(story)/components/ShareStorySheet";
 import ReportStoryDialog from "@/app/(story)/components/ReportStoryDialog";
 import StoryVisibilityChangeSheet from "@/app/(story)/components/StoryVisibilityChangeSheet";
 import {
-  Bookmark, BookmarkCheck,
+  Bookmark,
+  BookmarkCheck,
   EditIcon,
   EyeIcon,
   EyeOffIcon,
@@ -90,7 +91,6 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
     action({ id: story.id });
   };
 
-
   const onEdit = () => {
     setIsEditStoryDialogOpen(true);
     setIsOpen(false);
@@ -125,35 +125,23 @@ export default function MenuSheet({ storyId, className }: MenuSheetProps) {
               <span className="mt-[2px]">اشتراک‌گذاری</span>
             </li>
 
-            <li
-              className="flex gap-x-2 items-center py-4 cursor-pointer"
-              onClick={onBookmark}
-            >
-  <span className="relative size-5">
-    <span
-      className={cn(
-        "absolute inset-0",
-        story?.isBookmarkedByUser ? "" : "hidden"
-      )}
-    >
-      <BookmarkCheck className="size-5" />
-    </span>
-    <span
-      className={cn(
-        "absolute inset-0",
-        !story?.isBookmarkedByUser ? "" : "hidden"
-      )}
-    >
-      <Bookmark className="size-5" />
-    </span>
-  </span>
+            <li className="flex gap-x-2 items-center py-4 cursor-pointer" onClick={onBookmark}>
+              <span className="relative size-5">
+                <span className={cn("absolute inset-0", story?.isBookmarkedByUser ? "" : "hidden")}>
+                  <BookmarkCheck className="size-5" />
+                </span>
+                <span
+                  className={cn("absolute inset-0", !story?.isBookmarkedByUser ? "" : "hidden")}
+                >
+                  <Bookmark className="size-5" />
+                </span>
+              </span>
               <span className="mt-[4px]">
-    {story?.isBookmarkedByUser
-      ? "حذف از لیست علاقه مندی ها"
-      : "اضافه به لیست علاقه مندی ها"}
+                {story?.isBookmarkedByUser
+                  ? "حذف از لیست علاقه مندی ها"
+                  : "اضافه به لیست علاقه مندی ها"}
               </span>
             </li>
-
 
             {!!story?.isEditableByUser && (
               <li className="flex gap-x-2 items-center py-4 cursor-pointer" onClick={onEdit}>

@@ -20,7 +20,7 @@ import type {
   GetUserChatsParams,
   GetUserChatsResponse,
   GetCurrentUserBookmarksParams,
-  GetCurrentUserBookmarksResponse
+  GetCurrentUserBookmarksResponse,
 } from "./types";
 
 export async function getCurrentUser() {
@@ -75,7 +75,7 @@ export async function getCurrentUserBookmarks(params: GetCurrentUserBookmarksPar
 
 export async function getUserPrivateStoryCount() {
   const response = await http.get<GetUserPrivateStoryCountResponse>(
-    "v1/users/me/private-story-count"
+    "v1/users/me/private-story-count",
   );
 
   return response.data;
@@ -118,7 +118,7 @@ export async function uploadUserProfile(body: UploadUserProfileBody) {
     undefined,
     {
       body: formData,
-    }
+    },
   );
 
   return response.data;

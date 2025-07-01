@@ -15,7 +15,7 @@ function handleUtmSources(request: NextRequest, response: NextResponse): NextRes
 
   response.headers.set(
     "Set-Cookie",
-    `utmSource=${utmSource}; expires=${expireDate.toUTCString()}; path=/`
+    `utmSource=${utmSource}; expires=${expireDate.toUTCString()}; path=/`,
   );
 
   return response;
@@ -51,7 +51,7 @@ function handleAuthentication(request: NextRequest): NextResponse | undefined {
     params.set("redirect", pathname);
 
     const response = NextResponse.redirect(
-      new URL(`/accounts/login?${params.toString()}`, request.url)
+      new URL(`/accounts/login?${params.toString()}`, request.url),
     );
 
     return handleUtmSources(request, response);

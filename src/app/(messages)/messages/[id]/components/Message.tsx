@@ -57,7 +57,7 @@ export default function Message({
             !isLastInGroup &&
             "rounded-lg rounded-tl-xl rounded-bl-sm",
           !isMyMessage && !isFirstInGroup && !isLastInGroup && "rounded-lg rounded-bl-md",
-          !isMyMessage && !isFirstInGroup && isLastInGroup && "rounded-lg rounded-bl-none"
+          !isMyMessage && !isFirstInGroup && isLastInGroup && "rounded-lg rounded-bl-none",
         )}
       >
         {message.message}
@@ -67,7 +67,7 @@ export default function Message({
         <div
           className={cn(
             "flex gap-x-2 items-center mt-2",
-            isMyMessage ? "justify-start" : "justify-end"
+            isMyMessage ? "justify-start" : "justify-end",
           )}
         >
           {isMyMessage && <Icon className="size-3 text-soft-foreground" />}

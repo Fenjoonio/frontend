@@ -28,7 +28,7 @@ export default function CommentLikersSheet({
 }: CommentLikersSheetProps) {
   const { data, isFetching, hasNextPage, fetchNextPage } = useGetCommentLikers(
     { id: commentId },
-    { enabled: isOpen }
+    { enabled: isOpen },
   );
 
   const users = useMemo(() => {

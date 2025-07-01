@@ -10,15 +10,12 @@ import Story, { StorySkeleton } from "@/app/(story)/components/Story";
 export default function ProfileStoriesPage() {
   const { data, isFetching, hasNextPage, fetchNextPage, refetch } = useGetCurrentUserBookmarks();
   const bookmarks = useMemo(() => {
-    return data?.pages
-      ? data.pages.flatMap((data) => data?.stories ?? [])
-      : [];
+    return data?.pages ? data.pages.flatMap((data) => data?.stories ?? []) : [];
   }, [data?.pages]);
 
   const onRefresh = async () => {
     await refetch();
   };
-
 
   return (
     <section className="min-h-svh flex flex-col pb-20">
