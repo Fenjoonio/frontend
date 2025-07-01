@@ -4,7 +4,6 @@ import { ApiError } from "@/lib/exceptions";
 import ky, { HTTPError, type Input } from "ky";
 import { isClientSide } from "@/lib/utils/environment";
 import type { ApiResponse, RequestOptions } from "./types";
-console.log("API URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
 
 const request = ky.create({ hooks, retry: 0, prefixUrl: process.env.NEXT_PUBLIC_API_BASE_URL });
 
