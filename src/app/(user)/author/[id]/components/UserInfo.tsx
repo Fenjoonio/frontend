@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { cn } from "@/lib/utils/classnames";
 import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
 import { SendIcon, UserPlusIcon } from "lucide-react";
@@ -12,9 +13,10 @@ import UserFollowingsListSheet from "@/app/(user)/components/UserFollowingsListS
 
 type UserInfoProps = {
   id: number;
+  className?: string;
 };
 
-export default function UserInfo({ id }: UserInfoProps) {
+export default function UserInfo({ id, className }: UserInfoProps) {
   const [isFollowersSheetOpen, setIsFollowersSheetOpen] = useState(false);
   const [isFollowingsSheetOpen, setIsFollowingsSheetOpen] = useState(false);
 
@@ -24,10 +26,15 @@ export default function UserInfo({ id }: UserInfoProps) {
 
   if (!user) {
     return (
-      <>
+      <div className={cn("flex gap-x-4", className)}>
         <div className="w-20 h-20 shrink-0 flex items-center justify-center rounded-3xl bg-border opacity-40 animate-pulse"></div>
-        <div className="w-28 h-6 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse mt-6"></div>
-      </>
+
+        <div className="flex flex-col mt-2">
+          <div className="w-28 h-6 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse"></div>
+          <div className="w-56 h-4 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse mt-2"></div>
+          <div className="w-16 h-4 bg-gray-300 dark:bg-border opacity-40 rounded-full animate-pulse mt-1"></div>
+        </div>
+      </div>
     );
   }
 
@@ -40,47 +47,53 @@ export default function UserInfo({ id }: UserInfoProps) {
 
   return (
     <>
-      <div className="size-20 shrink-0 flex items-center justify-center rounded-3xl bg-primary cursor-pointer">
-        {user.profileImage ? (
-          <Image
-            width={48}
-            height={48}
-            alt={userName}
-            src={user.profileImage}
-            className="w-full h-full object-cover rounded-3xl"
-          />
-        ) : (
-          <div className="size-12 flex justify-center items-center overflow-hidden text-4xl text-light-gray-100 font-bold">
-            {userName[0]}
-          </div>
-        )}
+      <div className={cn("flex gap-x-4", className)}>
+        <div className="size-20 shrink-0 flex items-center justify-center rounded-3xl bg-primary cursor-pointer">
+          {user.profileImage ? (
+            <Image
+              width={48}
+              height={48}
+              alt={userName}
+              src={user.profileImage}
+              className="w-full h-full object-cover rounded-3xl"
+            />
+          ) : (
+            <div className="size-12 flex justify-center items-center overflow-hidden text-4xl text-light-gray-100 font-bold">
+              {userName[0]}
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col mt-2">
+          <h1 className="text-2xl font-bold">{userName}</h1>
+          <span className="block text-sm text-soft-foreground mt-1">{user.bio}</span>
+        </div>
       </div>
-      {user.isPremium && (
-        <span className="text-sm text-primary bg-foreground py-2 px-4 rounded-lg -mt-3">
-          کاربر حرفه‌ای
-        </span>
-      )}
 
-      <h1 className="text-2xl font-bold mt-4">{userName}</h1>
-      <span className="block text-sm text-soft-foreground mt-2">{user.bio}</span>
-
-      <div className="w-full flex gap-x-4 mt-4">
+      <div className="w-full flex gap-x-4 mt-6">
         <div className="flex-1 flex gap-y-1 flex-col items-center">
-          <span className="text-2xl" onClick={() => setIsFollowersSheetOpen(true)}>
+          <span className="text-lg" onClick={() => setIsFollowersSheetOpen(true)}>
             {user.followersCount}
           </span>
-          <span>دنبال کنندگان</span>
+          <span className="text-sm">داستانک‌ها</span>
         </div>
 
         <div className="flex-1 flex gap-y-1 flex-col items-center">
-          <span className="text-2xl" onClick={() => setIsFollowingsSheetOpen(true)}>
+          <span className="text-lg" onClick={() => setIsFollowersSheetOpen(true)}>
+            {user.followersCount}
+          </span>
+          <span className="text-sm">دنبال کنندگان</span>
+        </div>
+
+        <div className="flex-1 flex gap-y-1 flex-col items-center">
+          <span className="text-lg" onClick={() => setIsFollowingsSheetOpen(true)}>
             {user.followingsCount}
           </span>
-          <span>دنبال شدگان</span>
+          <span className="text-sm">دنبال شدگان</span>
         </div>
       </div>
 
-      <div className="w-full flex gap-x-2 px-5 mt-6">
+      <div className="flex gap-x-2 mt-6 mx-5">
         <Button
           className="flex-1"
           disabled={isFollowPending || isUnfollowPending}
@@ -91,10 +104,9 @@ export default function UserInfo({ id }: UserInfoProps) {
           <span className="mt-1">{user.isFollowedByUser ? "دنبال کرده‌اید" : "دنبال کردن"}</span>
         </Button>
 
-        <Link href={`/messages/${user.id}`} className="flex-1">
-          <Button variant="outline" className="w-full">
+        <Link href={`/messages/${user.id}`} className="basis-14">
+          <Button variant="secondary" className="w-full">
             <SendIcon />
-            <span className="mt-1">پیام دادن</span>
           </Button>
         </Link>
       </div>

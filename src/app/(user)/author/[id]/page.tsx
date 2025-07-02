@@ -1,8 +1,8 @@
-import BackArrow from "@/components/BackArrow";
 import UserInfo from "./components/UserInfo";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import BackArrow from "@/components/BackArrow";
 import UserStories from "./components/UserStories";
 import UserComments from "./components/UserComments";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type AuthorPageProps = {
   params: Promise<{ id: string }>;
@@ -10,6 +10,7 @@ type AuthorPageProps = {
 
 export default async function AuthorPage({ params }: AuthorPageProps) {
   const { id } = await params;
+
   return (
     <section className="pb-4">
       <header
@@ -19,18 +20,20 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         <BackArrow />
       </header>
 
-      <div className="flex flex-col items-center mt-8">
-        <UserInfo id={Number(id)} />
-      </div>
+      <UserInfo id={Number(id)} className="mt-4 mx-5" />
 
-      <Tabs defaultValue="stories" className="w-[calc(100%-40px)] mt-40 mx-5">
+      <Tabs defaultValue="stories" className="w-[calc(100%-40px)] mt-6 mx-5">
         <TabsList className="w-full h-14 flex">
           <TabsTrigger value="stories" className="flex-1">
-            آخرین داستان‌ها
+            داستانک‌ها
+          </TabsTrigger>
+
+          <TabsTrigger value="novels" className="flex-1">
+            داستان‌ها
           </TabsTrigger>
 
           <TabsTrigger value="comments" className="flex-1">
-            آخرین نقد‌ها
+            نقد‌ها
           </TabsTrigger>
         </TabsList>
 
