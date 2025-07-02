@@ -6,23 +6,22 @@ import { useState } from "react";
 import { cn } from "@/lib/utils/classnames";
 import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
-import { SendIcon, UserPlusIcon } from "lucide-react";
-import { useFollow, useGetUserById, useUnfollow } from "@/services/user";
+import { useGetCurrentUser } from "@/services/user";
+import { PenIcon, SettingsIcon } from "lucide-react";
+import { sendGAEvent } from "@next/third-parties/google";
+import CreateNewStoryDialog from "@/app/(story)/components/CreateNewStoryDialog";
 import UserFollowersListSheet from "@/app/(user)/components/UserFollowersListSheet";
 import UserFollowingsListSheet from "@/app/(user)/components/UserFollowingsListSheet";
 
 type UserInfoProps = {
-  id: number;
   className?: string;
 };
 
-export default function UserInfo({ id, className }: UserInfoProps) {
+export default function UserInfo({ className }: UserInfoProps) {
+  const { data: user } = useGetCurrentUser();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFollowersSheetOpen, setIsFollowersSheetOpen] = useState(false);
   const [isFollowingsSheetOpen, setIsFollowingsSheetOpen] = useState(false);
-
-  const { data: user } = useGetUserById({ id });
-  const { mutate: follow, isPending: isFollowPending } = useFollow();
-  const { mutate: unfollow, isPending: isUnfollowPending } = useUnfollow();
 
   if (!user) {
     return (
@@ -40,9 +39,9 @@ export default function UserInfo({ id, className }: UserInfoProps) {
 
   const userName = getUserName(user || {});
 
-  const toggleFollow = () => {
-    const toggleFollow = user.isFollowedByUser ? unfollow : follow;
-    toggleFollow({ id: user.id });
+  const openAddStoryModalIfLoggedIn = () => {
+    setIsModalOpen(true);
+    sendGAEvent("event", "add_new_story", { location: "profile" });
   };
 
   return (
@@ -51,8 +50,9 @@ export default function UserInfo({ id, className }: UserInfoProps) {
         <div className="size-20 shrink-0 flex items-center justify-center rounded-3xl bg-primary cursor-pointer">
           {user.profileImage ? (
             <Image
-              width={48}
-              height={48}
+              priority
+              width={80}
+              height={80}
               alt={userName}
               src={user.profileImage}
               className="w-full h-full object-cover rounded-3xl"
@@ -94,21 +94,21 @@ export default function UserInfo({ id, className }: UserInfoProps) {
       </div>
 
       <div className="flex gap-x-2 mt-6 mx-5">
-        <Button
-          className="flex-1"
-          disabled={isFollowPending || isUnfollowPending}
-          variant={user.isFollowedByUser ? "outline" : "default"}
-          onClick={toggleFollow}
-        >
-          <UserPlusIcon />
-          <span className="mt-1">{user.isFollowedByUser ? "دنبال کرده‌اید" : "دنبال کردن"}</span>
-        </Button>
-
-        <Link href={`/messages/${user.id}`} className="basis-14">
+        <Link href="/profile/edit" className="flex-1">
           <Button variant="secondary" className="w-full">
-            <SendIcon />
+            <span className="mt-1">ویرایش اطلاعات کاربری</span>
           </Button>
         </Link>
+
+        <Link href="/profile" className="basis-14">
+          <Button variant="secondary" className="w-full">
+            <SettingsIcon />
+          </Button>
+        </Link>
+
+        <Button className="basis-14" onClick={openAddStoryModalIfLoggedIn}>
+          <PenIcon />
+        </Button>
       </div>
 
       <UserFollowingsListSheet
@@ -122,6 +122,8 @@ export default function UserInfo({ id, className }: UserInfoProps) {
         isOpen={isFollowersSheetOpen}
         onOpenChange={setIsFollowersSheetOpen}
       />
+
+      <CreateNewStoryDialog open={isModalOpen} onOpenChange={setIsModalOpen} />
     </>
   );
 }

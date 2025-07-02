@@ -19,7 +19,7 @@ const ITEMS = [
   },
   {
     id: 2,
-    href: "/profile",
+    href: "/profile/me",
     title: "پروفایل",
     Icon: UserIcon,
     showBadge: false,

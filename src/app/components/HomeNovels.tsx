@@ -75,7 +75,7 @@ export default function HomeNovels({ className }: HomeNovelsProps) {
               href={`/novel/${novel.id}`}
               className="block w-full h-48 relative overflow-hidden rounded-lg"
             >
-              <Image src={novel.image} alt={novel.title} fill />
+              <Image src={novel.image} alt={novel.title} fill sizes="33%" priority />
             </Link>
 
             <div className="mt-3">
