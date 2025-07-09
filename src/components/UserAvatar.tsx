@@ -14,7 +14,7 @@ export default function UserAvatar({ user, className }: UserAvatarProps) {
   return (
     <div
       className={cn(
-        "size-7 shrink-0 flex items-center justify-center rounded-lg bg-primary",
+        "size-7 shrink-0 flex items-center justify-center rounded-lg bg-primary overflow-hidden",
         className
       )}
     >
@@ -24,7 +24,7 @@ export default function UserAvatar({ user, className }: UserAvatarProps) {
           height={28}
           alt={userName}
           src={user.profileImage}
-          className="w-full h-full object-cover rounded-lg"
+          className="w-full h-full object-cover"
         />
       ) : (
         <div className="size-4 flex justify-center items-center overflow-hidden text-sm text-light-gray-100 font-bold">

@@ -52,6 +52,29 @@ const novels = [
       createdAt: "2025-03-03T14:32:37.68221Z",
     },
   },
+  {
+    id: 2,
+    title: "مهمان احضار شده",
+    image: "https://s3.lexoya.com/fenjoon/novels/a23254b5-d45f-41ba-a143-915fdgt27854.png",
+    summery: `جییییغ می‌کشد.\n ولم کننن! دست از سرم برداااار!\n آن‌قدر جیغ زده که گلویش می‌سوزد. گوشه‌ای نشسته و لحظه‌ای آرام نمی‌گیرد. یک هفته‌ای می‌شود که این‌جوری شده است. مثل دیوانه‌ها رفتار می‌کند و گاهی صداهای عجیبی از خودش درمی‌آورد؛ و بعدش، جیییغ که: ولم کننن! بروو! راحتم بذااار! این رفتارش همه را کلافه، عصبی و حتی سردرگم کرده. اما قضیه چیست؟`,
+    user: {
+      id: 7,
+      bio: "حتی اگه بود و نبودم برای هیچکس مهم نباشه ، میخوام خودم از وجودم لذت ببرم",
+      followersCount: 4,
+      followingsCount: 3,
+      isFollowedByUser: false,
+      firstName: "دختر صورتی",
+      lastName: "",
+      nickname: "",
+      isVerified: false,
+      isBot: false,
+      isPremium: false,
+      profileImage:
+        "https://s3.lexoya.com/fenjoon/profiles/55a94dd0-1078-46db-baef-cddd4d344a01.jpg",
+      phone: "",
+      createdAt: "2025-03-08T20:18:51.33102Z",
+    },
+  },
 ];
 
 type HomeNovelsProps = {
@@ -68,7 +91,7 @@ export default function HomeNovels({ className }: HomeNovelsProps) {
       breakpoints={{ 320: { slidesPerView: 2.2 }, 420: { slidesPerView: 2.8 } }}
       className={className}
     >
-      {novels.map((novel) => (
+      {novels.toReversed().map((novel) => (
         <SwiperSlide key={novel.id}>
           <div className="bg-soft-background py-4 px-3 rounded-md">
             <Link
