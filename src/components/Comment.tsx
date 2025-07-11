@@ -133,7 +133,7 @@ function CommentMenuSheet({
   };
 
   const onReport = () => {
-    toast.info("این قابلیت بزودی اضافه می‌شود.");
+    toast.info("این قابلیت بزودی اضافه خواهد شد.");
   };
 
   return (
