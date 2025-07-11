@@ -1,11 +1,14 @@
 import UserInfo from "./components/UserInfo";
 import UserStories from "./components/UserStories";
 import UserComments from "./components/UserComments";
+import ProfileHeader from "./components/ProfileHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default async function AuthorPage() {
   return (
     <section className="pb-4">
+      <ProfileHeader />
+
       <UserInfo className="pt-4 mx-5" />
 
       <Tabs defaultValue="stories" className="w-[calc(100%-40px)] mt-6 mx-5">
