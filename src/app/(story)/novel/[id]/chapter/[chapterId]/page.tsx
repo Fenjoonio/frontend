@@ -25,13 +25,13 @@ export default async function NovelChapterPage({ params }: NovelChapterPageProps
       <Viewer content={chapterContent} className="py-4 px-5" />
 
       {hasNextChapter ? (
-        <Link href={`/novel/${id}/chapter/${+chapterId + 1}`} className="block py-8 px-5">
+        <Link href={`/novel/${id}/chapter/${+chapterId + 1}`} replace className="block py-8 px-5">
           <Button variant="outline" className="w-full">
             بخش بعدی
           </Button>
         </Link>
       ) : (
-        <Link href={`/novel/${id}`} className="block py-8 px-5">
+        <Link href={`/novel/${id}`} replace className="block py-8 px-5">
           <Button variant="outline" className="w-full">
             بازگشت به صفحه داستان
           </Button>
