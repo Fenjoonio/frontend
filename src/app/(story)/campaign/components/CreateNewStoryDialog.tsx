@@ -77,7 +77,7 @@ export default function CreateNewStoryDialog({ open, onOpenChange }: CreateNewSt
           <DialogTitle>داستان جدید</DialogTitle>
           <DialogDescription>
             هر لحظه‌ای می‌تونه یه داستان داشته باشه؛ به اطرافت نگاه کن و داستانت رو بنویس. (از{" "}
-            <span className="text-foreground">۲۵ تا ۲۵۰</span> حرف)
+            <span className="text-foreground">۲۵ تا ۲۰۰۰</span> حرف)
           </DialogDescription>
         </DialogHeader>
 
@@ -108,7 +108,9 @@ export default function CreateNewStoryDialog({ open, onOpenChange }: CreateNewSt
           </div>
         </div>
 
-        <span className="text-sm text-soft-foreground mt-2">نکته: داستان‌هایی که برای مسابقه می‌نویسید در صفحه اصلی فنجون نیز نمایش داده خواهند شد.</span>
+        <span className="text-sm text-soft-foreground mt-2">
+          نکته: داستان‌هایی که برای مسابقه می‌نویسید در صفحه اصلی فنجون نیز نمایش داده خواهند شد.
+        </span>
 
         <DialogFooter className="flex gap-x-2">
           <DialogClose asChild>
