@@ -12,8 +12,8 @@ export type Novel = {
 };
 
 export type GetNovelsParams = {
-  page: number;
-  limit: number;
+  page?: number;
+  limit?: number;
 };
 
 export type GetNovelsResponse = {
