@@ -3551,13 +3551,8 @@ const novelChapters = [
 
 export async function getNovels(params: GetNovelsParams) {
   return {
-    pagination: {
-      limit: params.limit,
-      page: params.page || 1,
-      pages: 1,
-      total: params.limit,
-    },
-    novels: novels.splice(0, params.limit),
+    pagination: { limit: 10, page: 1, pages: 1, total: params.limit },
+    novels: novels,
   };
 }
 
