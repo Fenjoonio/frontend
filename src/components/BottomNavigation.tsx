@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils/classnames";
-import { ChartNoAxesGanttIcon, HomeIcon, UserIcon } from "lucide-react";
+import { ChartNoAxesGanttIcon, HomeIcon, LibraryBigIcon, UserIcon } from "lucide-react";
 
 const ITEMS = [
   {
@@ -12,13 +12,20 @@ const ITEMS = [
   },
   {
     id: 1,
+    href: "/library",
+    title: "کتابخانه",
+    Icon: LibraryBigIcon,
+    showBadge: true,
+  },
+  {
+    id: 2,
     href: "/thread",
     title: "بافته",
     Icon: ChartNoAxesGanttIcon,
     showBadge: false,
   },
   {
-    id: 2,
+    id: 3,
     href: "/profile/me",
     title: "پروفایل",
     Icon: UserIcon,
