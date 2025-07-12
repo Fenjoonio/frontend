@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import HomeSlider from "./components/HomeSlider";
-import HomeNovels from "./components/HomeNovels";
 import PullToRefresh from "@/components/PullToRefresh";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useAuthContext } from "@/providers/AuthProvider";
@@ -84,10 +83,6 @@ export default function HomePage() {
       </header>
 
       <HomeSlider className="mt-4" />
-
-      <h3 className="text-sm text-soft-foreground mt-6 px-5">آخرین داستان‌ها</h3>
-
-      <HomeNovels className="mx-5 mt-4" />
 
       <h3 className="text-sm text-soft-foreground mt-6 px-5">آخرین داستانک‌ها</h3>
 
