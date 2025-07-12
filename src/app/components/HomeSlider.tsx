@@ -17,7 +17,7 @@ export default function HomeSlider({ className }: HomeSliderProps) {
     <Swiper autoplay={{ delay: 10_000 }} loop className={className}>
       <SwiperSlide className="px-5">
         <Link
-          href="/novels/3"
+          href="/novel/3"
           className="w-full h-48 flex items-center justify-center rounded-sm overflow-hidden relative px-4"
         >
           <Image
