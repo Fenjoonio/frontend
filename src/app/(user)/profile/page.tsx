@@ -23,8 +23,8 @@ const getDownloadLinkBaseOnUtmSource = (utmSource: string) => {
   }
 
   return {
-    text: "بروزرسانی (نسخه ۰.۱.۴)",
-    link: "https://github.com/freakingeek/fenjoon-app/releases/download/0.1.4/Fenjoon-v0.1.4.apk",
+    text: "بروزرسانی (نسخه ۰.۱.۸)",
+    link: "https://github.com/freakingeek/fenjoon-app/releases/download/0.1.8/Fenjoon-0.1.8.apk",
   };
 };
 
