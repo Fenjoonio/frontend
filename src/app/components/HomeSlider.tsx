@@ -24,6 +24,7 @@ export default function HomeSlider({ className }: HomeSliderProps) {
             src="https://s3.lexoya.com/fenjoon/banners/t5125425-f45f-41ec-a143-915faed27823.png"
             alt="تصویر داستان"
             fill
+            priority
             className="object-cover blur-xs"
           />
 
