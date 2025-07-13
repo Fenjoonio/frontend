@@ -30,7 +30,7 @@ export default async function LibraryPage() {
           <div key={novel.id} className="w-[calc(50%-8px)] bg-soft-background py-4 px-3 rounded-md">
             <Link
               href={`/novel/${novel.id}`}
-              className="block w-full h-48 relative overflow-hidden rounded-lg"
+              className="block w-full h-48 lg:h-64 relative overflow-hidden rounded-lg"
             >
               <Image src={novel.image} alt={novel.title} fill sizes="50%" priority={index < 5} />
             </Link>
