@@ -247,8 +247,12 @@
 }
 
 @layer base {
+  * {
+    @apply overscroll-none;
+  }
+
   body {
-    @apply overscroll-none bg-background text-foreground overscroll-y-contain antialiased leading-[140%] transition-colors duration-75 ease-linear;
+    @apply bg-background text-foreground overscroll-y-contain antialiased leading-[140%] transition-colors duration-75 ease-linear;
   }
 }
 
