@@ -1,6 +1,5 @@
 "use client";
 
-import "./styles/editor-overrides.css";
 import { PropsWithChildren } from "react";
 import { cn } from "@/lib/utils/classnames";
 import EditorToolkit from "../EditorToolkit";
