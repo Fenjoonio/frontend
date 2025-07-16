@@ -1,54 +1,75 @@
 "use client";
 
-import { PropsWithChildren } from "react";
+import { EditorState } from "lexical";
+import Toolbar from "./components/Toolbar";
 import { cn } from "@/lib/utils/classnames";
-import EditorToolkit from "../EditorToolkit";
+import { useState, useCallback } from "react";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
+import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { LexicalComposer, type InitialConfigType } from "@lexical/react/LexicalComposer";
-
-type EditorProps = PropsWithChildren<{
-  className?: string;
-  enableToolkit?: boolean;
-  toolkitClassName?: string;
-}>;
 
 function Placeholder() {
   return (
-    <div className="absolute top-0 start-0 text-gray-300 pointer-events-none">
-      مثلاً: کاش توی خیابون، بارون می‌اومد و کسی منتظر کسی نبود...
+    <div className="absolute top-0 start-0 text-lg text-gray-300 pointer-events-none">
+      کاش خیابان باشه، بارون باشه، اما کسی منتظر کسی نه ...
     </div>
   );
 }
 
-export default function Editor({ enableToolkit = true, toolkitClassName, className }: EditorProps) {
-  const editorConfig: InitialConfigType = {
+type EditorProps = {
+  className?: string;
+  initialState?: string;
+  onSave?: (data: { json: any; text: string }) => void;
+};
+
+export default function Editor({ initialState, className, onSave }: EditorProps) {
+  const [editorState, setEditorState] = useState<EditorState | null>(null);
+
+  const onChange = useCallback((editorState: EditorState) => {
+    setEditorState(editorState);
+  }, []);
+
+  const config: InitialConfigType = {
     namespace: "FenjoonEditor",
+    editorState: initialState ?? undefined,
     nodes: [HeadingNode, QuoteNode],
     theme: {
+      paragraph: "text-lg leading-8",
       quote: "border-s-2 py-2 px-2 border-primary italic text-muted-foreground",
     },
     onError(error) {
-      console.error("Lexical error:", error);
+      console.error("Lexical error", error);
     },
   };
 
+  const handleSave = useCallback(() => {
+    if (!editorState || !onSave) return;
+
+    editorState.read(() => {
+      const root = editorState._nodeMap.get("root");
+
+      const text = root?.getTextContent() || "";
+      const json = editorState.toJSON();
+
+      onSave({ json, text });
+    });
+  }, [editorState, onSave]);
+
   return (
-    <LexicalComposer initialConfig={editorConfig}>
-      <div className={cn("relative", className)}>
+    <LexicalComposer initialConfig={config}>
+      <div className={cn("editor relative", className)}>
+        <Toolbar className="fixed bottom-5 start-5" onSave={handleSave} />
         <RichTextPlugin
           contentEditable={<ContentEditable className="min-h-96 outline-none" />}
           placeholder={<Placeholder />}
-          ErrorBoundary={LexicalErrorBoundary}
+          ErrorBoundary={({ children }) => children}
         />
         <HistoryPlugin />
-        <AutoFocusPlugin />
+        <OnChangePlugin onChange={onChange} />
       </div>
-      {enableToolkit && <EditorToolkit className={toolkitClassName} />}
     </LexicalComposer>
   );
 }
