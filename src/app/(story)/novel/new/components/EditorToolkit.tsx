@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils/classnames";
-import { $createQuoteNode, $isQuoteNode } from "@lexical/rich-text";
 import { $findMatchingParent } from "@lexical/utils";
 import { useCallback, useEffect, useState } from "react";
+import { $createQuoteNode, $isQuoteNode } from "@lexical/rich-text";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { Popover, PopoverArrow, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
@@ -27,6 +27,7 @@ import {
   BoldIcon,
   ItalicIcon,
   MinusIcon,
+  PlusIcon,
   QuoteIcon,
   RedoIcon,
   TypeIcon,
@@ -45,8 +46,11 @@ export default function EditorToolkit({ className }: EditorToolkitProps) {
   const [isBold, setIsBold] = useState(false);
   const [isQuote, setIsQuote] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
   const [alignment, setAlignment] = useState<string>("right");
+
+  const Icon = isExpanded ? MinusIcon : PlusIcon;
 
   const updateToolbar = useCallback(() => {
     editor.read(() => {
@@ -158,112 +162,117 @@ export default function EditorToolkit({ className }: EditorToolkitProps) {
 
   return (
     <div className={cn("flex bg-soft-background rounded-lg", className)}>
-      <div className="flex gap-x-1 items-center bg-background rounded-md my-1 ms-1">
-        <div
-          className={cn("p-2 cursor-pointer", { "text-primary bg-primary/10": isQuote })}
-          onClick={handleQuote}
-        >
-          <QuoteIcon />
+      {isExpanded && (
+        <div className="flex gap-x-1 items-center bg-background rounded-md my-1 ms-1 overflow-hidden">
+          <div
+            className={cn("p-2 cursor-pointer", { "text-primary bg-primary/10": isQuote })}
+            onClick={handleQuote}
+          >
+            <QuoteIcon />
+          </div>
+
+          <Popover>
+            <PopoverTrigger className="p-2 cursor-pointer">
+              <TypeIcon />
+            </PopoverTrigger>
+            <PopoverContent className="p-1">
+              <div className="flex bg-background rounded-md">
+                <button
+                  disabled
+                  className={cn("p-2 enabled:cursor-pointer disabled:opacity-25", {
+                    "text-primary bg-primary/10": isUnderline,
+                  })}
+                  onClick={() => format("underline")}
+                >
+                  <UnderlineIcon />
+                </button>
+
+                <button
+                  className={cn("p-2 cursor-pointer", { "text-primary bg-primary/10": isItalic })}
+                  onClick={() => format("italic")}
+                >
+                  <ItalicIcon />
+                </button>
+
+                <button
+                  className={cn("p-2 cursor-pointer", { "text-primary bg-primary/10": isBold })}
+                  onClick={() => format("bold")}
+                >
+                  <BoldIcon />
+                </button>
+              </div>
+
+              <PopoverArrow className="mb-1" />
+            </PopoverContent>
+          </Popover>
+
+          <Popover>
+            <PopoverTrigger className="p-2 cursor-pointer">
+              <AlignJustifyIcon />
+            </PopoverTrigger>
+            <PopoverContent className="p-1">
+              <div className="flex bg-background rounded-md">
+                <div
+                  className={cn("p-2 cursor-pointer", {
+                    "text-primary bg-primary/10": alignment === "justify",
+                  })}
+                  onClick={() => handleAlignment("justify")}
+                >
+                  <AlignJustifyIcon />
+                </div>
+
+                <div
+                  className={cn("p-2 cursor-pointer", {
+                    "text-primary bg-primary/10": alignment === "right",
+                  })}
+                  onClick={() => handleAlignment("right")}
+                >
+                  <AlignRightIcon />
+                </div>
+
+                <div
+                  className={cn("p-2 cursor-pointer", {
+                    "text-primary bg-primary/10": alignment === "center",
+                  })}
+                  onClick={() => handleAlignment("center")}
+                >
+                  <AlignCenterIcon />
+                </div>
+
+                <div
+                  className={cn("p-2 cursor-pointer", {
+                    "text-primary bg-primary/10": alignment === "left",
+                  })}
+                  onClick={() => handleAlignment("left")}
+                >
+                  <AlignLeftIcon />
+                </div>
+              </div>
+
+              <PopoverArrow className="mb-1" />
+            </PopoverContent>
+          </Popover>
+
+          <button
+            disabled={!canRedo}
+            className="p-2 cursor-pointer disabled:text-gray-300"
+            onClick={handleRedo}
+          >
+            <RedoIcon />
+          </button>
+
+          <button
+            disabled={!canUndo}
+            className="p-2 cursor-pointer disabled:text-gray-300"
+            onClick={handleUndo}
+          >
+            <UndoIcon />
+          </button>
         </div>
+      )}
 
-        <Popover>
-          <PopoverTrigger className="p-2 cursor-pointer hover:bg-gray-100 rounded">
-            <TypeIcon />
-          </PopoverTrigger>
-          <PopoverContent className="p-1">
-            <div className="flex bg-background rounded-md">
-              <button
-                className={cn("p-2 cursor-pointer", { "text-primary bg-primary/10": isUnderline })}
-                onClick={() => format("underline")}
-              >
-                <UnderlineIcon />
-              </button>
-
-              <button
-                className={cn("p-2 cursor-pointer", { "text-primary bg-primary/10": isItalic })}
-                onClick={() => format("italic")}
-              >
-                <ItalicIcon />
-              </button>
-
-              <button
-                className={cn("p-2 cursor-pointer", { "text-primary bg-primary/10": isBold })}
-                onClick={() => format("bold")}
-              >
-                <BoldIcon />
-              </button>
-            </div>
-
-            <PopoverArrow className="mb-1" />
-          </PopoverContent>
-        </Popover>
-
-        <Popover>
-          <PopoverTrigger className="p-2 cursor-pointer">
-            <AlignJustifyIcon />
-          </PopoverTrigger>
-          <PopoverContent className="p-1">
-            <div className="flex bg-background rounded-md">
-              <div
-                className={cn("p-2 cursor-pointer", {
-                  "text-primary bg-primary/10": alignment === "justify",
-                })}
-                onClick={() => handleAlignment("justify")}
-              >
-                <AlignJustifyIcon />
-              </div>
-
-              <div
-                className={cn("p-2 cursor-pointer", {
-                  "text-primary bg-primary/10": alignment === "right",
-                })}
-                onClick={() => handleAlignment("right")}
-              >
-                <AlignRightIcon />
-              </div>
-
-              <div
-                className={cn("p-2 cursor-pointer", {
-                  "text-primary bg-primary/10": alignment === "center",
-                })}
-                onClick={() => handleAlignment("center")}
-              >
-                <AlignCenterIcon />
-              </div>
-
-              <div
-                className={cn("p-2 cursor-pointer", {
-                  "text-primary bg-primary/10": alignment === "left",
-                })}
-                onClick={() => handleAlignment("left")}
-              >
-                <AlignLeftIcon />
-              </div>
-            </div>
-
-            <PopoverArrow className="mb-1" />
-          </PopoverContent>
-        </Popover>
-
-        <button
-          disabled={!canRedo}
-          className="p-2 cursor-pointer disabled:text-gray-300"
-          onClick={handleRedo}
-        >
-          <RedoIcon />
-        </button>
-
-        <button
-          disabled={!canUndo}
-          className="p-2 cursor-pointer disabled:text-gray-300"
-          onClick={handleUndo}
-        >
-          <UndoIcon />
-        </button>
-      </div>
-
-      <div className="p-3">
-        <MinusIcon />
+      <div className="p-3" onClick={() => setIsExpanded(!isExpanded)}>
+        <Icon />
       </div>
     </div>
   );
