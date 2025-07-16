@@ -29,10 +29,13 @@ function Placeholder() {
 export default function Editor({ enableToolkit = true, toolkitClassName, className }: EditorProps) {
   const editorConfig: InitialConfigType = {
     namespace: "FenjoonEditor",
+    nodes: [HeadingNode, QuoteNode],
+    theme: {
+      quote: "border-s-2 py-2 px-2 border-primary italic text-muted-foreground",
+    },
     onError(error) {
       console.error("Lexical error:", error);
     },
-    nodes: [HeadingNode, QuoteNode],
   };
 
   return (
@@ -46,7 +49,6 @@ export default function Editor({ enableToolkit = true, toolkitClassName, classNa
         <HistoryPlugin />
         <AutoFocusPlugin />
       </div>
-
       {enableToolkit && <EditorToolkit className={toolkitClassName} />}
     </LexicalComposer>
   );
