@@ -1,19 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import dynamic from "next/dynamic";
-import { SaveIcon } from "lucide-react";
-import { type KeyboardEvent } from "react";
 import { Input } from "@/components/ui/input";
 import BackArrow from "@/components/BackArrow";
-import { Button } from "@/components/ui/button";
 
 const Editor = dynamic(() => import("./components/Editor"), { ssr: false });
 
 export default function NewNovelPage() {
-  const onTitleEnter = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.code === "Enter") {
-      // console.log("e.code");
-    }
+  const [title, setTitle] = useState("");
+
+  const save = (novel: { json: any; text: string }) => {
+    console.log("novel", novel);
   };
 
   return (
@@ -28,18 +26,13 @@ export default function NewNovelPage() {
 
       <article className="p-5">
         <Input
+          value={title}
           placeholder="عنوان این بخش"
           className="border-none shadow-none !text-xl placeholder:text-gray-300 placeholder:text-xl font-bold p-0"
-          onKeyDown={onTitleEnter}
+          onChange={(e) => setTitle(e.target.value)}
         />
 
-        <Editor className="mt-5" toolkitClassName="fixed bottom-5 start-5" />
-
-        <div className="flex fixed bottom-5 end-5 bg-primary rounded-lg">
-          <Button size="sm" className="w-12">
-            <SaveIcon />
-          </Button>
-        </div>
+        <Editor className="mt-5" onSave={save} />
       </article>
     </section>
   );
