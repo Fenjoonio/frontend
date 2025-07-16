@@ -1,12 +1,13 @@
 "use client";
 
 import { cn } from "@/lib/utils/classnames";
-import { $isQuoteNode } from "@lexical/rich-text";
+import { $createQuoteNode, $isQuoteNode } from "@lexical/rich-text";
 import { $findMatchingParent } from "@lexical/utils";
 import { useCallback, useEffect, useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { Popover, PopoverArrow, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
+  $createParagraphNode,
   $getSelection,
   $isRangeSelection,
   CAN_REDO_COMMAND,
@@ -48,28 +49,30 @@ export default function EditorToolkit({ className }: EditorToolkitProps) {
   const [alignment, setAlignment] = useState<string>("right");
 
   const updateToolbar = useCallback(() => {
-    const selection = $getSelection();
-    if ($isRangeSelection(selection)) {
-      // Update text formatting states
-      setIsBold(selection.hasFormat("bold"));
-      setIsItalic(selection.hasFormat("italic"));
-      setIsUnderline(selection.hasFormat("underline"));
+    editor.read(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        setIsBold(selection.hasFormat("bold"));
+        setIsItalic(selection.hasFormat("italic"));
+        setIsUnderline(selection.hasFormat("underline"));
 
-      // Check if we're in a quote
-      const anchorNode = selection.anchor.getNode();
-      const element =
-        anchorNode.getKey() === "root"
-          ? anchorNode
-          : $findMatchingParent(anchorNode, (e) => {
-              const parent = e.getParent();
-              return parent !== null && parent.getKey() === "root";
-            });
+        const anchorNode = selection.anchor.getNode();
+        const element =
+          anchorNode.getKey() === "root"
+            ? anchorNode
+            : $findMatchingParent(anchorNode, (e) => {
+                const parent = e.getParent();
+                return parent !== null && parent.getKey() === "root";
+              });
 
-      if (element) {
-        setIsQuote($isQuoteNode(element));
+        if (element) {
+          setIsQuote($isQuoteNode(element));
+        } else {
+          setIsQuote(false);
+        }
       }
-    }
-  }, []);
+    });
+  }, [editor]);
 
   useEffect(() => {
     const unregisterCanUndo = editor.registerCommand(
@@ -117,16 +120,49 @@ export default function EditorToolkit({ className }: EditorToolkitProps) {
 
   const handleUndo = () => {
     editor.dispatchCommand(UNDO_COMMAND, undefined);
+    setTimeout(updateToolbar, 0);
   };
 
   const handleRedo = () => {
     editor.dispatchCommand(REDO_COMMAND, undefined);
+    setTimeout(updateToolbar, 0);
+  };
+
+  const handleQuote = () => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if (!$isRangeSelection(selection)) return;
+
+      const anchorNode = selection.anchor.getNode();
+      const topLevelElement = anchorNode.getTopLevelElementOrThrow();
+
+      if ($isQuoteNode(topLevelElement)) {
+        const paragraphNode = $createParagraphNode();
+        const children = topLevelElement.getChildren();
+        for (const child of children) {
+          paragraphNode.append(child);
+        }
+        topLevelElement.replace(paragraphNode);
+      } else {
+        const quoteNode = $createQuoteNode();
+        const children = topLevelElement.getChildren();
+        for (const child of children) {
+          quoteNode.append(child);
+        }
+        topLevelElement.replace(quoteNode);
+      }
+
+      updateToolbar();
+    });
   };
 
   return (
     <div className={cn("flex bg-soft-background rounded-lg", className)}>
       <div className="flex gap-x-1 items-center bg-background rounded-md my-1 ms-1">
-        <div className={cn("p-2 cursor-pointer", { "text-primary bg-primary/10": isQuote })}>
+        <div
+          className={cn("p-2 cursor-pointer", { "text-primary bg-primary/10": isQuote })}
+          onClick={handleQuote}
+        >
           <QuoteIcon />
         </div>
 
