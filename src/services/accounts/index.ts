@@ -1,2 +1,2 @@
 export * from "./hooks";
-export type { RefreshResponse } from "./types";
+export * from "./functions";

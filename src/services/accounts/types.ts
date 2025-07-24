@@ -1,19 +1,12 @@
 export type OtpRequest = {
   phone: string;
-  status: "success" | "failed";
+  status: "success";
 };
 
 export type VerifyOtp = {
   isNewUser: boolean;
-  tokens: {
-    accessToken: string;
-    refreshToken: string;
-  };
 };
 
 export type RefreshResponse = {
-  tokens: {
-    accessToken: string;
-    refreshToken: string;
-  };
+  status: "success";
 };
