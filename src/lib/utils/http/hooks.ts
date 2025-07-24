@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { AuthError } from "@/lib/exceptions";
 import { isClientSide } from "../environment";
 import { refresh } from "@/services/accounts";
-import { runSingleInstance } from "@/lib/utils/functionts";
 import type { Hooks, KyRequest, KyResponse, Options } from "ky";
 import { deleteUserCredentials, getUserCredentials } from "@/app/(user)/accounts/actions";
 
@@ -48,7 +47,7 @@ const refreshUserToken = async (request: KyRequest, options: Options, response: 
 
 const hooks: Hooks = {
   beforeRequest: [addAuthorizationHook],
-  afterResponse: [runSingleInstance(refreshUserToken)],
+  afterResponse: [refreshUserToken], // BUG: Runs for every 401 request on the page
 };
 
 export default hooks;
