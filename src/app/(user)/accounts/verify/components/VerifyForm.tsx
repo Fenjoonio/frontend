@@ -12,7 +12,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toEnglishDigits } from "@/lib/utils/numbers";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuthContext } from "@/providers/AuthProvider";
-import { setUserCredentials } from "@/app/(user)/accounts/actions";
 
 const schema = z.object({
   code: z.string().length(5, { message: "کد وارد شده صحیح نیست" }),
@@ -43,17 +42,8 @@ export default function VerifyForm({ phone, redirect, className }: VerifyFormPro
 
   const { mutate: login, isPending } = useVerifyOtp({
     onSuccess: async (response) => {
-      await setUserCredentials({
-        accessToken: response.tokens.accessToken,
-        refreshToken: response.tokens.refreshToken,
-      });
-
-      setIsLoggedIn(!!response.tokens.accessToken);
-
-      // NOTE: We need this to make sure cookie is present!
-      setTimeout(() => {
-        router.replace(redirect ? redirect : response.isNewUser ? "/profile/edit" : "/");
-      }, 0);
+      setIsLoggedIn(true);
+      router.replace(redirect ? redirect : response.isNewUser ? "/profile/edit" : "/");
     },
   });
 
