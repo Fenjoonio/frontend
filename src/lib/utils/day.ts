@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import jalaliday from "jalaliday";
+import jalaliday from "jalali-plugin-dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(jalaliday);

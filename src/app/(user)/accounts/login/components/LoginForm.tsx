@@ -65,6 +65,7 @@ export default function LoginForm({ phone, redirect, className }: LoginFormProps
         <Input
           dir="ltr"
           maxLength={11}
+          autoComplete="off"
           inputMode="numeric"
           placeholder="شماره همراه"
           className="placeholder:text-right"
@@ -80,7 +81,7 @@ export default function LoginForm({ phone, redirect, className }: LoginFormProps
         <Button disabled={isPending} className="w-full mt-8">
           بررسی شماره همراه
         </Button>
-        <span className="block text-xs text-center px-5 mt-4">
+        <span className="block text-xs text-center mt-5">
           وارد کردن شماره همراه در این مرحله به معنای پذیرش{" "}
           <Link href="/legal/terms" className="text-primary">
             قوانین و شرایط استفاده

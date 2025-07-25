@@ -1,10 +1,10 @@
 import ky from "ky";
 import { redirect } from "next/navigation";
-import { isClientSide } from "../environment";
-import { RefreshResponse } from "@/services/accounts";
-import type { Hooks, KyRequest, KyResponse, Options } from "ky";
-import { getUserCredentials } from "@/app/(user)/accounts/actions";
 import { AuthError } from "@/lib/exceptions";
+import { isClientSide } from "../environment";
+import { refresh } from "@/services/accounts";
+import type { Hooks, KyRequest, KyResponse, Options } from "ky";
+import { deleteUserCredentials, getUserCredentials } from "@/app/(user)/accounts/actions";
 
 // Before Request
 const addAuthorizationHook = async (request: KyRequest) => {
@@ -25,23 +25,19 @@ const refreshUserToken = async (request: KyRequest, options: Options, response: 
   }
 
   try {
-    const { accessToken, refreshToken } = await getUserCredentials();
+    const { refreshToken } = await getUserCredentials();
+    const res = await refresh({ refreshToken });
 
-    const res = await ky.post<RefreshResponse>("api/auth/refresh", {
-      json: { accessToken, refreshToken },
-      prefixUrl: isClientSide() ? "/" : "http://localhost:3000/",
-    });
-
-    if (res.status >= 400) {
+    if (res.status !== "success") {
       throw new AuthError("لطفا مجددا وارد شوید");
     }
 
-    const { tokens } = await res.json();
-    options.headers = { ...options.headers, Authorization: `Bearer ${tokens.accessToken}` };
     (options.retry as { retried: boolean }).retried = true;
 
     return ky(request, options);
   } catch {
+    await deleteUserCredentials();
+
     const loginPageUrl = "/accounts/login";
     isClientSide() ? window.location.replace(loginPageUrl) : redirect(loginPageUrl);
 
@@ -51,7 +47,7 @@ const refreshUserToken = async (request: KyRequest, options: Options, response: 
 
 const hooks: Hooks = {
   beforeRequest: [addAuthorizationHook],
-  afterResponse: [refreshUserToken],
+  afterResponse: [refreshUserToken], // BUG: Runs for every 401 request on the page
 };
 
 export default hooks;
