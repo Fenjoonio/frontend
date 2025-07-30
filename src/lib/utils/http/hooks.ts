@@ -2,9 +2,9 @@ import ky from "ky";
 import { redirect } from "next/navigation";
 import { AuthError } from "@/lib/exceptions";
 import { isClientSide } from "../environment";
-import { refresh } from "@/services/accounts";
+import { logout, refresh } from "@/services/accounts";
 import type { Hooks, KyRequest, KyResponse, Options } from "ky";
-import { deleteUserCredentials, getUserCredentials } from "@/app/(user)/accounts/actions";
+import { getUserCredentials } from "@/app/(user)/accounts/actions";
 
 // Before Request
 const addAuthorizationHook = async (request: KyRequest) => {
@@ -24,8 +24,9 @@ const refreshUserToken = async (request: KyRequest, options: Options, response: 
     return response;
   }
 
+  const { refreshToken } = await getUserCredentials();
+
   try {
-    const { refreshToken } = await getUserCredentials();
     const res = await refresh({ refreshToken });
 
     if (res.status !== "success") {
@@ -36,7 +37,7 @@ const refreshUserToken = async (request: KyRequest, options: Options, response: 
 
     return ky(request, options);
   } catch {
-    await deleteUserCredentials();
+    await logout({ refreshToken });
 
     const loginPageUrl = "/accounts/login";
     isClientSide() ? window.location.replace(loginPageUrl) : redirect(loginPageUrl);

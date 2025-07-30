@@ -1,16 +1,19 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { logout } from "@/services/accounts";
 import { ArrowLeftIcon, LogOutIcon } from "lucide-react";
 import { useAuthContext } from "@/providers/AuthProvider";
-import { deleteUserCredentials } from "@/app/(user)/accounts/actions";
+import { getUserCredentials } from "@/app/(user)/accounts/actions";
 
 export default function LogoutButton() {
   const router = useRouter();
   const { setIsLoggedIn } = useAuthContext();
 
-  const logout = async () => {
-    await deleteUserCredentials();
+  const logoutAndRedirect = async () => {
+    const { refreshToken } = await getUserCredentials();
+    await logout({ refreshToken });
+
     setIsLoggedIn(false);
 
     setTimeout(() => {
@@ -19,7 +22,7 @@ export default function LogoutButton() {
   };
 
   return (
-    <button className="w-full flex gap-x-2 items-center py-3 px-2" onClick={logout}>
+    <button className="w-full flex gap-x-2 items-center py-3 px-2" onClick={logoutAndRedirect}>
       <div className="bg-background rounded-[8px] p-2">
         <LogOutIcon className="w-5 h-5 " />
       </div>

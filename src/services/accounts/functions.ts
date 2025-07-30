@@ -19,7 +19,6 @@ export async function verifyOtp(payload: { phone: string; otpCode: string }) {
   return response.data;
 }
 
-// TODO: Replace this with that one on the refresh api route
 export async function refresh(payload: { refreshToken: string }) {
   const response = await http.post<RefreshResponse>(
     "v1/auth/refresh",
@@ -30,10 +29,10 @@ export async function refresh(payload: { refreshToken: string }) {
   return response.data;
 }
 
-// export async function logout(payload: { refreshToken: string }) {
-//   const response = await http.post("/idp/auth/logout", {
-//     refreshToken: payload.refreshToken,
-//   });
+export async function logout(payload: { refreshToken: string }) {
+  const response = await http.post("v1/auth/logout", {
+    refreshToken: payload.refreshToken,
+  });
 
-//   return response;
-// }
+  return response.data;
+}
