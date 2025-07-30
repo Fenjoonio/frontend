@@ -15,10 +15,10 @@ export async function getUserCredentials() {
 }
 
 export async function deleteUserCredentials() {
-  const { set } = await cookies();
+  const cookieStore = await cookies();
 
-  set(ACCESS_TOKEN_KEY, "value", { maxAge: 0 });
-  set(REFRESH_TOKEN_KEY, "value", { maxAge: 0 });
+  cookieStore.delete(ACCESS_TOKEN_KEY);
+  cookieStore.delete(REFRESH_TOKEN_KEY);
 }
 
 export async function isUserLoggedIn() {
