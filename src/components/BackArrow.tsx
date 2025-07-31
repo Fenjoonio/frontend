@@ -1,12 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils/classnames";
 import { ArrowRightIcon } from "lucide-react";
 
-export default function BackArrow() {
+type BackArrowProps = {
+  className?: string;
+};
+
+export default function BackArrow({ className }: BackArrowProps) {
   return (
     <div
-      className="w-10 h-10 flex justify-center items-center cursor-pointer"
+      className={cn("size-10 flex justify-center items-center cursor-pointer", className)}
       onClick={useRouter().back}
     >
       <ArrowRightIcon />
