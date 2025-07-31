@@ -36,7 +36,7 @@ export default async function NovelPage({ params }: NovelPageProps) {
       <div className="px-5 mt-4">
         <div className="flex gap-x-4">
           <div className="shrink-0 w-28 h-44 relative overflow-hidden rounded-lg">
-            <Image src={novel.image} alt={novel.title} fill className="object-cover" />
+            <Image src={novel.coverImage} alt={novel.title} fill className="object-cover" />
           </div>
 
           <div className="mt-2">
@@ -53,7 +53,7 @@ export default async function NovelPage({ params }: NovelPageProps) {
 
         <h3 className="text-sm text-soft-foreground mt-8">خلاصه داستان</h3>
 
-        <p className="whitespace-pre-line line-clamp-6 leading-6 mt-2">{novel.summery}</p>
+        <p className="whitespace-pre-line line-clamp-6 leading-6 mt-2">{novel.description}</p>
 
         <h3 className="text-sm text-soft-foreground mt-8">آخرین بخش‌ها</h3>
 
