@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import { ImageIcon, TrashIcon } from "lucide-react";
 import { useGetNovelById, useUploadCoverImage } from "@/services/novels";
 
-const MAX_SIZE_MB = 5;
+const MAX_SIZE_KB = 1024;
 const ACCEPTED_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
 
 const uploaderStyles = {
@@ -28,14 +28,18 @@ export default function CoverUploader() {
     const isAcceptedType = ACCEPTED_TYPES.includes(file.type);
 
     if (!isAcceptedType) {
+      e.target.value = "";
       toast.error("فرمت فایل انتخاب شده معتبر نیست");
+
       return;
     }
 
-    const sizeMB = file.size / (1024 * 1024);
+    const size = file.size / 1024;
 
-    if (sizeMB > MAX_SIZE_MB) {
-      toast.error("حجم تصویر نباید بیشتر از ۵ مگابایت باشد.");
+    if (size > MAX_SIZE_KB) {
+      e.target.value = "";
+      toast.error("حجم تصویر نباید بیشتر از 1 مگابایت باشد.");
+
       return;
     }
 
