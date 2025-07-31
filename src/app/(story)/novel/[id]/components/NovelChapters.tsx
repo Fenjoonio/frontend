@@ -33,7 +33,7 @@ export default function NovelChapters({ chapters }: NovelChaptersProps) {
         </Link>
       ))}
 
-      {!isShowingAllChapters && (
+      {!isShowingAllChapters && chapters.length > 3 && (
         <Button variant="link" className="w-full" onClick={() => setIsShowingAllChapters(true)}>
           نمایش تمام بخش‌ها
         </Button>
