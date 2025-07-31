@@ -1,17 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import Editor from "@/components/EditorNew";
 import { Input } from "@/components/ui/input";
 import BackArrow from "@/components/BackArrow";
-
-const Editor = dynamic(() => import("./components/Editor"), { ssr: false });
+import { useCreateNewNovel } from "@/services/novels";
 
 export default function NewNovelPage() {
+  const router = useRouter();
   const [title, setTitle] = useState("");
+  const { mutate: createNewNovel, isPending } = useCreateNewNovel({
+    onSuccess: (novel) => {
+      router.replace(`/novel/${novel.id}/info`);
+    },
+  });
 
   const save = (novel: { json: any; text: string }) => {
-    console.log("novel", novel);
+    createNewNovel({
+      title: "",
+      description: "",
+      chapters: [{ title, text: novel.text, jsonContent: JSON.stringify(novel.json) }],
+    });
   };
 
   return (
@@ -27,12 +37,13 @@ export default function NewNovelPage() {
       <article className="p-5">
         <Input
           value={title}
+          disabled={isPending}
           placeholder="عنوان این بخش"
           className="border-none shadow-none !text-xl placeholder:text-gray-300 placeholder:text-xl font-bold p-0"
           onChange={(e) => setTitle(e.target.value)}
         />
 
-        <Editor className="mt-5" onSave={save} />
+        <Editor className="mt-5" isSaveLoading={isPending} onSave={save} />
       </article>
     </section>
   );
