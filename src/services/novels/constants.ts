@@ -1,0 +1,4 @@
+export const enum NOVELS_QUERY_KEYS {
+  GET_NOVEL_BY_ID = "GET_NOVEL_BY_ID",
+  GET_CHAPTER_BY_ID = "GET_CHAPTER_BY_ID",
+}
