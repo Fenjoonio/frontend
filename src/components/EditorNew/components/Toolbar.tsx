@@ -39,10 +39,11 @@ import {
 
 type ToolbarProps = {
   className?: string;
+  isSaveLoading?: boolean;
   onSave: () => void;
 };
 
-export default function Toolbar({ className, onSave }: ToolbarProps) {
+export default function Toolbar({ isSaveLoading, className, onSave }: ToolbarProps) {
   const [editor] = useLexicalComposerContext();
   const [isBold, setIsBold] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
@@ -281,7 +282,7 @@ export default function Toolbar({ className, onSave }: ToolbarProps) {
       </div>
 
       <div className="flex fixed bottom-5 end-5 bg-primary rounded-lg">
-        <Button size="sm" className="w-12" onClick={onSave}>
+        <Button disabled={isSaveLoading} size="sm" className="w-12" onClick={onSave}>
           <SaveIcon />
         </Button>
       </div>

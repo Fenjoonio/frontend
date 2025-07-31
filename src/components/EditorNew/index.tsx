@@ -20,12 +20,20 @@ function Placeholder() {
 }
 
 type EditorProps = {
+  readOnly?: boolean;
   className?: string;
   initialState?: string;
+  isSaveLoading?: boolean;
   onSave?: (data: { json: any; text: string }) => void;
 };
 
-export default function Editor({ initialState, className, onSave }: EditorProps) {
+export default function Editor({
+  readOnly,
+  initialState,
+  isSaveLoading,
+  className,
+  onSave,
+}: EditorProps) {
   const [editorState, setEditorState] = useState<EditorState | null>(null);
 
   const onChange = useCallback((editorState: EditorState) => {
@@ -33,6 +41,7 @@ export default function Editor({ initialState, className, onSave }: EditorProps)
   }, []);
 
   const config: InitialConfigType = {
+    editable: !readOnly,
     namespace: "FenjoonEditor",
     editorState: initialState ?? undefined,
     nodes: [HeadingNode, QuoteNode],
@@ -61,7 +70,14 @@ export default function Editor({ initialState, className, onSave }: EditorProps)
   return (
     <LexicalComposer initialConfig={config}>
       <div className={cn("editor relative", className)}>
-        <Toolbar className="fixed bottom-5 start-5" onSave={handleSave} />
+        {!readOnly && (
+          <Toolbar
+            isSaveLoading={isSaveLoading}
+            className="fixed bottom-5 start-5"
+            onSave={handleSave}
+          />
+        )}
+
         <RichTextPlugin
           contentEditable={<ContentEditable className="min-h-96 outline-none" />}
           placeholder={<Placeholder />}
