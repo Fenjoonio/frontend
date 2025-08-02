@@ -1,5 +1,5 @@
 import { NOVELS_QUERY_KEYS } from "./constants";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createNewChapter,
   createNewNovel,
@@ -8,6 +8,7 @@ import {
   editNovel,
   getChapterById,
   getNovelById,
+  getNovels,
   publishNovel,
   unPublishNovel,
   uploadCoverImage,
@@ -24,7 +25,23 @@ import type {
   EditChapterBody,
   EditChapterResponse,
   GetChapterByIdParams,
+  GetNovelsParams,
 } from "./types";
+
+export function useGetInfiniteNovels(params?: GetNovelsParams) {
+  return useInfiniteQuery({
+    initialPageParam: params || { page: 1, limit: 5 },
+    queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS, params],
+    queryFn: ({ pageParam }) => getNovels(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
+  });
+}
 
 export function useGetNovelById(params: GetNovelByIdParams) {
   return useQuery({

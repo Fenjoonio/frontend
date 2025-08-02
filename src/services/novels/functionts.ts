@@ -13,6 +13,7 @@ import type {
   GetNovelByIdParams,
   GetNovelByIdResponse,
   GetNovelsParams,
+  GetNovelsResponse,
   Novel,
   PublishNovelParams,
   UnPublishNovelParams,
@@ -4133,10 +4134,9 @@ const novels = [
 // ];
 
 export async function getNovels(params: GetNovelsParams) {
-  return {
-    pagination: { limit: 10, page: 1, pages: 1, total: params.limit },
-    novels: novels,
-  };
+  const response = await http.get<GetNovelsResponse>("v1/novels", { searchParams: params });
+
+  return response.data;
 }
 
 export async function getNovelById(params: GetNovelByIdParams) {
