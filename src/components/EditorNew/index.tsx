@@ -14,7 +14,7 @@ import { LexicalComposer, type InitialConfigType } from "@lexical/react/LexicalC
 function Placeholder() {
   return (
     <div className="absolute top-0 start-0 text-lg text-gray-300 pointer-events-none">
-      کاش خیابان باشه، بارون باشه، اما کسی منتظر کسی نه ...
+      داستان از اینجا شروع میشه که ...
     </div>
   );
 }
