@@ -30,9 +30,11 @@ export async function refresh(payload: { refreshToken: string }) {
 }
 
 export async function logout(payload: { refreshToken: string }) {
-  const response = await http.post("v1/auth/logout", {
-    refreshToken: payload.refreshToken,
-  });
+  const response = await http.post(
+    "v1/auth/logout",
+    { refreshToken: payload.refreshToken },
+    { credentials: "include" }
+  );
 
   return response.data;
 }
