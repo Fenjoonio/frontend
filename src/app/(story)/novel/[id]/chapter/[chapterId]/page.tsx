@@ -34,7 +34,7 @@ export default function NovelChapterPage() {
 
   if (!data) {
     return (
-      <>
+      <section className="min-h-svh">
         <header
           style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
           className="w-[calc(100%-1px)] flex items-center sticky top-0 right-0 z-10 bg-background border-b border-border pb-3 px-2"
@@ -44,7 +44,7 @@ export default function NovelChapterPage() {
         </header>
 
         <ChapterSkeleton />
-      </>
+      </section>
     );
   }
 
