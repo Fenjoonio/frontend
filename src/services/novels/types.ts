@@ -9,6 +9,15 @@ export type Novel = {
   id: number;
   chapters: Chapter[];
   user: User;
+  coverImage: string;
+  createdAt: string;
+  description: string;
+  isDeletableByUser: boolean;
+  isEditableByUser: boolean;
+  isPublishableByUser: boolean;
+  isPublished: boolean;
+  publishedAt: string;
+  title: string;
 };
 
 export type GetNovelsParams = {
