@@ -1,7 +1,7 @@
-import { otpRequest, verifyOtp } from "./functions";
 import { ACCOUNTS_QUERY_KEYS } from "./constants";
 import { useMutation } from "@tanstack/react-query";
 import type { VerifyOtp, OtpRequest } from "./types";
+import { logout, otpRequest, verifyOtp } from "./functions";
 
 export function useOtpRequest(options?: { onSuccess: (response: OtpRequest) => void }) {
   return useMutation({
@@ -17,4 +17,8 @@ export function useVerifyOtp(options?: { onSuccess: (response: VerifyOtp) => voi
     mutationFn: verifyOtp,
     ...options,
   });
+}
+
+export function useLogout(options?: { onSuccess?: () => void }) {
+  return useMutation({ ...options, mutationFn: logout });
 }
