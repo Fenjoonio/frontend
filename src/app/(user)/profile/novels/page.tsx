@@ -1,0 +1,99 @@
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { useMemo } from "react";
+import BackArrow from "@/components/BackArrow";
+import { getUserName } from "@/lib/utils/users";
+import UserAvatar from "@/components/UserAvatar";
+import PullToRefresh from "@/components/PullToRefresh";
+import { useGetCurrentUserNovels } from "@/services/user";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { StorySkeleton } from "@/app/(story)/components/Story";
+import NoImage from '../../../../../public/assets/images/no-image.png'
+
+export default function ProfileNovelsPage() {
+  const { data, isFetching, hasNextPage, fetchNextPage, refetch } = useGetCurrentUserNovels();
+
+  const novels = useMemo(() => {
+    return data?.pages ? data.pages.flatMap((page) => page.novels ?? []) : [];
+  }, [data?.pages]);
+
+  const onRefresh = async () => {
+    await refetch();
+  };
+
+  return (
+    <section className="min-h-svh flex flex-col pb-4">
+      <header
+        style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}
+        className="w-[calc(100%-1px)] flex items-center sticky top-0 right-0 z-10 bg-background border-b border-border pb-3 px-2"
+      >
+        <BackArrow />
+        <h1 className="text-lg font-bold mt-1">داستان‌های من</h1>
+      </header>
+
+      <div className="px-5 mt-4">
+        <span className="block text-sm text-soft-foreground mt-1">
+          از این بخش میتونی داستان‌های خودت رو ببینی
+        </span>
+      </div>
+
+      <PullToRefresh onRefresh={onRefresh} className="mx-5 mt-10">
+        <InfiniteScroll
+          next={fetchNextPage}
+          dataLength={novels.length}
+          hasMore={isFetching || hasNextPage}
+          loader={
+            <>
+              {Array(5)
+                .fill(0)
+                .map((_, index) => (
+                  <StorySkeleton key={index} className="pb-6 not-first:pt-6" />
+                ))}
+            </>
+          }
+          className="flex gap-4 flex-wrap"
+        >
+          {novels.map((novel, index) => (
+            <div
+              key={novel.id}
+              className="w-[calc(50%-8px)] bg-soft-background py-4 px-3 rounded-md"
+            >
+              <Link
+                href={`/novel/${novel.id}/info`}
+                className="block w-full h-48 lg:h-64 relative overflow-hidden rounded-lg"
+              >
+                <Image
+                  src={novel.coverImage || NoImage}
+                  alt={novel.title}
+                  fill
+                  sizes="50%"
+                  priority={index < 5}
+                />
+              </Link>
+
+              <div className="mt-3">
+                <Link
+                  href={`/novel/${novel.id}`}
+                  title={novel.title}
+                  className="block truncate font-semibold"
+                >
+                  {novel.title}
+                </Link>
+
+                <Link
+                  href={`/author/${novel.user.id}`}
+                  className="flex gap-x-2 items-center text-sm text-soft-foreground mt-1"
+                >
+                  <UserAvatar user={novel.user} className="size-5 rounded-sm" />
+                  <span className="mt-1">{getUserName(novel.user)}</span>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </InfiniteScroll>
+      </PullToRefresh>
+    </section>
+  );
+}

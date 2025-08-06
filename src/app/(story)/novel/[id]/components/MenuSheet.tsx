@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { FlagIcon, MoreHorizontalIcon, Share2Icon } from "lucide-react";
+import { EditIcon, FlagIcon, MoreHorizontalIcon, Share2Icon } from "lucide-react";
 import {
   Sheet,
   SheetTitle,
@@ -11,13 +11,18 @@ import {
   SheetTrigger,
   SheetDescription,
 } from "@/components/ui/sheet";
+import { useGetNovelById } from "@/services/novels";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 
 type MenuSheetProps = {
   className?: string;
 };
 
 export default function MenuSheet({ className }: MenuSheetProps) {
+  const params = useParams<{ id: string }>();
   const [isOpen, setIsOpen] = useState(false);
+  const { data: novel } = useGetNovelById({ id: +params.id });
 
   const onReport = () => {
     toast.info("این قابلیت بزودی اضافه خواهد شد.");
@@ -51,6 +56,15 @@ export default function MenuSheet({ className }: MenuSheetProps) {
             <Share2Icon className="size-5" />
             <span className="mt-[2px]">اشتراک‌گذاری</span>
           </li>
+
+          {!!novel?.isEditableByUser && (
+            <li>
+              <Link href={`/novel/${params.id}/info`} className="flex gap-x-2 items-center py-4">
+                <EditIcon className="size-5" />
+                <span className="mt-[2px]">ویرایش داستان</span>
+              </Link>
+            </li>
+          )}
         </ul>
       </SheetContent>
     </Sheet>

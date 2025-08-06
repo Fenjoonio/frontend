@@ -1,4 +1,5 @@
 import UserInfo from "./components/UserInfo";
+import UserNovels from "./components/UserNovels";
 import UserStories from "./components/UserStories";
 import UserComments from "./components/UserComments";
 import ProfileHeader from "./components/ProfileHeader";
@@ -29,6 +30,10 @@ export default async function AuthorPage() {
         <div className="mt-6">
           <TabsContent value="stories">
             <UserStories />
+          </TabsContent>
+
+          <TabsContent value="novels">
+            <UserNovels />
           </TabsContent>
 
           <TabsContent value="comments">

@@ -1,12 +1,22 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { getNovels } from "@/services/novels";
+import { useMemo } from "react";
+import { PlusIcon } from "lucide-react";
 import BackArrow from "@/components/BackArrow";
+import { Button } from "@/components/ui/button";
 import { getUserName } from "@/lib/utils/users";
 import UserAvatar from "@/components/UserAvatar";
+import { useGetInfiniteNovels } from "@/services/novels";
 
-export default async function LibraryPage() {
-  const { novels } = await getNovels({ limit: 20 });
+export default function LibraryPage() {
+  const { data } = useGetInfiniteNovels({ limit: 20 });
+
+  const novels = useMemo(() => {
+    return data?.pages ? data.pages.flatMap((page) => page.novels ?? []) : [];
+  }, [data?.pages]);
+
   const reversedNovels = novels.toReversed();
 
   return (
@@ -32,7 +42,13 @@ export default async function LibraryPage() {
               href={`/novel/${novel.id}`}
               className="block w-full h-48 lg:h-64 relative overflow-hidden rounded-lg"
             >
-              <Image src={novel.image} alt={novel.title} fill sizes="50%" priority={index < 5} />
+              <Image
+                src={novel.coverImage}
+                alt={novel.title}
+                fill
+                sizes="50%"
+                priority={index < 5}
+              />
             </Link>
 
             <div className="mt-3">
@@ -55,6 +71,15 @@ export default async function LibraryPage() {
           </div>
         ))}
       </div>
+
+      <Link href="/novel/new">
+        <Button
+          style={{ bottom: "calc(env(safe-area-inset-bottom) + 80px)" }}
+          className="w-14 fixed left-4"
+        >
+          <PlusIcon className="size-5" />
+        </Button>
+      </Link>
     </section>
   );
 }
