@@ -36,7 +36,13 @@ export default async function NovelPage({ params }: NovelPageProps) {
       <div className="px-5 mt-4">
         <div className="flex gap-x-4">
           <div className="shrink-0 w-28 h-44 relative overflow-hidden rounded-lg">
-            <Image src={novel.coverImage} alt={novel.title} fill className="object-cover" />
+            <Image
+              fill
+              sizes="128px"
+              alt={novel.title}
+              src={novel.coverImage}
+              className="object-cover"
+            />
           </div>
 
           <div className="mt-2">
