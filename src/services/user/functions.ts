@@ -19,6 +19,8 @@ import type {
   UploadUserProfileResponse,
   GetUserChatsParams,
   GetUserChatsResponse,
+  GetCurrentUserNovelsParams,
+  GetCurrentUserNovelsResponse,
 } from "./types";
 
 export async function getCurrentUser() {
@@ -57,6 +59,14 @@ export async function getUserCommentsById({ id, ...params }: GetUserCommentsById
 
 export async function getCurrentUserStories(params: GetCurrentUserStoriesParams) {
   const response = await http.get<GetCurrentUserStoriesResponse>("v1/users/me/stories", {
+    searchParams: params,
+  });
+
+  return response.data;
+}
+
+export async function getCurrentUserNovels(params: GetCurrentUserNovelsParams) {
+  const response = await http.get<GetCurrentUserNovelsResponse>("v1/users/me/novels", {
     searchParams: params,
   });
 

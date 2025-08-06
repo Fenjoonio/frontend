@@ -14,8 +14,10 @@ import {
   getUserFollowingsList,
   uploadUserProfile,
   getUserChats,
+  getCurrentUserNovels,
 } from "./functions";
 import type {
+  GetCurrentUserNovelsParams,
   GetCurrentUserStoriesParams,
   GetUserByIdParams,
   GetUserChatsParams,
@@ -65,6 +67,24 @@ export function useGetCurrentUserStories(
     },
   });
 }
+
+export function useGetCurrentUserNovels(
+  params: GetCurrentUserNovelsParams = { page: 1, limit: 10 }
+) {
+  return useInfiniteQuery({
+    initialPageParam: params,
+    queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_NOVELS, params],
+    queryFn: ({ pageParam }) => getCurrentUserNovels(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
+  });
+}
+
 
 export function useGetUserPrivateStoryCount() {
   return useQuery({

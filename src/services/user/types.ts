@@ -1,3 +1,4 @@
+import type { Novel } from "@/services/novels";
 import type { Chat } from "@/services/messages";
 import type { Story } from "@/services/stories";
 import type { Comment } from "@/services/comments";
@@ -67,6 +68,21 @@ export type GetCurrentUserStoriesResponse = {
     total: number;
   };
   stories: Story[];
+};
+
+export type GetCurrentUserNovelsParams = {
+  page?: number;
+  limit?: number;
+};
+
+export type GetCurrentUserNovelsResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  novels: Novel[];
 };
 
 export type GetUserPrivateStoryCountResponse = {
