@@ -68,7 +68,7 @@ export type GetNovelChaptersParams = {
 export type CreateNewNovelBody = {
   title: string;
   description: string;
-  chapters: {
+  chapters?: {
     text: string;
     title: string;
     jsonContent: string;
