@@ -16,7 +16,7 @@ export default function EditChapterPage() {
     { id: +id, chapterId: +chapterId },
     {
       onSuccess: () => {
-        router.replace(`/novel/${id}/info`);
+        router.replace(`/novel/${id}/info`, { scroll: false });
       },
     }
   );
