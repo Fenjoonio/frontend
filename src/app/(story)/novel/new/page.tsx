@@ -6,21 +6,24 @@ import Editor from "@/components/EditorNew";
 import { Input } from "@/components/ui/input";
 import BackArrow from "@/components/BackArrow";
 import { useCreateNewNovel } from "@/services/novels";
+import { Button } from "@/components/ui/button";
 
 export default function NewNovelPage() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const { mutate: createNewNovel, isPending } = useCreateNewNovel({
     onSuccess: (novel) => {
-      router.replace(`/novel/${novel.id}/info`);
+      router.replace(`/novel/${novel.id}/info`, { scroll: false });
     },
   });
 
-  const save = (novel: { json: any; text: string }) => {
+  const save = (novel?: { json: any; text: string }) => {
     createNewNovel({
       title: "",
       description: "",
-      chapters: [{ title, text: novel.text, jsonContent: JSON.stringify(novel.json) }],
+      chapters: novel
+        ? [{ title, text: novel.text, jsonContent: JSON.stringify(novel.json) }]
+        : undefined,
     });
   };
 
@@ -32,6 +35,10 @@ export default function NewNovelPage() {
       >
         <BackArrow />
         <h1 className="text-lg font-bold mt-1">داستان جدید</h1>
+
+        <Button variant="link" className="p-0 h-auto ms-auto me-4" onClick={() => save()}>
+          رد شدن
+        </Button>
       </header>
 
       <article className="p-5">
