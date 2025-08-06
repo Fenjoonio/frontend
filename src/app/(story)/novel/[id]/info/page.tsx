@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import BackArrow from "@/components/BackArrow";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,10 @@ import { Textarea } from "@/components/ui/textarea";
 import NovelChapters from "./components/NovelChapters";
 import CoverUploader from "./components/CoverUploader";
 import { useEditNovel, useGetNovelById, usePublishNovel } from "@/services/novels";
+import MenuSheet from "./components/MenuSheet";
 
 export default function NovelInfoPage() {
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const { id } = useParams<{ id: string }>();
   const [description, setDescription] = useState("");
@@ -36,6 +38,13 @@ export default function NovelInfoPage() {
     await publishNovel();
   };
 
+  const onButtonClick = async () => {
+    const action = novel?.isPublished ? edit : editAndPublish;
+
+    await action();
+    router.push(`/novel/${id}`);
+  };
+
   if (!novel) {
     return (
       <div className="size-full fixed top-0 right-0 flex items-center justify-center bg-background">
@@ -52,6 +61,11 @@ export default function NovelInfoPage() {
       >
         <BackArrow className="shrink-0" />
         <h1 className="text-lg font-bold truncate mt-1">اطلاعات داستان</h1>
+
+        <MenuSheet
+          novelId={+id}
+          className="size-10 flex items-center justify-center cursor-pointer ms-auto"
+        />
       </header>
 
       <div className="px-5 mt-4">
@@ -85,7 +99,7 @@ export default function NovelInfoPage() {
         <Button
           disabled={isPublishPending || isEditPending}
           className="w-full rounded-none"
-          onClick={novel?.isPublished ? edit : editAndPublish}
+          onClick={onButtonClick}
         >
           {novel?.isPublished ? "بروزرسانی داستان" : "انتشار داستان"}
         </Button>
