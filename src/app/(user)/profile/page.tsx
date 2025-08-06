@@ -45,7 +45,7 @@ export default async function ProfilePage() {
           <li>
             <Link href="/profile/edit" className="flex gap-x-2 items-center py-3 px-2">
               <div className="bg-background rounded-lg p-2">
-                <UserPenIcon className="size-5 " />
+                <UserPenIcon className="size-5" />
               </div>
 
               <span className="text-sm  mt-[2px]">ویرایش اطلاعات شخصی</span>
@@ -61,7 +61,19 @@ export default async function ProfilePage() {
           <li>
             <Link href="/profile/stories" className="flex gap-x-2 items-center py-3 px-2">
               <div className="bg-background rounded-lg p-2">
-                <NotebookPenIcon className="size-5 " />
+                <NotebookPenIcon className="size-5" />
+              </div>
+
+              <span className="text-sm  mt-[2px]">داستانک‌های من</span>
+
+              <ArrowLeftIcon className="size-5 ms-auto me-1" />
+            </Link>
+          </li>
+
+          <li>
+            <Link href="/profile/novels" className="flex gap-x-2 items-center py-3 px-2">
+              <div className="bg-background rounded-lg p-2">
+                <NotebookPenIcon className="size-5" />
               </div>
 
               <span className="text-sm  mt-[2px]">داستان‌های من</span>
