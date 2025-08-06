@@ -169,21 +169,23 @@ export default function Toolbar({ isSaveLoading, className, onSave }: ToolbarPro
       <div className="flex bg-soft-background rounded-lg">
         {isExpanded && (
           <div className="flex gap-x-1 items-center bg-background rounded-md my-1 ms-1 overflow-hidden">
-            <div
+            <button
+              tabIndex={3}
               className={cn("p-2 cursor-pointer", { "text-primary bg-primary/10": isQuote })}
               onClick={handleQuote}
             >
               <QuoteIcon />
-            </div>
+            </button>
 
             <Popover>
-              <PopoverTrigger className="p-2 cursor-pointer">
+              <PopoverTrigger tabIndex={4} className="p-2 cursor-pointer">
                 <TypeIcon />
               </PopoverTrigger>
               <PopoverContent className="p-1">
                 <div className="flex bg-background rounded-md">
                   <button
                     disabled
+                    tabIndex={5}
                     className={cn("p-2 enabled:cursor-pointer disabled:opacity-25", {
                       "text-primary bg-primary/10": isUnderline,
                     })}
@@ -193,6 +195,7 @@ export default function Toolbar({ isSaveLoading, className, onSave }: ToolbarPro
                   </button>
 
                   <button
+                    tabIndex={6}
                     className={cn("p-2 cursor-pointer", { "text-primary bg-primary/10": isItalic })}
                     onClick={() => format("italic")}
                   >
@@ -200,6 +203,7 @@ export default function Toolbar({ isSaveLoading, className, onSave }: ToolbarPro
                   </button>
 
                   <button
+                    tabIndex={7}
                     className={cn("p-2 cursor-pointer", { "text-primary bg-primary/10": isBold })}
                     onClick={() => format("bold")}
                   >
@@ -212,46 +216,50 @@ export default function Toolbar({ isSaveLoading, className, onSave }: ToolbarPro
             </Popover>
 
             <Popover>
-              <PopoverTrigger className="p-2 cursor-pointer">
+              <PopoverTrigger tabIndex={8} className="p-2 cursor-pointer">
                 <AlignJustifyIcon />
               </PopoverTrigger>
               <PopoverContent className="p-1">
                 <div className="flex bg-background rounded-md">
-                  <div
+                  <button
+                    tabIndex={9}
                     className={cn("p-2 cursor-pointer", {
                       "text-primary bg-primary/10": alignment === "justify",
                     })}
                     onClick={() => handleAlignment("justify")}
                   >
                     <AlignJustifyIcon />
-                  </div>
+                  </button>
 
-                  <div
+                  <button
+                    tabIndex={10}
                     className={cn("p-2 cursor-pointer", {
                       "text-primary bg-primary/10": alignment === "right",
                     })}
                     onClick={() => handleAlignment("right")}
                   >
                     <AlignRightIcon />
-                  </div>
+                  </button>
 
-                  <div
+                  <button
+                    tabIndex={11}
                     className={cn("p-2 cursor-pointer", {
                       "text-primary bg-primary/10": alignment === "center",
                     })}
                     onClick={() => handleAlignment("center")}
                   >
                     <AlignCenterIcon />
-                  </div>
+                  </button>
 
-                  <div
+                  <button
+                    tabIndex={12}
                     className={cn("p-2 cursor-pointer", {
                       "text-primary bg-primary/10": alignment === "left",
                     })}
                     onClick={() => handleAlignment("left")}
                   >
                     <AlignLeftIcon />
-                  </div>
+                  </button>
                 </div>
 
                 <PopoverArrow className="mb-1" />
@@ -259,6 +267,7 @@ export default function Toolbar({ isSaveLoading, className, onSave }: ToolbarPro
             </Popover>
 
             <button
+              tabIndex={13}
               disabled={!canRedo}
               className="p-2 cursor-pointer disabled:text-gray-300"
               onClick={handleRedo}
@@ -267,6 +276,7 @@ export default function Toolbar({ isSaveLoading, className, onSave }: ToolbarPro
             </button>
 
             <button
+              tabIndex={14}
               disabled={!canUndo}
               className="p-2 cursor-pointer disabled:text-gray-300"
               onClick={handleUndo}
@@ -282,7 +292,7 @@ export default function Toolbar({ isSaveLoading, className, onSave }: ToolbarPro
       </div>
 
       <div className="flex fixed bottom-5 end-5 bg-primary rounded-lg">
-        <Button disabled={isSaveLoading} size="sm" className="w-12" onClick={onSave}>
+        <Button disabled={isSaveLoading} tabIndex={15} size="sm" className="w-12" onClick={onSave}>
           <SaveIcon />
         </Button>
       </div>
