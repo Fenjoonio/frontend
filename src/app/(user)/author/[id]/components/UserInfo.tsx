@@ -72,9 +72,7 @@ export default function UserInfo({ id, className }: UserInfoProps) {
 
       <div className="w-full flex gap-x-4 mt-6">
         <div className="flex-1 flex gap-y-1 flex-col items-center">
-          <span className="text-lg" onClick={() => setIsFollowersSheetOpen(true)}>
-            {user.followersCount}
-          </span>
+          <span className="text-lg">{user.publicStoriesCount}</span>
           <span className="text-sm">داستانک‌ها</span>
         </div>
 
