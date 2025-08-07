@@ -5,7 +5,6 @@ import Toolbar from "./components/Toolbar";
 import { cn } from "@/lib/utils/classnames";
 import { useState, useCallback } from "react";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import FlexibleContainer from "@/components/FlexibleContainer";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
@@ -79,13 +78,11 @@ export default function Editor({
           />
         )}
 
-        <FlexibleContainer className="pb-16">
-          <RichTextPlugin
-            contentEditable={<ContentEditable className="min-h-96 outline-none" />}
-            placeholder={<Placeholder />}
-            ErrorBoundary={({ children }) => children}
-          />
-        </FlexibleContainer>
+        <RichTextPlugin
+          contentEditable={<ContentEditable className="min-h-96 outline-none pb-16" />}
+          placeholder={<Placeholder />}
+          ErrorBoundary={({ children }) => children}
+        />
 
         <HistoryPlugin />
         <OnChangePlugin onChange={onChange} />
