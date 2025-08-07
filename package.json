@@ -9,9 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@editorjs/editorjs": "^2.30.8",
-    "@editorjs/header": "^2.8.8",
-    "@editorjs/paragraph": "^2.11.7",
     "@hookform/resolvers": "^4.1.0",
     "@hugocxl/react-to-image": "^0.0.9",
     "@lexical/plain-text": "^0.33.1",
@@ -30,10 +27,6 @@
     "@serwist/next": "^9.0.12",
     "@tailwindcss/postcss": "^4.0.6",
     "@tanstack/react-query": "^5.66.0",
-    "@tiptap/extension-placeholder": "^2.26.1",
-    "@tiptap/pm": "^2.26.1",
-    "@tiptap/react": "^2.26.1",
-    "@tiptap/starter-kit": "^2.26.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
