@@ -17,8 +17,6 @@ export default function LibraryPage() {
     return data?.pages ? data.pages.flatMap((page) => page.novels ?? []) : [];
   }, [data?.pages]);
 
-  const reversedNovels = novels.toReversed();
-
   return (
     <section className="pb-4">
       <header
@@ -36,11 +34,11 @@ export default function LibraryPage() {
       </div>
 
       <div className="flex gap-4 flex-wrap px-5 mt-5">
-        {reversedNovels.map((novel, index) => (
+        {novels.map((novel, index) => (
           <div key={novel.id} className="w-[calc(50%-8px)] bg-soft-background py-4 px-3 rounded-md">
             <Link
               href={`/novel/${novel.id}`}
-              className="block w-full h-48 lg:h-64 relative overflow-hidden rounded-lg"
+              className="block w-full h-56 lg:h-64 relative overflow-hidden rounded-lg"
             >
               <Image
                 src={novel.coverImage}
