@@ -11,11 +11,14 @@ export default function NewChapterPage() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const { id } = useParams<{ id: string }>();
-  const { mutate: createNewChapter, isPending } = useCreateNewChapter({
-    onSuccess: () => {
-      router.replace(`/novel/${id}/info`);
-    },
-  });
+  const { mutate: createNewChapter, isPending } = useCreateNewChapter(
+    { id: +id },
+    {
+      onSuccess: () => {
+        router.replace(`/novel/${id}/info`);
+      },
+    }
+  );
 
   const save = (chapter: { json: any; text: string }) => {
     createNewChapter({

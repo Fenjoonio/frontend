@@ -26,7 +26,9 @@ import type {
   EditChapterResponse,
   GetChapterByIdParams,
   GetNovelsParams,
+  CreateNewChapterBody,
 } from "./types";
+import { USER_QUERY_KEYS } from "../user/constants";
 
 export function useGetInfiniteNovels(params?: GetNovelsParams) {
   return useInfiniteQuery({
@@ -51,7 +53,23 @@ export function useGetNovelById(params: GetNovelByIdParams) {
 }
 
 export function useCreateNewNovel(options?: { onSuccess?: (res: CreateNewNovelResponse) => void }) {
-  return useMutation({ ...options, mutationFn: createNewNovel });
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    ...options,
+    mutationFn: createNewNovel,
+    onSuccess: (response) => {
+      options?.onSuccess?.(response);
+
+      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_NOVELS] });
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.GET_USER_NOVELS_BY_ID],
+        exact: false,
+      });
+
+      queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS], exact: false });
+    },
+  });
 }
 
 export function useEditNovel(
@@ -65,7 +83,13 @@ export function useEditNovel(
     onSuccess: (response) => {
       options?.onSuccess?.(response);
 
-      // TODO: Invalid get-all-novels cache too
+      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_NOVELS] });
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.GET_USER_NOVELS_BY_ID],
+        exact: false,
+      });
+
+      queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS], exact: false });
       queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_BY_ID, params] });
     },
   });
@@ -82,7 +106,13 @@ export function usePublishNovel(
     onSuccess: (response) => {
       options?.onSuccess?.(response);
 
-      // TODO: Invalid get-all-novels cache too
+      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_NOVELS] });
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.GET_USER_NOVELS_BY_ID],
+        exact: false,
+      });
+
+      queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS], exact: false });
       queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_BY_ID, params] });
     },
   });
@@ -99,7 +129,13 @@ export function useUnPublishNovel(
     onSuccess: (response) => {
       options?.onSuccess?.(response);
 
-      // TODO: Invalid get-all-novels cache too
+      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_NOVELS] });
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.GET_USER_NOVELS_BY_ID],
+        exact: false,
+      });
+
+      queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS], exact: false });
       queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_BY_ID, params] });
     },
   });
@@ -113,8 +149,13 @@ export function useDeleteNovel(options?: { onSuccess?: (res: Novel) => void }) {
     onSuccess: (response) => {
       options?.onSuccess?.(response);
 
-      // TODO: Invalid get-all-novels cache too
-      queryClient.invalidateQueries({ queryKey: [] });
+      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_NOVELS] });
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.GET_USER_NOVELS_BY_ID],
+        exact: false,
+      });
+
+      queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS], exact: false });
     },
   });
 }
@@ -126,10 +167,32 @@ export function useGetChapterById(params: GetChapterByIdParams) {
   });
 }
 
-export function useCreateNewChapter(options?: {
-  onSuccess?: (res: CreateNewChapterResponse) => void;
-}) {
-  return useMutation({ ...options, mutationFn: createNewChapter });
+export function useCreateNewChapter(
+  body: Pick<CreateNewChapterBody, "id">,
+  options?: {
+    onSuccess?: (res: CreateNewChapterResponse) => void;
+  }
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    ...options,
+    mutationFn: createNewChapter,
+    onSuccess: (response) => {
+      options?.onSuccess?.(response);
+
+      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_NOVELS] });
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.GET_USER_NOVELS_BY_ID],
+        exact: false,
+      });
+
+      queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS], exact: false });
+      queryClient.invalidateQueries({
+        queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_BY_ID, { id: body.id }],
+      });
+    },
+  });
 }
 
 export function useEditChapter(
@@ -143,7 +206,13 @@ export function useEditChapter(
     onSuccess: (response) => {
       options?.onSuccess?.(response);
 
-      // TODO: Invalid get-all-novels cache too
+      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.GET_CURRENT_USER_NOVELS] });
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.GET_USER_NOVELS_BY_ID],
+        exact: false,
+      });
+
+      queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS], exact: false });
       queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_BY_ID, params] });
     },
   });
