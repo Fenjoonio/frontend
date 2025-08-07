@@ -56,12 +56,14 @@ export default function EditChapterPage() {
           onChange={(e) => setTitle(e.target.value)}
         />
 
-        <Editor
-          className="mt-5"
-          initialState={data?.chapter.jsonContent}
-          isSaveLoading={isPending}
-          onSave={save}
-        />
+        {!!data && (
+          <Editor
+            isSaveLoading={isPending}
+            initialState={data?.chapter.jsonContent}
+            className="mt-5"
+            onSave={save}
+          />
+        )}
       </article>
     </section>
   );
