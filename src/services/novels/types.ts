@@ -25,15 +25,7 @@ export type GetNovelsParams = {
   limit?: number;
 };
 
-export type GetNovelsResponse = {
-  pagination: {
-    limit: number;
-    page: number;
-    pages: number;
-    total: number;
-  };
-  novels: Novel[];
-};
+export type GetNovelsResponse = Paginated<Novel>;
 
 export type GetNovelByIdParams = {
   id: number;

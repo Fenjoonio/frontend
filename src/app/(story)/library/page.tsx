@@ -13,7 +13,7 @@ export default function LibraryPage() {
   const { data, isFetching, fetchNextPage, hasNextPage } = useGetInfiniteNovels({ limit: 20 });
 
   const novels = useMemo(() => {
-    return data?.pages ? data.pages.flatMap((page) => page.novels ?? []) : [];
+    return data?.pages ? data.pages.flatMap((page) => page.items ?? []) : [];
   }, [data?.pages]);
 
   return (
