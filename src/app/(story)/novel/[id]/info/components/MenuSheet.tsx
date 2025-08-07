@@ -4,8 +4,8 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils/classnames";
-import { MoreHorizontalIcon, TrashIcon } from "lucide-react";
-import { useDeleteNovel, useGetNovelById } from "@/services/novels";
+import { EditIcon, MoreHorizontalIcon, TrashIcon } from "lucide-react";
+import { useDeleteNovel, useGetNovelById, useUnPublishNovel } from "@/services/novels";
 import {
   Sheet,
   SheetTitle,
@@ -24,6 +24,16 @@ export default function MenuSheet({ novelId, className }: MenuSheetProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const { data: novel } = useGetNovelById({ id: novelId });
+  const { mutate: unpublish, isPending: isUnpublishPending } = useUnPublishNovel(
+    { id: novelId },
+    {
+      onSuccess: () => {
+        setIsOpen(false);
+        toast.success("داستان به حالت عدم انتشار درآمد");
+      },
+    }
+  );
+
   const { mutate: deleteNovel, isPending: isDeletePending } = useDeleteNovel({
     onSuccess: () => {
       setIsOpen(false);
@@ -31,6 +41,11 @@ export default function MenuSheet({ novelId, className }: MenuSheetProps) {
       toast.success("داستان شما با موفقیت حذف شد");
     },
   });
+
+  const onUnpublish = () => {
+    if (!novel?.isPublished || isUnpublishPending) return;
+    unpublish();
+  };
 
   const onDelete = () => {
     if (isDeletePending) return;
@@ -50,6 +65,18 @@ export default function MenuSheet({ novelId, className }: MenuSheetProps) {
         </SheetHeader>
 
         <ul className="divide-y divide-border px-5">
+          {!!novel?.isEditableByUser && (
+            <li
+              className={cn("flex gap-x-2 items-center py-4 cursor-pointer", {
+                "opacity-50": !novel.isPublished || isUnpublishPending,
+              })}
+              onClick={onUnpublish}
+            >
+              <EditIcon className="size-5" />
+              <span className="mt-[2px]">عدم انتشار داستان</span>
+            </li>
+          )}
+
           {!!novel?.isDeletableByUser && (
             <li
               className={cn("flex gap-x-2 items-center py-4 cursor-pointer", {
