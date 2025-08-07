@@ -59,7 +59,9 @@ export default function NovelChapterPage() {
         className="w-[calc(100%-1px)] flex items-center sticky top-0 right-0 z-10 bg-background border-b border-border pb-3 px-2"
       >
         <BackArrow />
-        <h1 className="text-lg font-bold mt-1">{data?.chapter.title || ""}</h1>
+        <h1 title={data?.chapter.title || ""} className="text-lg truncate font-bold mt-1">
+          {data?.chapter.title || ""}
+        </h1>
       </header>
 
       <Reader initialState={data?.chapter.jsonContent || ""} className="py-4 px-5" />
