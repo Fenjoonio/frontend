@@ -5,6 +5,7 @@ import Toolbar from "./components/Toolbar";
 import { cn } from "@/lib/utils/classnames";
 import { useState, useCallback } from "react";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
+import FlexibleContainer from "@/components/FlexibleContainer";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
@@ -73,16 +74,19 @@ export default function Editor({
         {!readOnly && (
           <Toolbar
             isSaveLoading={isSaveLoading}
-            className="fixed bottom-5 start-5"
+            className="fixed z-10 bottom-5 start-5"
             onSave={handleSave}
           />
         )}
 
-        <RichTextPlugin
-          contentEditable={<ContentEditable className="min-h-96 outline-none" />}
-          placeholder={<Placeholder />}
-          ErrorBoundary={({ children }) => children}
-        />
+        <FlexibleContainer className="pb-16">
+          <RichTextPlugin
+            contentEditable={<ContentEditable className="min-h-96 outline-none" />}
+            placeholder={<Placeholder />}
+            ErrorBoundary={({ children }) => children}
+          />
+        </FlexibleContainer>
+
         <HistoryPlugin />
         <OnChangePlugin onChange={onChange} />
       </div>
