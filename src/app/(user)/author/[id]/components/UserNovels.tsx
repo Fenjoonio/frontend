@@ -5,12 +5,16 @@ import Image from "next/image";
 import { useMemo } from "react";
 import { getUserName } from "@/lib/utils/users";
 import UserAvatar from "@/components/UserAvatar";
-import { useGetCurrentUserNovels } from "@/services/user";
+import { useGetUserNovelsById } from "@/services/user";
 import InfiniteScroll from "react-infinite-scroll-component";
 import NoImage from "../../../../../../public/assets/images/no-image.png";
 
-export default function UserNovels() {
-  const { data, isFetching, fetchNextPage, hasNextPage } = useGetCurrentUserNovels();
+type UserNovelsProps = {
+  id: number;
+};
+
+export default function UserNovels({ id }: UserNovelsProps) {
+  const { data, isFetching, fetchNextPage, hasNextPage } = useGetUserNovelsById({ id: +id });
 
   const novels = useMemo(() => {
     return data?.pages ? data.pages.flatMap((page) => page.items ?? []) : [];

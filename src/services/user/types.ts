@@ -39,6 +39,14 @@ export type GetUserStoriesByIdResponse = {
   stories: Story[];
 };
 
+export type GetUserNovelsByIdParams = {
+  id: number;
+  page?: number;
+  limit?: number;
+};
+
+export type GetUserNovelsByIdResponse = Paginated<Novel>;
+
 export type GetUserCommentsByIdParams = {
   id: number;
   page?: number;
@@ -75,15 +83,7 @@ export type GetCurrentUserNovelsParams = {
   limit?: number;
 };
 
-export type GetCurrentUserNovelsResponse = {
-  pagination: {
-    limit: number;
-    page: number;
-    pages: number;
-    total: number;
-  };
-  novels: Novel[];
-};
+export type GetCurrentUserNovelsResponse = Paginated<Novel>;
 
 export type GetUserPrivateStoryCountResponse = {
   count: number;

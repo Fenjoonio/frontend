@@ -4,6 +4,8 @@ import type {
   GetUserByIdParams,
   GetUserStoriesByIdParams,
   GetUserStoriesByIdResponse,
+  GetUserNovelsByIdParams,
+  GetUserNovelsByIdResponse,
   GetUserCommentsByIdParams,
   GetUserCommentsByIdResponse,
   GetCurrentUserStoriesResponse,
@@ -43,6 +45,14 @@ export async function getUserById(params: GetUserByIdParams) {
 
 export async function getUserStoriesById({ id, ...params }: GetUserStoriesByIdParams) {
   const response = await http.get<GetUserStoriesByIdResponse>(`v1/users/${id}/stories`, {
+    searchParams: params,
+  });
+
+  return response.data;
+}
+
+export async function getUserNovelsById({ id, ...params }: GetUserNovelsByIdParams) {
+  const response = await http.get<GetUserNovelsByIdResponse>(`v1/users/${id}/novels`, {
     searchParams: params,
   });
 

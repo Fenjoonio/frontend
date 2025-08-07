@@ -3,6 +3,7 @@ import BackArrow from "@/components/BackArrow";
 import UserStories from "./components/UserStories";
 import UserComments from "./components/UserComments";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import UserNovels from "./components/UserNovels";
 
 type AuthorPageProps = {
   params: Promise<{ id: string }>;
@@ -40,6 +41,10 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         <div className="mt-6">
           <TabsContent value="stories">
             <UserStories id={Number(id)} />
+          </TabsContent>
+
+          <TabsContent value="novels">
+            <UserNovels id={Number(id)} />
           </TabsContent>
 
           <TabsContent value="comments">

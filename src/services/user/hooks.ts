@@ -3,6 +3,7 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tansta
 import {
   getCurrentUser,
   getUserById,
+  getUserNovelsById,
   getUserCommentsById,
   getUserStoriesById,
   updateCurrentUser,
@@ -23,6 +24,7 @@ import type {
   GetUserChatsParams,
   GetUserFollowersListParams,
   GetUserFollowingsListParams,
+  GetUserNovelsByIdParams,
   GetUserStoriesByIdParams,
   User,
 } from "./types";
@@ -85,7 +87,6 @@ export function useGetCurrentUserNovels(
   });
 }
 
-
 export function useGetUserPrivateStoryCount() {
   return useQuery({
     queryKey: [USER_QUERY_KEYS.GET_USER_PRIVATE_STORY_COUNT],
@@ -105,6 +106,21 @@ export function useGetUserStoriesById(params: GetUserStoriesByIdParams) {
     initialPageParam: params,
     queryKey: [USER_QUERY_KEYS.GET_USER_STORIES_BY_ID, params],
     queryFn: ({ pageParam }) => getUserStoriesById(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { id: params.id, page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
+  });
+}
+
+export function useGetUserNovelsById(params: GetUserNovelsByIdParams) {
+  return useInfiniteQuery({
+    initialPageParam: params,
+    queryKey: [USER_QUERY_KEYS.GET_USER_NOVELS_BY_ID, params],
+    queryFn: ({ pageParam }) => getUserNovelsById(pageParam),
     getNextPageParam: (lastPage) => {
       const nextPage = lastPage.pagination.page + 1;
 
