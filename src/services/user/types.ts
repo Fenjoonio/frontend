@@ -17,6 +17,8 @@ export type User = {
   followersCount: number;
   followingsCount: number;
   isFollowedByUser: boolean;
+  publicStoriesCount: number;
+  privateStoriesCount: number;
 };
 
 export type GetUserByIdParams = {
