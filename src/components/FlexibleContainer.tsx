@@ -13,10 +13,10 @@ export default function FlexibleContainer({ children, className }: FlexibleConta
       setInputTranslateY(height > 0 ? -height : 0);
     };
 
-    window.addEventListener("keyboardHeightChange", handleKeyboardHeightChange);
+    window.addEventListener("resize", handleKeyboardHeightChange);
 
     return () => {
-      window.removeEventListener("keyboardHeightChange", handleKeyboardHeightChange);
+      window.removeEventListener("resize", handleKeyboardHeightChange);
     };
   }, []);
 
