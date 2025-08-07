@@ -1,17 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useMemo } from "react";
 import { PlusIcon } from "lucide-react";
 import BackArrow from "@/components/BackArrow";
 import { Button } from "@/components/ui/button";
-import { getUserName } from "@/lib/utils/users";
-import UserAvatar from "@/components/UserAvatar";
 import { useGetInfiniteNovels } from "@/services/novels";
+import InfiniteScroll from "react-infinite-scroll-component";
+import NovelCard, { NovelCardSkeleton } from "../components/NovelCard";
 
 export default function LibraryPage() {
-  const { data } = useGetInfiniteNovels({ limit: 20 });
+  const { data, isFetching, fetchNextPage, hasNextPage } = useGetInfiniteNovels({ limit: 20 });
 
   const novels = useMemo(() => {
     return data?.pages ? data.pages.flatMap((page) => page.novels ?? []) : [];
@@ -33,42 +32,25 @@ export default function LibraryPage() {
         </span>
       </div>
 
-      <div className="flex gap-4 flex-wrap px-5 mt-5">
+      <InfiniteScroll
+        next={fetchNextPage}
+        dataLength={novels.length}
+        hasMore={isFetching || hasNextPage}
+        loader={
+          <>
+            {Array(3)
+              .fill(0)
+              .map((_, index) => (
+                <NovelCardSkeleton key={index} className="py-4" />
+              ))}
+          </>
+        }
+        className="divide-y divide-border px-5 mt-5"
+      >
         {novels.map((novel, index) => (
-          <div key={novel.id} className="w-[calc(50%-8px)] bg-soft-background py-4 px-3 rounded-md">
-            <Link
-              href={`/novel/${novel.id}`}
-              className="block w-full h-56 lg:h-64 relative overflow-hidden rounded-lg"
-            >
-              <Image
-                src={novel.coverImage}
-                alt={novel.title}
-                fill
-                sizes="50%"
-                priority={index < 5}
-              />
-            </Link>
-
-            <div className="mt-3">
-              <Link
-                href={`/novel/${novel.id}`}
-                title={novel.title}
-                className="block truncate font-semibold"
-              >
-                {novel.title}
-              </Link>
-
-              <Link
-                href={`/author/${novel.user.id}`}
-                className="flex gap-x-2 items-center text-sm text-soft-foreground mt-1"
-              >
-                <UserAvatar user={novel.user} className="size-5 rounded-sm" />
-                <span className="mt-1">{getUserName(novel.user)}</span>
-              </Link>
-            </div>
-          </div>
+          <NovelCard key={index} novel={novel} className="py-4" />
         ))}
-      </div>
+      </InfiniteScroll>
 
       <Link href="/novel/new">
         <Button
