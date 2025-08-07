@@ -211,6 +211,10 @@
 :root {
   --toastify-font-family: inherit;
 
+  --rt-opacity: 1 !important;
+  --rt-color-dark: var(--color-soft-background) !important;
+  --rt-color-white: var(--color-foreground) !important;
+
   /* TODO: Remove these colors */
   --card: hsl(0 0% 100%);
   --primary-foreground: hsl(0 0% 98%);
