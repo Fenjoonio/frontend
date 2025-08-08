@@ -20,6 +20,7 @@ import type {
   UploadCoverImageBody,
   UploadCoverImageResponse,
 } from "./types";
+import Pako from "pako";
 
 export async function getNovels(params: GetNovelsParams) {
   const response = await http.get<GetNovelsResponse>("v1/novels", { searchParams: params });
@@ -36,7 +37,10 @@ export async function getNovelById(params: GetNovelByIdParams) {
 }
 
 export async function createNewNovel(body: CreateNewNovelBody) {
-  const response = await http.post<CreateNewNovelResponse>("v1/novels", body);
+  const response = await http.post<CreateNewNovelResponse>("v1/novels", undefined, {
+    headers: { "Content-Encoding": "gzip" },
+    body: Pako.gzip(JSON.stringify(body)) as BodyInit,
+  });
 
   return response.data;
 }
@@ -72,7 +76,14 @@ export async function getChapterById({ id, chapterId }: GetChapterByIdParams) {
 }
 
 export async function createNewChapter({ id, ...body }: CreateNewChapterBody) {
-  const response = await http.post<CreateNewChapterResponse>(`v1/novels/${id}/chapters`, body);
+  const response = await http.post<CreateNewChapterResponse>(
+    `v1/novels/${id}/chapters`,
+    undefined,
+    {
+      headers: { "Content-Encoding": "gzip" },
+      body: Pako.gzip(JSON.stringify(body)) as BodyInit,
+    }
+  );
 
   return response.data;
 }
@@ -80,7 +91,11 @@ export async function createNewChapter({ id, ...body }: CreateNewChapterBody) {
 export async function editChapter({ id, chapterId, ...body }: EditChapterBody) {
   const response = await http.put<EditChapterResponse>(
     `v1/novels/${id}/chapters/${chapterId}`,
-    body
+    undefined,
+    {
+      headers: { "Content-Encoding": "gzip" },
+      body: Pako.gzip(JSON.stringify(body)) as BodyInit,
+    }
   );
 
   return response.data;
