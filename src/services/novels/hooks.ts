@@ -212,6 +212,7 @@ export function useEditChapter(
         exact: false,
       });
 
+      queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_CHAPTER_BY_ID, params] });
       queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS], exact: false });
       queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_BY_ID, params] });
     },
