@@ -12,10 +12,12 @@ type NovelCardProps = {
 };
 
 export default function NovelCard({ novel, className }: NovelCardProps) {
+  const url = novel.isPublished ? `/novel/${novel.id}` : `/novel/${novel.id}/info`;
+
   return (
     <div className={cn("flex gap-x-4", className)}>
       <Link
-        href={`/novel/${novel.id}/info`}
+        href={url}
         title={novel.title || `داستان #${novel.id}`}
         className="shrink-0 w-24 h-36 relative overflow-hidden rounded-md"
       >
@@ -34,7 +36,7 @@ export default function NovelCard({ novel, className }: NovelCardProps) {
 
       <div className="mt-1">
         <Link
-          href={`/novel/${novel.id}/info`}
+          href={url}
           title={novel.title || `داستان #${novel.id}`}
           className="text-lg font-semibold line-clamp-2"
         >
