@@ -1,5 +1,7 @@
 import http from "@/lib/utils/http";
 import type {
+  AddNovelCommentBody,
+  AddNovelCommentResponse,
   CreateNewChapterBody,
   CreateNewChapterResponse,
   CreateNewNovelBody,
@@ -12,6 +14,8 @@ import type {
   GetChapterByIdResponse,
   GetNovelByIdParams,
   GetNovelByIdResponse,
+  GetNovelCommentsParams,
+  GetNovelCommentsResponse,
   GetNovelsParams,
   GetNovelsResponse,
   Novel,
@@ -65,6 +69,20 @@ export async function editNovel({ id, ...body }: EditNovelBody) {
 
 export async function deleteNovel(params: DeleteNovelParams) {
   const response = await http.delete<Novel>(`v1/novels/${params.id}`);
+
+  return response.data;
+}
+
+export async function getNovelComments({ id, ...params }: GetNovelCommentsParams) {
+  const response = await http.get<GetNovelCommentsResponse>(`v1/novels/${id}/comments`, {
+    searchParams: params,
+  });
+
+  return response.data;
+}
+
+export async function addNovelComment({ id, ...body }: AddNovelCommentBody) {
+  const response = await http.post<AddNovelCommentResponse>(`v1/novels/${id}/comments`, body);
 
   return response.data;
 }

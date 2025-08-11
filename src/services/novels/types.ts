@@ -1,4 +1,5 @@
 import type { User } from "@/services/user";
+import type { Comment } from "@/services/comments";
 
 export type Chapter = {
   id: number;
@@ -12,6 +13,7 @@ export type Novel = {
   coverImage: string;
   createdAt: string;
   description: string;
+  commentsCount: number;
   isDeletableByUser: boolean;
   isEditableByUser: boolean;
   isPublishableByUser: boolean;
@@ -106,6 +108,21 @@ export type UnPublishNovelParams = {
 export type DeleteNovelParams = {
   id: number;
 };
+
+export type GetNovelCommentsParams = {
+  id: number;
+  page?: number;
+  limit?: number;
+};
+
+export type GetNovelCommentsResponse = Paginated<Comment>;
+
+export type AddNovelCommentBody = {
+  id: string;
+  text: string;
+};
+
+export type AddNovelCommentResponse = Comment;
 
 export type GetChapterByIdParams = {
   id: number;

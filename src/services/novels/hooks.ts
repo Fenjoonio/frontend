@@ -1,6 +1,9 @@
+import { Comment } from "@/services/comments";
 import { NOVELS_QUERY_KEYS } from "./constants";
+import { USER_QUERY_KEYS } from "@/services/user/constants";
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  addNovelComment,
   createNewChapter,
   createNewNovel,
   deleteNovel,
@@ -8,6 +11,7 @@ import {
   editNovel,
   getChapterById,
   getNovelById,
+  getNovelComments,
   getNovels,
   publishNovel,
   unPublishNovel,
@@ -27,8 +31,8 @@ import type {
   GetChapterByIdParams,
   GetNovelsParams,
   CreateNewChapterBody,
+  GetNovelCommentsParams,
 } from "./types";
-import { USER_QUERY_KEYS } from "../user/constants";
 
 export function useGetInfiniteNovels(params?: GetNovelsParams) {
   return useInfiniteQuery({
@@ -156,6 +160,33 @@ export function useDeleteNovel(options?: { onSuccess?: (res: Novel) => void }) {
       });
 
       queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS], exact: false });
+    },
+  });
+}
+
+export function useGetInfiniteNovelComments(params: GetNovelCommentsParams) {
+  return useInfiniteQuery({
+    initialPageParam: params,
+    queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_COMMENTS, params],
+    queryFn: ({ pageParam }) => getNovelComments(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { id: params.id, page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
+  });
+}
+
+export function useAddStoryComment(options?: { onSuccess?: (res: Comment) => void }) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: addNovelComment,
+    onSuccess: (response) => {
+      options?.onSuccess?.(response);
+      queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_COMMENTS] });
     },
   });
 }
