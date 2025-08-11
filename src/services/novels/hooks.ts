@@ -179,7 +179,7 @@ export function useGetInfiniteNovelComments(params: GetNovelCommentsParams) {
   });
 }
 
-export function useAddStoryComment(options?: { onSuccess?: (res: Comment) => void }) {
+export function useAddNovelComment(options?: { onSuccess?: (res: Comment) => void }) {
   const queryClient = useQueryClient();
 
   return useMutation({

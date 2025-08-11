@@ -8,6 +8,7 @@ import { getUserName } from "@/lib/utils/users";
 import UserAvatar from "@/components/UserAvatar";
 import { getNovelById } from "@/services/novels";
 import NovelChapters from "./components/NovelChapters";
+import NovelComments from "./components/NovelComments";
 
 type NovelPageProps = {
   params: Promise<{ id: string }>;
@@ -64,6 +65,7 @@ export default async function NovelPage({ params }: NovelPageProps) {
         <h3 className="text-sm text-soft-foreground mt-8">آخرین بخش‌ها</h3>
 
         <NovelChapters chapters={novel.chapters} />
+        <NovelComments className="mt-8" />
       </div>
 
       <div
