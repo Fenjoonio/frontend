@@ -15,8 +15,7 @@ export default function NovelChapters({ chapters }: NovelChaptersProps) {
   const params = useParams<{ id: string }>();
   const [isShowingAllChapters, setIsShowingAllChapters] = useState(false);
 
-  const reversedChapters = chapters.toReversed();
-  const novelChapters = isShowingAllChapters ? reversedChapters : reversedChapters.splice(0, 3);
+  const novelChapters = isShowingAllChapters ? chapters : chapters.slice(0, 3);
 
   return (
     <div className="space-y-2 mt-2">
