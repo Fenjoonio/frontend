@@ -29,7 +29,7 @@ export default function EditCommentDialog({
   onSuccess,
 }: EditCommentDialogProps) {
   const [text, setText] = useState(comment.text);
-  const { mutate, isPending } = useEditComment({ id: comment.id }, { onSuccess });
+  const { mutate, isPending } = useEditComment({ onSuccess });
 
   const edit = () => {
     mutate({ id: comment.id, text });

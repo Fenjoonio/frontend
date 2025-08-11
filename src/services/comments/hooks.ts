@@ -1,4 +1,8 @@
+import { USER_QUERY_KEYS } from "@/services/user";
 import { COMMENTS_QUERY_KEYS } from "./constants";
+import { STORIES_QUERY_KEYS } from "@/services/stories";
+import type { GetStoryCommentsResponse } from "@/services/stories/types";
+import type { GetUserCommentsByIdResponse } from "@/services/user/types";
 import { InfiniteData, useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   deleteComment,
@@ -10,39 +14,22 @@ import {
 import type {
   Comment,
   DislikeCommentParams,
-  EditCommentBody,
   GetCommentLikersParams,
   LikeCommentParams,
 } from "./types";
-import { STORIES_QUERY_KEYS } from "../stories";
-import { GetStoryCommentsResponse } from "../stories/types";
-import { USER_QUERY_KEYS } from "../user/constants";
-import { GetUserCommentsByIdResponse } from "../user/types";
 
-export function useEditComment(
-  params: Pick<EditCommentBody, "id">,
-  options?: { onSuccess?: (res: Comment) => void }
-) {
-  return useMutation({
-    ...options,
-    mutationKey: [COMMENTS_QUERY_KEYS.EDIT_COMMENT, params],
-    mutationFn: editComment,
-  });
+export function useEditComment(options?: { onSuccess?: (res: Comment) => void }) {
+  return useMutation({ ...options, mutationFn: editComment });
 }
 
 export function useDeleteComment(options?: { onSuccess?: (res: unknown) => void }) {
-  return useMutation({
-    ...options,
-    mutationKey: [COMMENTS_QUERY_KEYS.DELETE_COMMENT],
-    mutationFn: deleteComment,
-  });
+  return useMutation({ ...options, mutationFn: deleteComment });
 }
 
 export function useLikeComment(params: LikeCommentParams, options?: { onSuccess?: () => void }) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: [COMMENTS_QUERY_KEYS.LIKE_COMMENT, params],
     mutationFn: () => likeComment(params),
     onSuccess: () => {
       options?.onSuccess?.();
@@ -56,7 +43,7 @@ export function useLikeComment(params: LikeCommentParams, options?: { onSuccess?
             ...oldData,
             pages: oldData.pages.map((page) => ({
               ...page,
-              comments: page.comments.map((comment) =>
+              comments: page.items.map((comment) =>
                 comment.id === params.id
                   ? { ...comment, likesCount: comment.likesCount + 1, isLikedByUser: true }
                   : comment
@@ -75,7 +62,7 @@ export function useLikeComment(params: LikeCommentParams, options?: { onSuccess?
             ...oldData,
             pages: oldData.pages.map((page) => ({
               ...page,
-              comments: page.comments.map((comment) =>
+              comments: page.items.map((comment) =>
                 comment.id === params.id
                   ? { ...comment, likesCount: comment.likesCount + 1, isLikedByUser: true }
                   : comment
@@ -97,7 +84,6 @@ export function useDislikeComment(
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: [COMMENTS_QUERY_KEYS.DISLIKE_COMMENT, params],
     mutationFn: () => dislikeComment(params),
     onSuccess: () => {
       options?.onSuccess?.();
@@ -111,7 +97,7 @@ export function useDislikeComment(
             ...oldData,
             pages: oldData.pages.map((page) => ({
               ...page,
-              comments: page.comments.map((comment) =>
+              comments: page.items.map((comment) =>
                 comment.id === params.id
                   ? { ...comment, likesCount: comment.likesCount - 1, isLikedByUser: false }
                   : comment
@@ -130,7 +116,7 @@ export function useDislikeComment(
             ...oldData,
             pages: oldData.pages.map((page) => ({
               ...page,
-              comments: page.comments.map((comment) =>
+              comments: page.items.map((comment) =>
                 comment.id === params.id
                   ? { ...comment, likesCount: comment.likesCount - 1, isLikedByUser: false }
                   : comment

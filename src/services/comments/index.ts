@@ -1,2 +1,2 @@
 export * from "./hooks";
-export type { Comment } from "./types";
+export type { Comment, NovelComment } from "./types";

@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { cn } from "@/lib/utils/classnames";
 import { getUserName } from "@/lib/utils/users";
 import { formatStoryCreateAt } from "@/lib/utils/story";
-import { useDeleteComment, type Comment } from "@/services/comments";
+import { NovelComment, useDeleteComment, type Comment } from "@/services/comments";
 import EditCommentDialog from "@/app/(comment)/components/EditCommentDialog";
 import CommentLikeButton from "@/app/(comment)/components/CommentLikeButton";
 import { EditIcon, FlagIcon, MoreHorizontalIcon, TrashIcon } from "lucide-react";
@@ -20,10 +20,10 @@ import {
 } from "@/components/ui/sheet";
 
 type CommentProps = {
-  comment: Comment;
   className?: string;
   onCommentEdit?: VoidFunction;
   onCommentDelete?: VoidFunction;
+  comment: Comment | NovelComment;
 };
 
 export function Comment({ comment, className, onCommentEdit, onCommentDelete }: CommentProps) {

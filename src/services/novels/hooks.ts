@@ -1,15 +1,31 @@
 import { NOVELS_QUERY_KEYS } from "./constants";
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { NovelComment } from "@/services/comments/types";
+import { USER_QUERY_KEYS } from "@/services/user/constants";
 import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type InfiniteData,
+} from "@tanstack/react-query";
+import {
+  addNovelComment,
   createNewChapter,
   createNewNovel,
   deleteNovel,
+  dislikeNovel,
   editChapter,
   editNovel,
+  getAuthorOtherNovels,
   getChapterById,
   getNovelById,
+  getNovelComments,
+  getNovelLikers,
   getNovels,
+  likeNovel,
   publishNovel,
+  reportNovel,
+  shareNovel,
   unPublishNovel,
   uploadCoverImage,
 } from "./functionts";
@@ -27,8 +43,13 @@ import type {
   GetChapterByIdParams,
   GetNovelsParams,
   CreateNewChapterBody,
+  GetNovelCommentsParams,
+  LikeNovelParams,
+  GetNovelsResponse,
+  DislikeNovelParams,
+  GetNovelLikersParams,
+  GetAuthorOtherNovelsParams,
 } from "./types";
-import { USER_QUERY_KEYS } from "../user/constants";
 
 export function useGetInfiniteNovels(params?: GetNovelsParams) {
   return useInfiniteQuery({
@@ -157,6 +178,184 @@ export function useDeleteNovel(options?: { onSuccess?: (res: Novel) => void }) {
 
       queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS], exact: false });
     },
+  });
+}
+
+export function useGetInfiniteNovelComments(params: GetNovelCommentsParams) {
+  return useInfiniteQuery({
+    initialPageParam: params,
+    queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_COMMENTS, params],
+    queryFn: ({ pageParam }) => getNovelComments(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { id: params.id, page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
+  });
+}
+
+export function useAddNovelComment(options?: { onSuccess?: (res: NovelComment) => void }) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: addNovelComment,
+    onSuccess: (response) => {
+      options?.onSuccess?.(response);
+      queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_COMMENTS] });
+    },
+  });
+}
+
+export function useLikeNovel(params: LikeNovelParams, options?: { onSuccess?: () => void }) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => likeNovel(params),
+    onSuccess: () => {
+      options?.onSuccess?.();
+
+      queryClient.setQueriesData(
+        { queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS] },
+        (oldData: InfiniteData<GetNovelsResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              stories: page.items.map((novel) =>
+                novel.id === params.id
+                  ? { ...novel, likesCount: novel.likesCount + 1, isLikedByUser: true }
+                  : novel
+              ),
+            })),
+          };
+        }
+      );
+
+      queryClient.setQueriesData(
+        { queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_BY_ID, params] },
+        (oldData: Novel | undefined) => {
+          if (!oldData) return oldData;
+
+          return { ...oldData, likesCount: oldData.likesCount + 1, isLikedByUser: true };
+        }
+      );
+
+      queryClient.setQueriesData(
+        { queryKey: [USER_QUERY_KEYS.GET_USER_STORIES_BY_ID] },
+        (oldData: InfiniteData<GetNovelsResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              stories: page.items.map((novel) =>
+                novel.id === params.id
+                  ? { ...novel, likesCount: novel.likesCount + 1, isLikedByUser: true }
+                  : novel
+              ),
+            })),
+          };
+        }
+      );
+
+      queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_LIKERS, params] });
+    },
+  });
+}
+
+export function useDislikeNovel(params: DislikeNovelParams, options?: { onSuccess?: () => void }) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => dislikeNovel(params),
+    onSuccess: () => {
+      options?.onSuccess?.();
+
+      queryClient.setQueriesData(
+        { queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS] },
+        (oldData: InfiniteData<GetNovelsResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              stories: page.items.map((novel) =>
+                novel.id === params.id
+                  ? { ...novel, likesCount: novel.likesCount - 1, isLikedByUser: false }
+                  : novel
+              ),
+            })),
+          };
+        }
+      );
+
+      queryClient.setQueriesData(
+        { queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_BY_ID, params] },
+        (oldData: Novel | undefined) => {
+          if (!oldData) return oldData;
+
+          return { ...oldData, likesCount: oldData.likesCount - 1, isLikedByUser: false };
+        }
+      );
+
+      queryClient.setQueriesData(
+        { queryKey: [USER_QUERY_KEYS.GET_USER_STORIES_BY_ID] },
+        (oldData: InfiniteData<GetNovelsResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              stories: page.items.map((novel) =>
+                novel.id === params.id
+                  ? { ...novel, likesCount: novel.likesCount - 1, isLikedByUser: false }
+                  : novel
+              ),
+            })),
+          };
+        }
+      );
+
+      queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_LIKERS, params] });
+    },
+  });
+}
+
+export function useGetNovelLikers(params: GetNovelLikersParams, options?: { enabled?: boolean }) {
+  return useInfiniteQuery({
+    ...options,
+    initialPageParam: { id: params.id, page: 1, limit: 5 },
+    queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_LIKERS, params],
+    queryFn: ({ pageParam }) => getNovelLikers(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { id: params.id, page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
+  });
+}
+
+export function useShareNovel(options?: { onSuccess?: () => void }) {
+  return useMutation({ ...options, mutationFn: shareNovel });
+}
+
+export function useReportNovel(options?: { onSuccess?: () => void }) {
+  return useMutation({ ...options, mutationFn: reportNovel });
+}
+
+export function useGetAuthorOtherNovels(params: GetAuthorOtherNovelsParams) {
+  return useQuery({
+    queryFn: () => getAuthorOtherNovels(params),
+    queryKey: [NOVELS_QUERY_KEYS.GET_AUTHOR_OTHER_NOVELS, params],
   });
 }
 

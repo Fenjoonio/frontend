@@ -1,26 +1,38 @@
+import Pako from "pako";
 import http from "@/lib/utils/http";
+import type { NovelComment } from "@/services/comments/types";
 import type {
+  AddNovelCommentBody,
   CreateNewChapterBody,
   CreateNewChapterResponse,
   CreateNewNovelBody,
   CreateNewNovelResponse,
   DeleteNovelParams,
+  DislikeNovelParams,
   EditChapterBody,
   EditChapterResponse,
   EditNovelBody,
+  GetAuthorOtherNovelsParams,
+  GetAuthorOtherNovelsResponse,
   GetChapterByIdParams,
   GetChapterByIdResponse,
   GetNovelByIdParams,
   GetNovelByIdResponse,
+  GetNovelCommentsParams,
+  GetNovelCommentsResponse,
+  GetNovelLikersParams,
+  GetNovelLikersResponse,
   GetNovelsParams,
   GetNovelsResponse,
+  LikeNovelParams,
   Novel,
   PublishNovelParams,
+  ReportNovelBody,
+  ShareNovelParams,
   UnPublishNovelParams,
   UploadCoverImageBody,
   UploadCoverImageResponse,
 } from "./types";
-import Pako from "pako";
 
 export async function getNovels(params: GetNovelsParams) {
   const response = await http.get<GetNovelsResponse>("v1/novels", { searchParams: params });
@@ -65,6 +77,60 @@ export async function editNovel({ id, ...body }: EditNovelBody) {
 
 export async function deleteNovel(params: DeleteNovelParams) {
   const response = await http.delete<Novel>(`v1/novels/${params.id}`);
+
+  return response.data;
+}
+
+export async function getNovelComments({ id, ...params }: GetNovelCommentsParams) {
+  const response = await http.get<GetNovelCommentsResponse>(`v1/novels/${id}/comments`, {
+    searchParams: params,
+  });
+
+  return response.data;
+}
+
+export async function addNovelComment({ id, ...body }: AddNovelCommentBody) {
+  const response = await http.post<NovelComment>(`v1/novels/${id}/comments`, body);
+
+  return response.data;
+}
+
+export async function getNovelLikers({ id, ...params }: GetNovelLikersParams) {
+  const response = await http.get<GetNovelLikersResponse>(`v1/novels/${id}/likes`, {
+    searchParams: params,
+  });
+
+  return response.data;
+}
+
+export async function likeNovel({ id }: LikeNovelParams) {
+  const response = await http.post(`v1/novels/${id}/likes`);
+
+  return response.data;
+}
+
+export async function dislikeNovel({ id }: DislikeNovelParams) {
+  const response = await http.delete(`v1/novels/${id}/likes`);
+
+  return response.data;
+}
+
+export async function shareNovel({ id }: ShareNovelParams) {
+  const response = await http.post(`v1/novels/${id}/shares`);
+
+  return response.data;
+}
+
+export async function reportNovel({ id, ...body }: ReportNovelBody) {
+  const response = await http.post<boolean>(`v1/novels/${id}/reports`, body);
+
+  return response.data;
+}
+
+export async function getAuthorOtherNovels({ id }: GetAuthorOtherNovelsParams) {
+  const response = await http.get<GetAuthorOtherNovelsResponse>(
+    `v1/novels/${id}/related-by-author`
+  );
 
   return response.data;
 }

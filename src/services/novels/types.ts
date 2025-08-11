@@ -12,6 +12,7 @@ export type Novel = {
   coverImage: string;
   createdAt: string;
   description: string;
+  commentsCount: number;
   isDeletableByUser: boolean;
   isEditableByUser: boolean;
   isPublishableByUser: boolean;
@@ -106,6 +107,58 @@ export type UnPublishNovelParams = {
 export type DeleteNovelParams = {
   id: number;
 };
+
+export type GetNovelCommentsParams = {
+  id: number;
+  page?: number;
+  limit?: number;
+};
+
+export type GetNovelCommentsResponse = Paginated<NovelComment>;
+
+export type AddNovelCommentBody = {
+  id: string;
+  text: string;
+};
+
+export type LikeNovelParams = {
+  id: number;
+};
+
+export type DislikeNovelParams = {
+  id: number;
+};
+
+export type GetNovelLikersParams = {
+  id: number;
+  page?: number;
+  limit?: number;
+};
+
+export type GetNovelLikersResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+  users: User[];
+};
+
+export type ShareNovelParams = {
+  id: number;
+};
+
+export type ReportNovelBody = {
+  id: number;
+  reason: string;
+};
+
+export type GetAuthorOtherNovelsParams = {
+  id: number;
+};
+
+export type GetAuthorOtherNovelsResponse = Novel[];
 
 export type GetChapterByIdParams = {
   id: number;

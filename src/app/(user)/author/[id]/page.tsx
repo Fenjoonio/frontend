@@ -1,9 +1,8 @@
 import UserInfo from "./components/UserInfo";
 import BackArrow from "@/components/BackArrow";
-import UserStories from "./components/UserStories";
-import UserComments from "./components/UserComments";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UserNovels from "./components/UserNovels";
+import UserStories from "./components/UserStories";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type AuthorPageProps = {
   params: Promise<{ id: string }>;
@@ -32,10 +31,6 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           <TabsTrigger value="novels" className="flex-1">
             داستان‌ها
           </TabsTrigger>
-
-          <TabsTrigger value="comments" className="flex-1">
-            نقد‌ها
-          </TabsTrigger>
         </TabsList>
 
         <div className="mt-6">
@@ -45,10 +40,6 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 
           <TabsContent value="novels">
             <UserNovels id={Number(id)} />
-          </TabsContent>
-
-          <TabsContent value="comments">
-            <UserComments id={Number(id)} />
           </TabsContent>
         </div>
       </Tabs>

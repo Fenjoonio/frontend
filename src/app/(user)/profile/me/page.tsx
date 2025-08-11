@@ -1,7 +1,6 @@
 import UserInfo from "./components/UserInfo";
 import UserNovels from "./components/UserNovels";
 import UserStories from "./components/UserStories";
-import UserComments from "./components/UserComments";
 import ProfileHeader from "./components/ProfileHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -21,10 +20,6 @@ export default async function AuthorPage() {
           <TabsTrigger value="novels" className="flex-1">
             داستان‌ها
           </TabsTrigger>
-
-          <TabsTrigger value="comments" className="flex-1">
-            نقد‌ها
-          </TabsTrigger>
         </TabsList>
 
         <div className="mt-6">
@@ -34,10 +29,6 @@ export default async function AuthorPage() {
 
           <TabsContent value="novels">
             <UserNovels />
-          </TabsContent>
-
-          <TabsContent value="comments">
-            <UserComments />
           </TabsContent>
         </div>
       </Tabs>
