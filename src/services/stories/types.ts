@@ -62,15 +62,7 @@ export type GetStoryCommentsParams = {
   limit?: number;
 };
 
-export type GetStoryCommentsResponse = {
-  pagination: {
-    limit: number;
-    page: number;
-    pages: number;
-    total: number;
-  };
-  comments: Comment[];
-};
+export type GetStoryCommentsResponse = Paginated<Comment>;
 
 export type AddStoryCommentBody = {
   id: string;

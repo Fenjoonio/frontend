@@ -1,4 +1,9 @@
 import { COMMENTS_QUERY_KEYS } from "./constants";
+import { NOVELS_QUERY_KEYS } from "@/services/novels";
+import { STORIES_QUERY_KEYS } from "@/services/stories";
+import { USER_QUERY_KEYS } from "@/services/user/constants";
+import { GetStoryCommentsResponse } from "@/services/stories/types";
+import { GetUserCommentsByIdResponse } from "@/services/user/types";
 import { InfiniteData, useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   deleteComment,
@@ -14,10 +19,6 @@ import type {
   GetCommentLikersParams,
   LikeCommentParams,
 } from "./types";
-import { STORIES_QUERY_KEYS } from "../stories";
-import { GetStoryCommentsResponse } from "../stories/types";
-import { USER_QUERY_KEYS } from "../user/constants";
-import { GetUserCommentsByIdResponse } from "../user/types";
 
 export function useEditComment(
   params: Pick<EditCommentBody, "id">,
@@ -48,15 +49,15 @@ export function useLikeComment(params: LikeCommentParams, options?: { onSuccess?
       options?.onSuccess?.();
 
       queryClient.setQueriesData(
-        { queryKey: [STORIES_QUERY_KEYS.GET_STORY_COMMENTS] },
-        (oldData: InfiniteData<GetStoryCommentsResponse> | undefined) => {
+        { queryKey: [USER_QUERY_KEYS.GET_USER_COMMENTS_BY_ID] },
+        (oldData: InfiniteData<GetUserCommentsByIdResponse> | undefined) => {
           if (!oldData) return oldData;
 
           return {
             ...oldData,
             pages: oldData.pages.map((page) => ({
               ...page,
-              comments: page.comments.map((comment) =>
+              comments: page.items.map((comment) =>
                 comment.id === params.id
                   ? { ...comment, likesCount: comment.likesCount + 1, isLikedByUser: true }
                   : comment
@@ -67,15 +68,34 @@ export function useLikeComment(params: LikeCommentParams, options?: { onSuccess?
       );
 
       queryClient.setQueriesData(
-        { queryKey: [USER_QUERY_KEYS.GET_USER_COMMENTS_BY_ID] },
-        (oldData: InfiniteData<GetUserCommentsByIdResponse> | undefined) => {
+        { queryKey: [STORIES_QUERY_KEYS.GET_STORY_COMMENTS] },
+        (oldData: InfiniteData<GetStoryCommentsResponse> | undefined) => {
           if (!oldData) return oldData;
 
           return {
             ...oldData,
             pages: oldData.pages.map((page) => ({
               ...page,
-              comments: page.comments.map((comment) =>
+              items: page.items.map((comment) =>
+                comment.id === params.id
+                  ? { ...comment, likesCount: comment.likesCount + 1, isLikedByUser: true }
+                  : comment
+              ),
+            })),
+          };
+        }
+      );
+
+      queryClient.setQueriesData(
+        { queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_COMMENTS] },
+        (oldData: InfiniteData<GetStoryCommentsResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              items: page.items.map((comment) =>
                 comment.id === params.id
                   ? { ...comment, likesCount: comment.likesCount + 1, isLikedByUser: true }
                   : comment
@@ -103,15 +123,15 @@ export function useDislikeComment(
       options?.onSuccess?.();
 
       queryClient.setQueriesData(
-        { queryKey: [STORIES_QUERY_KEYS.GET_STORY_COMMENTS] },
-        (oldData: InfiniteData<GetStoryCommentsResponse> | undefined) => {
+        { queryKey: [USER_QUERY_KEYS.GET_USER_COMMENTS_BY_ID] },
+        (oldData: InfiniteData<GetUserCommentsByIdResponse> | undefined) => {
           if (!oldData) return oldData;
 
           return {
             ...oldData,
             pages: oldData.pages.map((page) => ({
               ...page,
-              comments: page.comments.map((comment) =>
+              comments: page.items.map((comment) =>
                 comment.id === params.id
                   ? { ...comment, likesCount: comment.likesCount - 1, isLikedByUser: false }
                   : comment
@@ -122,15 +142,34 @@ export function useDislikeComment(
       );
 
       queryClient.setQueriesData(
-        { queryKey: [USER_QUERY_KEYS.GET_USER_COMMENTS_BY_ID] },
-        (oldData: InfiniteData<GetUserCommentsByIdResponse> | undefined) => {
+        { queryKey: [STORIES_QUERY_KEYS.GET_STORY_COMMENTS] },
+        (oldData: InfiniteData<GetStoryCommentsResponse> | undefined) => {
           if (!oldData) return oldData;
 
           return {
             ...oldData,
             pages: oldData.pages.map((page) => ({
               ...page,
-              comments: page.comments.map((comment) =>
+              items: page.items.map((comment) =>
+                comment.id === params.id
+                  ? { ...comment, likesCount: comment.likesCount - 1, isLikedByUser: false }
+                  : comment
+              ),
+            })),
+          };
+        }
+      );
+
+      queryClient.setQueriesData(
+        { queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_COMMENTS] },
+        (oldData: InfiniteData<GetStoryCommentsResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              items: page.items.map((comment) =>
                 comment.id === params.id
                   ? { ...comment, likesCount: comment.likesCount - 1, isLikedByUser: false }
                   : comment
