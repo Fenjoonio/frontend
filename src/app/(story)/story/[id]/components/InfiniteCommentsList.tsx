@@ -39,7 +39,7 @@ export default function Comments({ id, className }: InfiniteCommentsListProps) {
   });
 
   const comments = useMemo(() => {
-    return data?.pages ? data.pages.flatMap((page) => page.comments ?? []) : [];
+    return data?.pages ? data.pages.flatMap((page) => page.items ?? []) : [];
   }, [data?.pages]);
 
   const refetchCommentsList = () => {
