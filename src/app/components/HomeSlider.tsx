@@ -17,7 +17,7 @@ export default function HomeSlider({ className }: HomeSliderProps) {
     <Swiper autoplay={{ delay: 10_000 }} loop className={className}>
       <SwiperSlide className="px-5">
         <Link
-          href="/novel/3"
+          href="/novel/6"
           className="w-full h-48 flex items-center justify-center rounded-sm overflow-hidden relative px-4"
         >
           <Image
@@ -40,7 +40,7 @@ export default function HomeSlider({ className }: HomeSliderProps) {
 
       <SwiperSlide className="px-5">
         <Link
-          href="/novel/3"
+          href="/novel/7"
           className="w-full h-48 flex items-center justify-center rounded-sm overflow-hidden relative px-4"
         >
           <Image
@@ -62,7 +62,7 @@ export default function HomeSlider({ className }: HomeSliderProps) {
 
       <SwiperSlide className="px-5">
         <Link
-          href="/novel/3"
+          href="/novel/2"
           className="w-full h-48 flex items-center justify-center rounded-sm overflow-hidden relative px-4"
         >
           <Image
