@@ -55,15 +55,7 @@ export type GetUserCommentsByIdParams = {
   limit?: number;
 };
 
-export type GetUserCommentsByIdResponse = {
-  pagination: {
-    limit: number;
-    page: number;
-    pages: number;
-    total: number;
-  };
-  comments: Comment[];
-};
+export type GetUserCommentsByIdResponse = Paginated<Comment>;
 
 export type GetCurrentUserStoriesParams = {
   page?: number;
