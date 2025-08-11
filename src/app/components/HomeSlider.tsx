@@ -21,7 +21,7 @@ export default function HomeSlider({ className }: HomeSliderProps) {
           className="w-full h-48 flex items-center justify-center rounded-sm overflow-hidden relative px-4"
         >
           <Image
-            src="https://s3.lexoya.com/fenjoon/banners/t5125425-f45f-41ec-a143-915faed27823.png"
+            src="https://s3.lexoya.com/fenjoon/novels/12752e71-b0f2-466a-b150-b5408861482f.png"
             alt="تصویر داستان"
             fill
             priority
@@ -29,9 +29,9 @@ export default function HomeSlider({ className }: HomeSliderProps) {
           />
 
           <div className="flex flex-col justify-center items-center relative z-10">
-            <span className="text-center text-xl text-light-gray-100 font-black">سبزپوشی خفته</span>
+            <span className="text-center text-xl text-light-gray-100 font-black">بی‌لیاقت</span>
             <span className="text-center text-sm text-light-gray-100 mt-1">
-              قصه دختری که میان سکوت، صدای مردم شد...
+              گاهی یک داستان کوتاه، می‌تواند روزت را عوض کند.
             </span>
             <span className="bg-white text-primary rounded-sm py-1 px-6 mt-4">خواندن</span>
           </div>
@@ -44,16 +44,38 @@ export default function HomeSlider({ className }: HomeSliderProps) {
           className="w-full h-48 flex items-center justify-center rounded-sm overflow-hidden relative px-4"
         >
           <Image
-            src="https://s3.lexoya.com/fenjoon/banners/a4335425-d15f-41fc-a143-915faed27912.png"
+            src="https://s3.lexoya.com/fenjoon/novels/05860b51-1c20-452e-8b6a-264fa401b70d.jpg"
             alt="تصویر داستان"
             fill
             className="object-cover blur-xs"
           />
 
           <div className="flex flex-col justify-center items-center relative z-10">
-            <span className="text-center text-xl text-light-gray-100 font-black">دالیای سیاه</span>
+            <span className="text-center text-xl text-light-gray-100 font-black">مجسمه‌ساز</span>
             <span className="text-center text-sm text-light-gray-100 mt-1">
-              او تنها یک قاتل نبود، دالیای سیاه بود؛ پژمرده اما مرگ‌بار.
+              هر کلمه، دری به دنیایی دیگر است… آماده‌ای وارد شوی؟
+            </span>
+            <span className="bg-white text-primary rounded-sm py-1 px-6 mt-4">خواندن</span>
+          </div>
+        </Link>
+      </SwiperSlide>
+
+      <SwiperSlide className="px-5">
+        <Link
+          href="/novel/3"
+          className="w-full h-48 flex items-center justify-center rounded-sm overflow-hidden relative px-4"
+        >
+          <Image
+            src="https://s3.lexoya.com/fenjoon/novels/f1125435-d45f-41bc-a143-915faed27854.png"
+            alt="تصویر داستان"
+            fill
+            className="object-cover blur-xs"
+          />
+
+          <div className="flex flex-col justify-center items-center relative z-10">
+            <span className="text-center text-xl text-light-gray-100 font-black">جزیره نامرئی</span>
+            <span className="text-center text-sm text-light-gray-100 mt-1">
+              دنیا پر از قصه‌هایی‌ست که هنوز نخوانده‌ای.
             </span>
             <span className="bg-white text-primary rounded-sm py-1 px-6 mt-4">خواندن</span>
           </div>
