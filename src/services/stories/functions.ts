@@ -23,6 +23,7 @@ import type {
   GetAuthorOtherStoriesParams,
   GetAuthorOtherStoriesResponse,
   ChangeStoryVisibilityBody,
+  ViewStoryParams,
 } from "./types";
 import { isClientSide } from "@/lib/utils/environment";
 
@@ -92,6 +93,12 @@ export async function dislikeStory({ id }: DislikeStoryParams) {
 
 export async function shareStory({ id }: ShareStoryParams) {
   const response = await http.post(`v1/stories/${id}/shares`);
+
+  return response.data;
+}
+
+export async function viewStory({ id }: ViewStoryParams) {
+  const response = await http.post<boolean>(`v1/stories/${id}/views`);
 
   return response.data;
 }

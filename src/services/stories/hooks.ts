@@ -15,6 +15,7 @@ import {
   likeStory,
   reportStory,
   shareStory,
+  viewStory,
   writeStoryWithAi,
 } from "./functions";
 import {
@@ -328,6 +329,10 @@ export function useShareStory(options?: { onSuccess?: () => void }) {
     mutationKey: [STORIES_QUERY_KEYS.SHARE_STORY],
     mutationFn: shareStory,
   });
+}
+
+export function useViewStory(options?: { onSuccess?: () => void }) {
+  return useMutation({ ...options, mutationFn: viewStory });
 }
 
 export function useReportStory(options?: { onSuccess?: () => void }) {
