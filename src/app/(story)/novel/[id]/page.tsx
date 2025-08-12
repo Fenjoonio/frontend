@@ -62,20 +62,27 @@ export default async function NovelPage({ params }: NovelPageProps) {
 
         <p className="whitespace-pre-line line-clamp-6 leading-6 mt-2">{novel.description}</p>
 
-        <h3 className="text-sm text-soft-foreground mt-8">آخرین بخش‌ها</h3>
+        {!!novel.chapters?.length && (
+          <>
+            <h3 className="text-sm text-soft-foreground mt-8">آخرین بخش‌ها</h3>
 
-        <NovelChapters chapters={novel.chapters} />
+            <NovelChapters chapters={novel.chapters} />
+          </>
+        )}
+
         <NovelComments className="mt-8" />
       </div>
 
-      <div
-        style={{ bottom: "env(safe-area-inset-bottom)" }}
-        className="max-w-[480px] fixed bottom-0 right-0 left-0 mx-auto bg-background"
-      >
-        <Link href={`/novel/${novel.id}/chapter/${novel.chapters[0].id}`}>
-          <Button className="w-full rounded-none">شروع خواندن</Button>
-        </Link>
-      </div>
+      {novel.chapters?.[0]?.id && (
+        <div
+          style={{ bottom: "env(safe-area-inset-bottom)" }}
+          className="max-w-[480px] fixed bottom-0 right-0 left-0 mx-auto bg-background"
+        >
+          <Link href={`/novel/${novel.id}/chapter/${novel.chapters[0].id}`}>
+            <Button className="w-full rounded-none">شروع خواندن</Button>
+          </Link>
+        </div>
+      )}
     </section>
   );
 }
