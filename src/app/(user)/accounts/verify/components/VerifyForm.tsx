@@ -43,7 +43,11 @@ export default function VerifyForm({ phone, redirect, className }: VerifyFormPro
   const { mutate: login, isPending } = useVerifyOtp({
     onSuccess: async (response) => {
       setIsLoggedIn(true);
-      router.replace(redirect ? redirect : response.isNewUser ? "/profile/edit" : "/");
+
+      // NOTE: We need to ensure the authorization cookie is set!
+      setTimeout(() => {
+        router.replace(redirect ? redirect : response.isNewUser ? "/profile/edit" : "/");
+      }, 0)
     },
   });
 
