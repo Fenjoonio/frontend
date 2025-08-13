@@ -16,6 +16,7 @@ import {
   publishNovel,
   unPublishNovel,
   uploadCoverImage,
+  viewNovel,
 } from "./functionts";
 import type {
   Novel,
@@ -189,6 +190,10 @@ export function useAddNovelComment(options?: { onSuccess?: (res: Comment) => voi
       queryClient.invalidateQueries({ queryKey: [NOVELS_QUERY_KEYS.GET_NOVEL_COMMENTS] });
     },
   });
+}
+
+export function useViewNovel(options?: { onSuccess?: () => void }) {
+  return useMutation({ ...options, mutationFn: viewNovel });
 }
 
 export function useGetChapterById(params: GetChapterByIdParams) {

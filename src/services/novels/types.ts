@@ -124,6 +124,10 @@ export type AddNovelCommentBody = {
 
 export type AddNovelCommentResponse = Comment;
 
+export type ViewNovelParams = {
+  id: number;
+};
+
 export type GetChapterByIdParams = {
   id: number;
   chapterId: number;
