@@ -178,7 +178,7 @@ export default function MessagePage() {
       </div>
 
       <div
-        className="flex gap-x-2 items-end bg-soft-background py-4 px-4 sticky bottom-0 z-10 transition-transform will-change-transform"
+        className="flex gap-x-2 items-end bg-soft-background p-2 sticky bottom-0 z-10 transition-transform will-change-transform"
         style={{ transform: `translateY(${inputTranslateY}px)` }}
       >
         <Textarea
@@ -187,11 +187,11 @@ export default function MessagePage() {
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}
           placeholder="متن پیامت رو اینجا بنویس"
-          className="max-h-32 min-h-14 caret-primary bg-background border-none resize-none"
+          className="max-h-32 min-h-12 caret-primary bg-background border-none resize-none"
           onKeyDown={onKeydown}
         />
 
-        <Button className="size-14 shrink-0" onClick={handleSendMessage} disabled={isSending}>
+        <Button className="size-12 shrink-0" onClick={handleSendMessage} disabled={isSending}>
           <SendHorizonalIcon className="rotate-180" />
         </Button>
       </div>
