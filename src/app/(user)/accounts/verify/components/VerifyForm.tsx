@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toEnglishDigits } from "@/lib/utils/numbers";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { sleep } from "@/lib/utils/promises";
 
 const schema = z.object({
   code: z.string().length(5, { message: "کد وارد شده صحیح نیست" }),
@@ -41,13 +42,9 @@ export default function VerifyForm({ phone, redirect, className }: VerifyFormPro
   });
 
   const { mutate: login, isPending } = useVerifyOtp({
-    onSuccess: async (response) => {
+    onSuccess: (response) => {
       setIsLoggedIn(true);
-
-      // NOTE: We need to ensure the authorization cookie is set!
-      setTimeout(() => {
-        router.replace(redirect ? redirect : response.isNewUser ? "/profile/edit" : "/");
-      }, 0)
+      router.replace(redirect ? redirect : response.isNewUser ? "/profile/edit" : "/");
     },
   });
 
