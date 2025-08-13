@@ -97,6 +97,10 @@ export type ShareStoryParams = {
   id: number;
 };
 
+export type ViewStoryParams = {
+  id: number;
+};
+
 export type ReportStoryBody = {
   id: number;
   reason: string;

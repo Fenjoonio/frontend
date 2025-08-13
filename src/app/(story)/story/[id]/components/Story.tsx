@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { notFound } from "next/navigation";
 import { cn } from "@/lib/utils/classnames";
 import { getUserName } from "@/lib/utils/users";
-import { useGetSingleStory } from "@/services/stories";
+import { useGetSingleStory, useViewStory } from "@/services/stories";
 import { formatStoryCreateAt } from "@/lib/utils/story";
 import StoryLikeButton from "@/app/(story)/components/StoryLikeButton";
 import ShareStorySheet from "@/app/(story)/components/ShareStorySheet";
@@ -22,10 +22,15 @@ type StoryProps = {
 };
 
 export default function Story({ id }: StoryProps) {
+  const { mutate } = useViewStory();
   const [showFullText, setShowFullText] = useState(true);
   const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
   const { data: story, isPending, isFetched } = useGetSingleStory({ id: +id });
   const hasStory = story && Object.keys(story).length;
+
+  useEffect(() => {
+    mutate({ id: +id });
+  }, [id, mutate]);
 
   if (isFetched && !hasStory) {
     notFound();

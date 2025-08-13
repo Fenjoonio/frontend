@@ -23,6 +23,7 @@ import type {
   UnPublishNovelParams,
   UploadCoverImageBody,
   UploadCoverImageResponse,
+  ViewNovelParams,
 } from "./types";
 import Pako from "pako";
 
@@ -83,6 +84,12 @@ export async function getNovelComments({ id, ...params }: GetNovelCommentsParams
 
 export async function addNovelComment({ id, ...body }: AddNovelCommentBody) {
   const response = await http.post<AddNovelCommentResponse>(`v1/novels/${id}/comments`, body);
+
+  return response.data;
+}
+
+export async function viewNovel({ id }: ViewNovelParams) {
+  const response = await http.post<boolean>(`v1/novels/${id}/views`);
 
   return response.data;
 }
