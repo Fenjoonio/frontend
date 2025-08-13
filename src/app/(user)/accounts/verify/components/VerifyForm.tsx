@@ -12,7 +12,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toEnglishDigits } from "@/lib/utils/numbers";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuthContext } from "@/providers/AuthProvider";
-import { sleep } from "@/lib/utils/promises";
 
 const schema = z.object({
   code: z.string().length(5, { message: "کد وارد شده صحیح نیست" }),
