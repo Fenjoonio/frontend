@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Chapter } from "@/services/novels";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Chapter, useViewNovel } from "@/services/novels";
 
 type NovelChaptersProps = {
   chapters: Chapter[];
@@ -13,7 +13,12 @@ type NovelChaptersProps = {
 
 export default function NovelChapters({ chapters }: NovelChaptersProps) {
   const params = useParams<{ id: string }>();
+  const { mutate: viewNovel } = useViewNovel();
   const [isShowingAllChapters, setIsShowingAllChapters] = useState(false);
+
+  useEffect(() => {
+    viewNovel({ id: Number(params.id) });
+  }, [viewNovel, params.id]);
 
   const novelChapters = isShowingAllChapters ? chapters : chapters.slice(0, 3);
 
