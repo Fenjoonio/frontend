@@ -1,23 +1,13 @@
 "use client";
 
-import { EditorState } from "lexical";
+import "./editor-overrides.css";
+import { useCallback } from "react";
 import Toolbar from "./components/Toolbar";
 import { cn } from "@/lib/utils/classnames";
-import { useState, useCallback } from "react";
-import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
-import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-import { LexicalComposer, type InitialConfigType } from "@lexical/react/LexicalComposer";
-
-function Placeholder() {
-  return (
-    <div className="absolute top-0 start-0 text-lg text-gray-300 pointer-events-none">
-      داستان از اینجا شروع میشه که ...
-    </div>
-  );
-}
+import StarterKit from "@tiptap/starter-kit";
+import TextAlign from "@tiptap/extension-text-align";
+import Placeholder from "@tiptap/extension-placeholder";
+import { useEditor, EditorContent } from "@tiptap/react";
 
 type EditorProps = {
   readOnly?: boolean;
@@ -34,59 +24,51 @@ export default function Editor({
   className,
   onSave,
 }: EditorProps) {
-  const [editorState, setEditorState] = useState<EditorState | null>(null);
-
-  const onChange = useCallback((editorState: EditorState) => {
-    setEditorState(editorState);
-  }, []);
-
-  const config: InitialConfigType = {
+  const editor = useEditor({
+    autofocus: "end",
     editable: !readOnly,
-    namespace: "FenjoonEditor",
-    editorState: initialState ?? undefined,
-    nodes: [HeadingNode, QuoteNode],
-    theme: {
-      paragraph: "text-lg leading-8",
-      quote: "border-s-2 py-2 px-2 border-primary italic text-muted-foreground",
+    immediatelyRender: false,
+    content: initialState ? JSON.parse(initialState) : "",
+    extensions: [
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
+      Placeholder.configure({
+        placeholder: "داستان از اینجا شروع میشه که ...",
+        showOnlyCurrent: true,
+        includeChildren: false,
+      }),
+    ],
+    onUpdate({ editor }) {
+      console.log(editor.getJSON());
+      // if (onSave) {
+      //   const json = editor.getJSON();
+      //   const text = editor.getText();
+      //   onSave({ json, text });
+      // }
     },
-    onError(error) {
-      console.error("Lexical error", error);
-    },
-  };
+  });
 
   const handleSave = useCallback(() => {
-    if (!editorState || !onSave) return;
+    if (!editor || !onSave) return;
+    const json = editor.getJSON();
+    const text = editor.getText();
+    onSave({ json, text });
+  }, [editor, onSave]);
 
-    editorState.read(() => {
-      const root = editorState._nodeMap.get("root");
-
-      const text = root?.getTextContent() || "";
-      const json = editorState.toJSON();
-
-      onSave({ json, text });
-    });
-  }, [editorState, onSave]);
+  if (!editor) return null;
 
   return (
-    <LexicalComposer initialConfig={config}>
-      <div className={cn("editor relative", className)}>
-        {!readOnly && (
-          <Toolbar
-            isSaveLoading={isSaveLoading}
-            className="fixed z-10 bottom-5 start-5"
-            onSave={handleSave}
-          />
-        )}
-
-        <RichTextPlugin
-          contentEditable={<ContentEditable className="min-h-96 outline-none pb-16" />}
-          placeholder={<Placeholder />}
-          ErrorBoundary={({ children }) => children}
+    <div className={cn("editor relative", className)}>
+      {!readOnly && (
+        <Toolbar
+          editor={editor}
+          isSaveLoading={isSaveLoading}
+          className="fixed z-10 bottom-5 start-5"
+          onSave={handleSave}
         />
+      )}
 
-        <HistoryPlugin />
-        <OnChangePlugin onChange={onChange} />
-      </div>
-    </LexicalComposer>
+      <EditorContent editor={editor} className="min-h-96 pb-16 text-lg leading-8" />
+    </div>
   );
 }
