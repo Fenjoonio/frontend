@@ -1,3 +1,7 @@
+.tiptap {
+  padding-bottom: 512px;
+}
+
 .tiptap p {
   font-size: var(--text-lg);
   line-height: var(--leading-relaxed);

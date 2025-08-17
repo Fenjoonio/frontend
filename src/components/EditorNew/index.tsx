@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import Toolbar from "./components/Toolbar";
 import { cn } from "@/lib/utils/classnames";
 import StarterKit from "@tiptap/starter-kit";
-import HardBreak from "@tiptap/extension-hard-break";
+import SelectAll from "./extensions/SelectAll";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -31,7 +31,7 @@ export default function Editor({
     immediatelyRender: false,
     content: initialState ? JSON.parse(initialState) : "",
     extensions: [
-      HardBreak,
+      SelectAll,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
       Placeholder.configure({
@@ -40,14 +40,6 @@ export default function Editor({
         includeChildren: false,
       }),
     ],
-    onUpdate({ editor }) {
-      console.log(editor.getJSON());
-      // if (onSave) {
-      //   const json = editor.getJSON();
-      //   const text = editor.getText();
-      //   onSave({ json, text });
-      // }
-    },
   });
 
   const handleSave = useCallback(() => {
@@ -70,7 +62,7 @@ export default function Editor({
         />
       )}
 
-      <EditorContent editor={editor} className="min-h-96 pb-16 text-lg leading-8" />
+      <EditorContent editor={editor} />
     </div>
   );
 }
