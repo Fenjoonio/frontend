@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import Toolbar from "./components/Toolbar";
 import { cn } from "@/lib/utils/classnames";
 import StarterKit from "@tiptap/starter-kit";
+import HardBreak from "@tiptap/extension-hard-break";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -30,6 +31,7 @@ export default function Editor({
     immediatelyRender: false,
     content: initialState ? JSON.parse(initialState) : "",
     extensions: [
+      HardBreak,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
       Placeholder.configure({
