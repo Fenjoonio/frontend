@@ -9,6 +9,7 @@ import SelectAll from "./extensions/SelectAll";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
 import { useEditor, EditorContent } from "@tiptap/react";
+import useKeyboardHeight from "@/hooks/useKeyboardHeigh";
 
 type EditorProps = {
   readOnly?: boolean;
@@ -25,6 +26,8 @@ export default function Editor({
   className,
   onSave,
 }: EditorProps) {
+  const keyboardHeight = useKeyboardHeight();
+
   const editor = useEditor({
     autofocus: "end",
     editable: !readOnly,
@@ -52,14 +55,17 @@ export default function Editor({
   if (!editor) return null;
 
   return (
-    <div className={cn("editor relative", className)}>
+    <div className={cn("editor relative h-[20%]", className)}>
       {!readOnly && (
-        <Toolbar
-          editor={editor}
-          isSaveLoading={isSaveLoading}
-          className="fixed z-10 bottom-5 start-5"
-          onSave={handleSave}
-        />
+        <div onMouseDown={(e) => e.preventDefault()}>
+          <Toolbar
+            editor={editor}
+            isSaveLoading={isSaveLoading}
+            className="w-full fixed z-10 bottom-5 start-0 px-5 transition-transform will-change-transform select-none"
+            style={{ transform: `translateY(${keyboardHeight}px)` }}
+            onSave={handleSave}
+          />
+        </div>
       )}
 
       <EditorContent editor={editor} />

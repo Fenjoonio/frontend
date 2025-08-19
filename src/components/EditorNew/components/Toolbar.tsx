@@ -1,5 +1,6 @@
 "use client";
 
+import type { Editor } from "@tiptap/react";
 import { cn } from "@/lib/utils/classnames";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverTrigger, PopoverContent, PopoverArrow } from "@/components/ui/popover";
@@ -19,19 +20,21 @@ import {
   MinusIcon,
   TypeIcon,
 } from "lucide-react";
-import { useState, useEffect } from "react";
-import { Editor } from "@tiptap/react";
+import { useState, useEffect, CSSProperties } from "react";
 
 type ToolbarProps = {
   className?: string;
+  editor: Editor | null;
+  style?: CSSProperties;
   isSaveLoading?: boolean;
   onSave: () => void;
-  editor: Editor | null;
 };
 
-export default function Toolbar({ isSaveLoading, className, onSave, editor }: ToolbarProps) {
-  const [isExpanded, setIsExpanded] = useState(true);
+export default function Toolbar({ isSaveLoading, style, className, onSave, editor }: ToolbarProps) {
   const [, forceUpdate] = useState({}); // trigger re-render
+  const [isExpanded, setIsExpanded] = useState(true);
+  const [isTypePopoverOpen, setIsTypePopoverOpen] = useState(false);
+  const [isAlignmentPopoverOpen, setIsAlignmentPopoverOpen] = useState(false);
 
   useEffect(() => {
     if (!editor) return;
@@ -53,7 +56,7 @@ export default function Toolbar({ isSaveLoading, className, onSave, editor }: To
   const isActive = (format: string | { [key: string]: any }) => editor.isActive(format);
 
   return (
-    <div className={cn("flex justify-between items-center", className)}>
+    <div style={style} className={cn("flex justify-between items-center", className)}>
       <div className="flex bg-soft-background rounded-lg">
         {isExpanded && (
           <div className="flex gap-x-1 items-center bg-background rounded-md my-1 ms-1 overflow-hidden">
@@ -61,22 +64,31 @@ export default function Toolbar({ isSaveLoading, className, onSave, editor }: To
               className={cn("p-2 cursor-pointer", {
                 "text-primary bg-primary/10": isActive("blockquote"),
               })}
-              onClick={() => editor.chain().focus().toggleBlockquote().run()}
+              onClick={() => editor.chain().toggleBlockquote().run()}
             >
               <QuoteIcon />
             </button>
 
-            <Popover>
+            <Popover open={isTypePopoverOpen} onOpenChange={setIsTypePopoverOpen}>
               <PopoverTrigger className="p-2 cursor-pointer">
                 <TypeIcon />
               </PopoverTrigger>
-              <PopoverContent className="p-1">
+
+              <PopoverContent
+                side="top"
+                className="p-1"
+                onOpenAutoFocus={(e) => e.preventDefault()}
+                onCloseAutoFocus={(e) => e.preventDefault()}
+              >
                 <div className="flex bg-background rounded-md">
                   <button
                     className={cn("p-2 cursor-pointer", {
                       "text-primary bg-primary/10": isActive("underline"),
                     })}
-                    onClick={() => editor.chain().toggleUnderline().run()}
+                    onClick={() => {
+                      setIsTypePopoverOpen(false);
+                      editor.chain().toggleUnderline().run();
+                    }}
                   >
                     <UnderlineIcon />
                   </button>
@@ -85,7 +97,10 @@ export default function Toolbar({ isSaveLoading, className, onSave, editor }: To
                     className={cn("p-2 cursor-pointer", {
                       "text-primary bg-primary/10": isActive("italic"),
                     })}
-                    onClick={() => editor.chain().toggleItalic().run()}
+                    onClick={() => {
+                      setIsTypePopoverOpen(false);
+                      editor.chain().toggleItalic().run();
+                    }}
                   >
                     <ItalicIcon />
                   </button>
@@ -94,7 +109,10 @@ export default function Toolbar({ isSaveLoading, className, onSave, editor }: To
                     className={cn("p-2 cursor-pointer", {
                       "text-primary bg-primary/10": isActive("bold"),
                     })}
-                    onClick={() => editor.chain().toggleBold().run()}
+                    onClick={() => {
+                      setIsTypePopoverOpen(false);
+                      editor.chain().toggleBold().run();
+                    }}
                   >
                     <BoldIcon />
                   </button>
@@ -103,17 +121,26 @@ export default function Toolbar({ isSaveLoading, className, onSave, editor }: To
               </PopoverContent>
             </Popover>
 
-            <Popover>
+            <Popover open={isAlignmentPopoverOpen} onOpenChange={setIsAlignmentPopoverOpen}>
               <PopoverTrigger className="p-2 cursor-pointer">
                 <AlignJustifyIcon />
               </PopoverTrigger>
-              <PopoverContent className="p-1">
+
+              <PopoverContent
+                side="top"
+                className="p-1"
+                onOpenAutoFocus={(e) => e.preventDefault()}
+                onCloseAutoFocus={(e) => e.preventDefault()}
+              >
                 <div className="flex bg-background rounded-md">
                   <button
                     className={cn("p-2 cursor-pointer", {
                       "text-primary bg-primary/10": isActive({ textAlign: "justify" }),
                     })}
-                    onClick={() => editor.chain().setTextAlign("justify").run()}
+                    onClick={() => {
+                      setIsAlignmentPopoverOpen(false);
+                      editor.chain().setTextAlign("justify").run();
+                    }}
                   >
                     <AlignJustifyIcon />
                   </button>
@@ -122,7 +149,10 @@ export default function Toolbar({ isSaveLoading, className, onSave, editor }: To
                     className={cn("p-2 cursor-pointer", {
                       "text-primary bg-primary/10": isActive({ textAlign: "right" }),
                     })}
-                    onClick={() => editor.chain().setTextAlign("right").run()}
+                    onClick={() => {
+                      setIsAlignmentPopoverOpen(false);
+                      editor.chain().setTextAlign("right").run();
+                    }}
                   >
                     <AlignRightIcon />
                   </button>
@@ -131,7 +161,10 @@ export default function Toolbar({ isSaveLoading, className, onSave, editor }: To
                     className={cn("p-2 cursor-pointer", {
                       "text-primary bg-primary/10": isActive({ textAlign: "center" }),
                     })}
-                    onClick={() => editor.chain().setTextAlign("center").run()}
+                    onClick={() => {
+                      setIsAlignmentPopoverOpen(false);
+                      editor.chain().setTextAlign("center").run();
+                    }}
                   >
                     <AlignCenterIcon />
                   </button>
@@ -140,7 +173,10 @@ export default function Toolbar({ isSaveLoading, className, onSave, editor }: To
                     className={cn("p-2 cursor-pointer", {
                       "text-primary bg-primary/10": isActive({ textAlign: "left" }),
                     })}
-                    onClick={() => editor.chain().setTextAlign("left").run()}
+                    onClick={() => {
+                      setIsAlignmentPopoverOpen(false);
+                      editor.chain().setTextAlign("left").run();
+                    }}
                   >
                     <AlignLeftIcon />
                   </button>
@@ -172,7 +208,7 @@ export default function Toolbar({ isSaveLoading, className, onSave, editor }: To
         </div>
       </div>
 
-      <div className="flex fixed bottom-5 end-5 bg-primary rounded-lg">
+      <div className="bg-primary rounded-lg">
         <Button disabled={isSaveLoading} size="sm" className="w-12" onClick={onSave}>
           <SaveIcon />
         </Button>
