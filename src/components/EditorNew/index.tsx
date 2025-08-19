@@ -43,7 +43,44 @@ export default function Editor({
         includeChildren: false,
       }),
     ],
+    onUpdate: () => {
+      setTimeout(scrollToCursor, 10);
+    },
   });
+
+  const scrollToCursor = useCallback(() => {
+    if (!editor || editor.isDestroyed) return;
+
+    try {
+      const { state } = editor;
+      const { selection } = state;
+      const { from } = selection;
+
+      const node = editor.view.domAtPos(from).node;
+
+      let targetElement: Element | null = null;
+
+      if (node.nodeType === Node.TEXT_NODE) {
+        targetElement = node.parentElement;
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        targetElement = node as Element;
+      }
+
+      if (targetElement) {
+        const rect = targetElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const keyboardOffset = Math.abs(keyboardHeight);
+        const availableHeight = viewportHeight - keyboardOffset;
+
+        if (rect.bottom > availableHeight - 100) {
+          const scrollOffset = rect.bottom - availableHeight + 150;
+          window.scrollBy({ top: scrollOffset, behavior: "smooth" });
+        }
+      }
+    } catch (error) {
+      console.warn("Error scrolling to cursor:", error);
+    }
+  }, [editor, keyboardHeight]);
 
   const handleSave = useCallback(() => {
     if (!editor || !onSave) return;
@@ -52,10 +89,12 @@ export default function Editor({
     onSave({ json, text });
   }, [editor, onSave]);
 
-  if (!editor) return null;
+  if (!editor) {
+    return <EditorSkeleton className={className} />;
+  }
 
   return (
-    <div className={cn("editor relative h-[20%]", className)}>
+    <div className={cn("editor relative", className)}>
       {!readOnly && (
         <div onMouseDown={(e) => e.preventDefault()}>
           <Toolbar
@@ -69,6 +108,26 @@ export default function Editor({
       )}
 
       <EditorContent editor={editor} />
+    </div>
+  );
+}
+
+type EditorSkeletonProps = {
+  className?: string;
+};
+
+function EditorSkeleton({ className }: EditorSkeletonProps) {
+  return (
+    <div className={className}>
+      <div className="w-[90%] h-5 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse"></div>
+      <div className="w-[60%] h-5 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-3"></div>
+      <div className="w-[100%] h-5 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-3"></div>
+      <div className="w-[80%] h-5 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-3"></div>
+
+      <div className="w-[40%] h-5 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-10"></div>
+      <div className="w-[80%] h-5 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-3"></div>
+      <div className="w-full h-5 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-3"></div>
+      <div className="w-[30%] h-5 bg-gray-300 dark:bg-border opacity-20 rounded-full animate-pulse mt-3"></div>
     </div>
   );
 }

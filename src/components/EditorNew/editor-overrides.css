@@ -15,6 +15,15 @@
   content: attr(data-placeholder);
 }
 
+.tiptap blockquote {
+  padding: 16px;
+  margin-top: 8px;
+  position: relative;
+  font-style: italic;
+  border-right: 2px solid var(--color-primary);
+  background-color: var(--color-soft-background);
+}
+
 .ProseMirror-focused {
   border: none;
   outline: none;
