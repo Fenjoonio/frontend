@@ -18,6 +18,7 @@ const isWithinFiveMinutes = (time1: string, time2: string) => {
   return Math.abs(diff) <= 5;
 };
 
+// TODO: use useKeyboardHeight hook
 export default function MessagePage() {
   const params = useParams<{ id: string }>();
   const [messageText, setMessageText] = useState("");
