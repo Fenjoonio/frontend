@@ -1,2 +1,3 @@
 - Toast errors
 - Font preload
+- Refactors
