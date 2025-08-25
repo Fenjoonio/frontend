@@ -13,6 +13,7 @@ import {
   getNovelById,
   getNovelComments,
   getNovels,
+  getUpdatedNovels,
   publishNovel,
   unPublishNovel,
   uploadCoverImage,
@@ -40,6 +41,21 @@ export function useGetInfiniteNovels(params?: GetNovelsParams) {
     initialPageParam: params || { page: 1, limit: 5 },
     queryKey: [NOVELS_QUERY_KEYS.GET_NOVELS, params],
     queryFn: ({ pageParam }) => getNovels(pageParam),
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.pagination.page + 1;
+
+      return nextPage <= lastPage.pagination.pages
+        ? { page: lastPage.pagination.page + 1, limit: lastPage.pagination.limit }
+        : undefined;
+    },
+  });
+}
+
+export function useGetInfiniteUpdatedNovels(params?: GetNovelsParams) {
+  return useInfiniteQuery({
+    initialPageParam: params || { page: 1, limit: 5 },
+    queryKey: [NOVELS_QUERY_KEYS.GET_UPDATED_NOVELS, params],
+    queryFn: ({ pageParam }) => getUpdatedNovels(pageParam),
     getNextPageParam: (lastPage) => {
       const nextPage = lastPage.pagination.page + 1;
 

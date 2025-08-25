@@ -33,6 +33,13 @@ export async function getNovels(params: GetNovelsParams) {
   return response.data;
 }
 
+export async function getUpdatedNovels(params: GetNovelsParams) {
+  const response = await http.get<GetNovelsResponse>("v1/novels/updated", { searchParams: params });
+
+  return response.data;
+}
+
+
 export async function getNovelById(params: GetNovelByIdParams) {
   const response = await http.get<GetNovelByIdResponse>(`v1/novels/${params.id}`, {
     throwHttpErrors: false,
