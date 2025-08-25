@@ -1,21 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
 import { PlusIcon } from "lucide-react";
 import BackArrow from "@/components/BackArrow";
 import { Button } from "@/components/ui/button";
-import { useGetInfiniteNovels } from "@/services/novels";
-import InfiniteScroll from "react-infinite-scroll-component";
-import NovelCard, { NovelCardSkeleton } from "../components/NovelCard";
+import LatestNovels from "./components/LatestNovels";
+import UpdatedNovels from "./components/UpdatedNovels";
 
 export default function LibraryPage() {
-  const { data, isFetching, fetchNextPage, hasNextPage } = useGetInfiniteNovels({ limit: 20 });
-
-  const novels = useMemo(() => {
-    return data?.pages ? data.pages.flatMap((page) => page.items ?? []) : [];
-  }, [data?.pages]);
-
   return (
     <section className="pb-4">
       <header
@@ -26,31 +18,9 @@ export default function LibraryPage() {
         <h1 className="text-lg font-bold mt-1">کتابخانه</h1>
       </header>
 
-      <div className="px-5 mt-4">
-        <span className="block text-sm text-soft-foreground mt-1">
-          فرقی نداره داستان کوتاه دوست داری یا بلند، اینجا همه جورش رو پیدا می‌کنی!
-        </span>
-      </div>
+      <UpdatedNovels className="mt-14" />
 
-      <InfiniteScroll
-        next={fetchNextPage}
-        dataLength={novels.length}
-        hasMore={isFetching || hasNextPage}
-        loader={
-          <>
-            {Array(3)
-              .fill(0)
-              .map((_, index) => (
-                <NovelCardSkeleton key={index} className="py-4" />
-              ))}
-          </>
-        }
-        className="divide-y divide-border px-5 mt-5"
-      >
-        {novels.map((novel, index) => (
-          <NovelCard key={index} novel={novel} className="py-4" />
-        ))}
-      </InfiniteScroll>
+      <LatestNovels className="mt-14" />
 
       <Link href="/novel/new">
         <Button
